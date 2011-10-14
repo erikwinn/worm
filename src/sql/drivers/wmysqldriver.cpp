@@ -380,34 +380,24 @@ void WMysqlDriver::initColumnType( WSqlColumn &clm, std::string description )
     clm.setDataType(WSqlDataType::toType(tname));    
 }
 
-//!TODO: FIXME - mysql returns a really wierd string .. malloc bails. Currently does nothing.
+//!use mysql to escape some things .. TODO: something more robust.
 std::string WMysqlDriver::local_escape_string(std::string& escapeme)
 {
-    //uncomment to see badness
-    return escapeme;
-    
     if(escapeme.empty())
         return escapeme;
-    const char * input = escapeme.c_str();
-    ulong inlength = strlen(input);
-    ulong outlength = (inlength * 2) + 2;
-    char *buffer = new char[outlength];
-    std::cout << "@@@unescaped:" << input << std::endl;
-    if(NULL == buffer) //ruh roh ..
-    {
+    ulong inlength = escapeme.length();
+    char *buffer = new char[(inlength * 2) + 1];
+    if(NULL == buffer) {
         setError("Warning: escape string memory allocation error! String not escaped.");
-        return escapeme;
+        return std::string();
     }
-    ulong retlen = mysql_real_escape_string(_mysql, buffer, input, outlength);
-    if(retlen < inlength)
-    {
+    ulong retlen = mysql_real_escape_string(_mysql, buffer, escapeme.c_str(), inlength);
+    if(retlen < inlength){
         setError("Warning: escape string size error! String not escaped.");
         delete[] buffer;
         return escapeme;
     }
-    std::cout << "@@@escaped:" << buffer << ", length:" << retlen << std::endl;
-    std::string ret;
-    ret.append(buffer);
+    std::string ret = buffer;
     delete[] buffer;
     return ret;
 }

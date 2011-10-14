@@ -1,6 +1,6 @@
 WORM - DAL / ORM code geration framework
 
-Copyright (C) 2011  Erik Winn <erikwinnmail@yahoo.com>
+Copyright (C) 2011  Erik Winn (erikwinnmail at yahoo dot com)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,9 +27,10 @@ including query execution with structured result sets and runtime metadata
 including column information such as name, data type, defaults, extras, etc.
 
 NOTE: This API is not fully stable! I expect there to be some changes and
-do not yet recommend building off the API - wormgen is functional (if 
-simple) but the libraries are under heavy development.  There may be
-modifications and these should be expected until this message is removed.
+do not yet recommend building off the API for anything serious.  wormgen 
+is functional (if simple) and changes there should not cause problems but 
+the libraries are under heavy development.  There may be modifications 
+and these should be expected until this message is removed.
 You have been warned :).
 
 Requirements:
@@ -44,7 +45,7 @@ Build Instructions:
 cd build && cmake ..
 make
 
-This will build the libraries and womgen in build/src. By default the static
+This will build the libraries and wormgen in build/src. By default the static
 library is built - uncomment the shared library in src/CMakeLists.txt and
 comment out the static to change this (todo: add a configure script ..)
 
@@ -60,14 +61,22 @@ Uninstall:
 rm /usr/local/bin/wormgen
 rm /usr/local/lib/libworm*
 
-You can also use wormgen without installing by using something like this if
-with the shared libraries:
+You can also use wormgen without installing by doing something like this if
+it was built with the shared libraries:
 (use a full path to work outside this directory):
+
 export LD_LIBRARY_PATH=./build/src
 ./build/src/wormgen
 
-Usage:
+wormgen Usage:
 wormgen -h gives help on usage.
+
+The database argument is the only required argument - you must have 
+a database already set up and access to it.  By default it assumes the username
+is root with no password - for an SQlite3 database pass the filename as the
+argument for -d database; eg. wormgen -d /home/jane/worm/examples/blog.db
+This will generate files in the current directory - to specify a different output
+directory use -o /path/to/output
 
 Library Usage and Documentation:
 There are some small example programs under examples/ - I recommend

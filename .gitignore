@@ -1,0 +1,9 @@
+/build/
+/tmp/
+*~
+*.so.*
+*.so
+*.o
+*.a
+*.nogit
+

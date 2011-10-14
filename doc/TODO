@@ -1,0 +1,20 @@
+
+In addition to misc punchlist items flagged in the code:
+
+* always, documentation can be improved ..
+* unit tests
+* check for mem leaks
+* some optimization
+
+* in DAL (database api, drivers)
+    - statements, transactions, etc
+    - connection pooling
+    - support for:
+      Postgres
+      Mongodb
+    - stablize API
+      
+* design/architecture for ORM layer and generation:
+    - templating system
+    - ORM class design (using the templating)
+    - CRUD scaffolding for Wt (using the templating)

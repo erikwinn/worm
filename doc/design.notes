@@ -1,0 +1,56 @@
+Design Architecture for WORM
+
+ This document describes the basic architecture for a DAL and ORM layer. 
+This is a general treatment and unfinished.
+
+ The database abstaction layer consists of four functional components that share one point of 
+entry to the database (via. the driver). 
+    1. Classes which offer and API for basic CRUD interaction with the database. 
+        These include:
+        * WSqlDatabase - the sole point of access recommended; all raw/direct interaction with
+           the database should use an instance of this class - the API is intended to provide any
+           direct query actions, insertions, selection of datasets, etc.
+        * WSqlDriver - this is a base class to be implemented by adapters for specific datastore
+            engines (currently MySql5, Sqlite3 and PosrgreSQL adapters are implemented). This class
+            does all the heavy lifting behind the scenes for the WSqlDatabase API. It should not be 
+            used directly.
+        * WSqlRecord - datasets (or result sets) are encapsulated by WSqlRecord; this class is 
+            returned by the API for queries that return results (may be empty ..) - it is initialized and
+            managed by the driver which hands it to WSqlDatabase. Random access to sets of the 
+            records is supported (if cached).  This is also the prefered method of insertion or update
+            - an initialized WSqlRecord sent to the driver is the cleanest interaction.
+            WSqlRecord is basically a vector of WSqlFields with some convenience methods for seeking
+            in the columns.
+        * WSqlField - represents a single data column in a record consisting of a column name
+            and a value (ie. simple key/value data structure).  It does _not_ contain metadata about
+            the value.  The value is stored as a string of characters as received from the database.
+            The value can therefor be easily converted to native C++ data types using the convenience
+            methods provided.
+            This class is intended to provide a simple and efficient data transfer - not metadata; if 
+            metadata about the database column, data type etc. is needed WSqlColumn is to be used.
+        * WSqlResult - this class represents a set of returned records (or records to be inserted/updated)
+             it is an internal managed cache object for the driver.
+
+    2. Classes which offer and API for obtaining metadata about the database schemata. These may
+        instantiated for access to metadata at runtime but are primarily for use by the ORM generator.
+        These include:
+        * WSqlCatalog - access to all schemata in the DBMS (unimplemented)
+        * WSqlSchema - access to a metadata for a single database
+        * WSqlTable - metadata for a single table
+        * WSqlColumn - metadata for a single column
+        * WSqlIndex - metadata for an index in a table
+        * WSqlForiegnKey - metadata for a foriegn key relationship
+    
+    3. Classes which deal with generating ORM class object source code representing the metadata
+        for existing database schemata. 
+        These include:
+        
+        * TBD
+
+    4. Generated ORM classes and scaffolding providing an alternate CRUD vector.  These class
+        object may be used directly for CRUD functions with no interaction with the DAL classes.
+        Eg.:  
+            user = new User(); user->setName("joe"); user->save();
+            or
+            int id = 33; user = User::load(id); cout << user->name();
+        

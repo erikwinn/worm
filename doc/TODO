@@ -5,15 +5,29 @@ In addition to misc punchlist items flagged in the code:
 * unit tests
 * check for mem leaks
 * some optimization
+* 
+* Possibly: revert to a varient style WSqlDatum. In any case, handle bad casts
+* Possibly: move from WSqlError to WSqlException .. including a backtrace stack, this would
+provide much more meaningful errors which might be displayed on a web page for 
+developers.
+* WSqlTable: add foriegn keys, new class
+* WSqlTable: add constraints
+* 
+* Implement foriegn key support
+* Implement type table support
+* wormgen to generate accordingly for dbo (hasOne, hasMany, etc.)
 
 * in DAL (database api, drivers)
-    - statements, transactions, etc
+    - statements, transactions,  binding parameters, etc
     - connection pooling
     - support for:
       Postgres
       Mongodb
     - stablize API
-      
+    - in mysql: use uncached result sets.  also, there is an awkwardness to not allowing
+    nested queries .. think.
+    - in sqlite: clean up parsing, support full metadata and fks.
+    
 * design/architecture for ORM layer and generation:
     - templating system
     - ORM class design (using the templating)

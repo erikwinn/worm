@@ -32,6 +32,13 @@ class WSqlTable
 {
 
 public:
+    enum Type{
+        NORMAL,
+        VIEW,
+        JOIN,
+        TYPETABLE // tricky - these are simple two column tables, like an extensible enum type, crud available
+    };
+    
     WSqlTable();
 	WSqlTable(const std::string name);
     WSqlTable(const WSqlTable& other);
@@ -50,10 +57,11 @@ public:
 
 	int count() const;
 	int indexOf(const std::string &columnname) const;
+	const Type type()const{return _type;}
 	
 	void setName(const std::string &n){_name = n;}
     void setIsValid(bool b){_isValid = b;}
-    
+    void setType(Type t){_type=t;}
 	void append(const WSqlColumn& column);
     void replace(int pos, const WSqlColumn& column);
     void insert(int pos, const WSqlColumn& column, bool replace=false);
@@ -66,7 +74,7 @@ protected:
 	std::list<WSqlColumn> _columns;
 	std::string _name;
     bool _isValid;
-	
+	Type _type;
 };
 
 } //namespace WSql

@@ -7,6 +7,7 @@ sql/wsqlrecord.cpp
 sql/wsqlresult.cpp
 sql/wsqlcolumn.cpp
 sql/wsqltable.cpp
+sql/wsqlforeignkey.cpp
 #sql/wsqldabatasemanager.cpp
 #sql/wsqldriverfactory.cpp
 sql/drivers/wsqlitedriver.cpp

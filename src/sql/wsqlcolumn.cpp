@@ -41,7 +41,7 @@ namespace WSql{
  NOTE: This class is part of the metadata component - it is not used for 
  queries, results, etc.  As yet seting values here has no effect on the database
  - this is used primarily by the ORM generator. It may also be used to get 
- metadata about fields but for actual interaction with the database use WSqlField.
+ metadata about columns but for actual interaction with the database use WSqlField.
     
     \sa WSqlTable WSqlDataType WSqlRecord WSqlField
 */
@@ -105,7 +105,7 @@ WSqlColumn& WSqlColumn::operator=( const WSqlColumn & other )
  */
 
 /*!
- *    Returns true if the field is identical to \a other; otherwise returns
+ *    Returns true if this column is identical to \a other; otherwise returns
  *    false.
  */
 bool WSqlColumn::operator==( const WSqlColumn& other ) const
@@ -124,7 +124,7 @@ bool WSqlColumn::operator==( const WSqlColumn& other ) const
 }
 
 /*!
- *    Sets the field's floating point \a precision. This only affects numeric fields.
+ *    Sets the column's floating point \a precision. This only affects numeric columns.
  * 
  * Note also that this does not (yet) change the actual definition in the database.
  * TODO: the note above ..
@@ -139,7 +139,7 @@ void WSqlColumn::setPrecision(int precision)
 /*!
  * \fn  template <typename T> void setDefaultValue( const T value)
  *    
- * Sets the default value used for this field to \a value. This function will
+ * Sets the default value used for this column to \a value. This function will
  * accept any native C++ numeric type as well as std::string - Note that the
  * \a value will be converted to a string for internal storage.
  * 
@@ -147,7 +147,7 @@ void WSqlColumn::setPrecision(int precision)
  */
 
 /*!
- *    Sets the data type for the field. 
+ *    Sets the data type for the column. 
  */
 void WSqlColumn::setDataType(WSqlDataType::Type type)
 {
@@ -199,7 +199,7 @@ const std::string& WSqlColumn::variableName() const
 }
 
 /*!
- *    Returns the field's type as stored in the database. Note that numerical 
+ *    Returns the column's type as stored in the database. Note that numerical 
  * values are also stored as string to prevent precision loss (and since that is
  * how they are frequently received from the database) - and to facilitate easy conversion.
  * 
@@ -211,11 +211,11 @@ const WSqlDataType::Type WSqlColumn::dataType() const
 }
 
 /*!
- *    Returns true if this is not a required field and can be null; otherwise returns false.
- * In other words, "NOT NULL" has not been set for this column.Note that if the field
- * is AUTOINCREMENT this returns true as autoincrement fields should not have 
+ *    Returns true if this is not a required column and can be null; otherwise returns false.
+ * In other words, "NOT NULL" has not been set for this column.Note that if the column
+ * is AUTOINCREMENT this returns true as autoincrement columns should not have 
  * values assigned.
- * \return bool true if field may be null
+ * \return bool true if column may be null
  */
 bool WSqlColumn::canBeNull() const
 {
@@ -223,7 +223,7 @@ bool WSqlColumn::canBeNull() const
 }
 
 /*!
- *    Returns the field's maximum length, ie. the number of characters
+ *    Returns the column's maximum length, ie. the number of characters
  *    (eg. VARCHAR(255)) as defined in the database. If there is no maximum
  *    it returns -1.
  *    
@@ -235,7 +235,7 @@ const int WSqlColumn::maxLength() const
 }
 
 /*!
- *    Returns the field's precision; this is only meaningful for numeric
+ *    Returns the column's precision; this is only meaningful for numeric
  * types. Note that the default is 2 which supports monetary format.
  *    \sa setPrecision()
  */
@@ -251,7 +251,7 @@ const int WSqlColumn::precision() const
 
 /*!
  *  \fn template <typename T> T defaultValue()
- *    Returns the field's default value converted to the type specified .
+ *    Returns the column's default value converted to the type specified .
  * Ex:
  *  double d = defaultValue<double>();
  *  int i = defaultValue<int>();

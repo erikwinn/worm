@@ -29,10 +29,37 @@ namespace WSql
     information about indices, foriegn keys, primary keys, etc.  It is used primarily by the
     ORM generator.
 
-    Note: For NoSQL databases this class may not be useful for column metadata.
-    \sa WSqlColumn
-*/
+    Tables to be generated may have any naming schema - but it is recommended that this
+    is at least consistant. Worm will not alter the names but rather takes them exactly as they
+    are from the the names in the database - so "my_table" will produce a class object 
+    "class my_table", a column named firstName will be generated as firstName, First_Name
+    as First_Name, etc.  If you are designing a schema this may be taken into consideration
+    as it will effect the style of the generated code.
 
+    Note: For NoSQL databases this class may not be useful for column metadata.
+    \sa WSqlColumn WSqlDatum WSqlDataType
+*/
+/*! \enum WSqlTable::Type
+    \brief A flag indicating the type of table this is
+    Tables can be of various types:
+    \li NORMAL - this is an average normal table, the default
+    \li VIEW - this is an artificial table generated on demand by the server, these
+    may or may not be update capable.
+    \li JOIN - also known as an "association" table, maps many to many relationships
+    These have two foriegn keys to other tables, they may optionally have other columns.
+    To ensure that the ORM correctly accounts for these they should be named foo_assn
+    and have the first two columns as the foriegn keys. This will make the analysis more
+    reliable.
+    \li TYPETABLE - subtle: this is a simple table with two columns, a name and an index
+    it is like an extensible enum. Users can add or remove types, eg. a usergroup or role
+    might have a type_id column foriegn key to a type table - this makes for fast indexing
+    and lookup as well as flexible types that an administrator can alter without changing
+    the first table. To make clear to the ORM analysis that a table is one of these they should
+    be named name_type, eg. usergroup_type or product_type. Worm will generate a special
+    kind of class for this containing only the types as a enum like class.  When the types are
+    altered this class should be regenerated.
+ 
+ */
 /*!
     Constructs an empty table object.
 

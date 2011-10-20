@@ -324,10 +324,10 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
     std::string sql("show columns in ");sql.append(tableName);
     execute(sql);
     result();
+    WSqlColumn clm;
     WSqlRecord record = _result->fetchFirst();
     while(!record.empty())
     {
-        WSqlColumn clm;
 /*        clm.setColumnName(record.field("Field").data<std::string>());
         initColumnType(clm, record.field("Type").data<std::string>());
         bool nullable = ! (record.field("Null").data<std::string>().compare("NO") == 0);
@@ -347,18 +347,25 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
         tblToReturn.append(clm);
         record = _result->fetchNext();
     }
+    WSqlForeignKey fk;
     for(column_names_it = column_names.begin();column_names_it != column_names.end(); column_names_it++)
     {
-        WSqlForeignKey fk;
         
         sql = "select constraint_name, referenced_table_schema,  referenced_table_name,"
         " referenced_column_name from information_schema.key_column_usage "
-        " where table_name like `" + tableName + "` and column_name like `" + *column_names_it + "`";
+        " where table_name like '" + tableName + "' and column_name like '" + *column_names_it + "'";
+        
         execute(sql);
         result();
         WSqlRecord record = _result->fetchFirst();
         while(!record.empty())
         {
+            if(record["constraint_name"].compare("PRIMARY") == 0
+                || record["referenced_column_name"].compare("NULL") == 0)
+            {
+                record = _result->fetchNext();
+                continue;
+            }
             fk.setColumnName(*column_names_it);
             fk.setKeyName(record["constraint_name"]);
             fk.setReferencedColumnName(record["referenced_column_name"]);

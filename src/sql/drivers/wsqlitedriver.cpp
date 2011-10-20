@@ -441,17 +441,6 @@ std::string WSqliteDriver::extractStatement( const std::string& sqlToParse, cons
     return sqlToReturn;
 }
 
-WSqlTable WSqliteDriver::findTable( std::string tablename ) const
-{
-    if ( !_tables.empty() ) {
-        std::vector<WSqlTable>::const_iterator it = _tables.begin();
-        for ( ; it != _tables.end();++it )
-            if ( it->name().compare( tablename ) == 0 )
-                return *it;
-    }
-    return WSqlTable();
-}
-
 //eh, not graceful but mostly works - waddya want for free overnight?
 /*! \internal - dont use this.*/
 void WSqliteDriver::parseSchema( std::string& sql )

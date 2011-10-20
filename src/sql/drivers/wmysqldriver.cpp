@@ -287,6 +287,12 @@ std::vector< std::string > WMysqlDriver::tableNames()
  * 
     This method returns a WSqlTable object populated with WSqlColumns that
     contain metadata for the columns in the given table \a tableName.
+    \note It is recommended that this not be used directly but rather from a
+    WSqlDatabase object. Note also the warning below - unless you really only 
+    need metadata for a single table it is better to initialize all the tables at once
+    with WSqlDatabase::initMetaData() and avoid the possibility of invalidating
+    a result set.
+    
     Example:
 
 \code
@@ -304,23 +310,33 @@ std::vector< std::string > WMysqlDriver::tableNames()
         std::cout << "  * Primary key:  " << (column.isPrimaryKey() ? "true" : "false") << std::endl;
         std::cout << "  * Autoincrement:  "  << (column.isAutoIncremented()?"true" : "false") << std::endl;
         std::cout << "  * default value:  "  << column.defaultValue<std::string>() << std::endl;
-}
+    }
 
     \endcode
     
-    \note WARNING: This method will invalidate previous WSqlResults returned - nesting
-    calls to this method inside of a loop iterating over WSqlResults will not work. Obtain
-    the WSqlTable \em first and \em then execute() a query and fetch the result set using
-    result().
+    \warning If the table metadata has not been initialized yet this method will invalidate 
+    any previous WSqlResult pointer returned - in this case nesting calls to this method inside 
+    of a loop iterating over WSqlResults WILL NOT WORK. Obtain the WSqlTable \em first and 
+    \em then execute() a query and fetch the result set using result() or use WSqlDatabase::initMetaData()
+    to initialize the metadata for all tables at once.
+    
     \param string the name of the table to use
     \return WSqlTable an object containing metadata 
     \sa WSqlTable WSqlColumn
  */
 WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
 {
+    WSqlTable tblToReturn;
+    if ( !_tables.empty() ) 
+    {
+        tblToReturn = findTable( tableName );
+        if ( tblToReturn.isValid() )
+            return tblToReturn;
+    }
+    tblToReturn.setName(tableName);
+    
     std::vector<std::string> column_names;
     std::vector<std::string>::const_iterator column_names_it;
-    WSqlTable tblToReturn(tableName);
     std::string sql("show columns in ");sql.append(tableName);
     execute(sql);
     result();
@@ -375,6 +391,8 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
             record = _result->fetchNext();
         }        
     }
+    tblToReturn.setIsValid(true);
+    _tables.push_back(tblToReturn);
     return tblToReturn;
 }
 

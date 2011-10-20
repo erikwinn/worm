@@ -45,7 +45,6 @@ class WSqliteDriver : public WSqlDriver
 
         std::vector<std::string> tableNames();
         WSqlTable tableMetaData( const std::string &tableName );
-        WSqlTable findTable( std::string tablename )const;
         
     private:
         bool _isUtf8;

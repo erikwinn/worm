@@ -27,7 +27,7 @@
 void print_help( int exval )
 {
     std::cout << PACKAGE << " " << VERSION <<  "\n Usage:\n" << std::endl;
-    std::cout << PACKAGE << " [-hVv] [-o outputdir] [-u username] [-p password] [-s hostname] [-D driver]<-d database>\n" << std::endl;
+    std::cout << PACKAGE << " [-hVv] [-o outputdir] [-u username] [-p password] [-s hostname] [-D driver] <-d database>\n" << std::endl;
     std::cout << "  -h              print this help and exit" << std::endl;
     std::cout << "  -V              print version and exit" << std::endl;
     std::cout << "  -v              set verbose flag" << std::endl;
@@ -36,8 +36,8 @@ void print_help( int exval )
     std::cout << "  -p password            set password" << std::endl;
     std::cout << "  -s server              set server or hostname" << std::endl;
     std::cout << "  -o DIRECTORY           set output directory" << std::endl;
-    std::cout << "  -D driver           set database driver (default MYSQL)" << std::endl
-    << "Note: driver may be one of: 'mysql' or 'sqlite'. ";
+    std::cout << "  -D driver              set database driver (default MYSQL)" << std::endl
+    << "Note: driver may be one of: 'mysql' or 'sqlite'. " << std::endl;
     
     exit( exval );
 }
@@ -65,7 +65,7 @@ int main( int argc, char ** argv )
     std::string outputdir = ".";
     WSql::DriverType drivertype = WSql::WMYSQL;
 
-    while (( opt = getopt( argc, argv, "hVvf:o:u:d:p:s:" ) ) != -1 ) {
+    while (( opt = getopt( argc, argv, "hVvf:o:u:d:D:p:s:" ) ) != -1 ) {
         switch ( opt ) {
             case 'h':
                 print_help( 0 );

@@ -26,9 +26,11 @@ WSqlForeignKey::WSqlForeignKey()
 
 WSqlForeignKey::WSqlForeignKey( const WSqlForeignKey& other )
 {
+    _keyName=other._keyName;
     _columnName=other._columnName;
-    _foreignColumnName=other._foreignColumnName;
-    _foreignTableName=other._foreignTableName;
+    _referencedColumnName=other._referencedColumnName;
+    _referencedTableName=other._referencedTableName;
+    _referencedSchemaName=other._referencedSchemaName;
 }
 
 WSqlForeignKey::~WSqlForeignKey()
@@ -37,17 +39,21 @@ WSqlForeignKey::~WSqlForeignKey()
 
 WSqlForeignKey& WSqlForeignKey::operator=( const WSqlForeignKey & other )
 {
+    _keyName=other._keyName;
     _columnName=other._columnName;
-    _foreignColumnName=other._foreignColumnName;
-    _foreignTableName=other._foreignTableName;
+    _referencedColumnName=other._referencedColumnName;
+    _referencedTableName=other._referencedTableName;
+    _referencedSchemaName=other._referencedSchemaName;
     return *this;
 }
 
 bool WSqlForeignKey::operator==( const WSqlForeignKey& other ) const
 {
-   return(  _columnName.compare(other._columnName)== 0
-   && _foreignColumnName.compare(other._foreignColumnName)== 0
-   && _foreignTableName.compare(other._foreignTableName)== 0);
+   return( _keyName.compare(other._keyName) == 0 
+   && _columnName.compare(other._columnName)== 0
+   && _referencedColumnName.compare(other._referencedColumnName)== 0
+   && _referencedSchemaName.compare(other._referencedSchemaName)== 0
+   && _referencedTableName.compare(other._referencedTableName)== 0);
 }
 
 }//namespace WSql

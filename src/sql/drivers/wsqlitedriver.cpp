@@ -223,7 +223,8 @@ void WSqliteDriver::close()
 // We can't simply refer to tableMetaData as it may be a join or such - which
 // would mean parsing the query, etc..ugly The problem is that we cannot
 //rely on sqlite to return metadata if, for instance, the query returns no results..
-//Consider using sqlite3_column_metadata
+//Consider using sqlite3_column_metadata. 
+// Also, some of this might be better moved to result()
 bool WSqliteDriver::execute(std::string sql)
 {
     if ( !isOpen() ) {

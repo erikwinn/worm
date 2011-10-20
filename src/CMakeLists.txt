@@ -14,6 +14,7 @@ sql/drivers/wsqlitedriver.cpp
 sql/drivers/wsqliteresult.cpp
 sql/drivers/wmysqldriver.cpp
 sql/drivers/wmysqlresult.cpp
+#orm/wsqlmodel.cpp
 )
 
 add_library(worm ${LIBSRC})

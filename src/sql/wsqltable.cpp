@@ -88,6 +88,7 @@ WSqlTable::WSqlTable( const WSqlTable &other )
     _isValid = other._isValid;
     _name = other._name;
     _columns = other._columns;
+    _foreignKeys = other._foreignKeys;
 }
 /*!
     Sets this table equal to \a other.
@@ -97,6 +98,7 @@ WSqlTable& WSqlTable::operator=( const WSqlTable& other )
     _isValid = other._isValid;
     _name = other._name;
     _columns = other._columns;
+    _foreignKeys = other._foreignKeys;
     return *this;
 }
 /*!
@@ -129,13 +131,21 @@ bool WSqlTable::operator==( const WSqlTable &other ) const
             || _name.compare( other._name ) != 0 )
         return false;
 
-    std::list<WSqlColumn>::const_iterator it;
-    std::list<WSqlColumn>::const_iterator ito = other._columns.begin();
+    std::vector<WSqlColumn>::const_iterator it;
+    std::vector<WSqlColumn>::const_iterator ito = other._columns.begin();
     for ( it = _columns.begin(); it != _columns.end(); ++it ) {
         if ( *( it ) != *( ito ) )
             return false;
         else
             ito++;
+    }
+    std::vector<WSqlForeignKey>::const_iterator fit;
+    std::vector<WSqlForeignKey>::const_iterator fito = other._foreignKeys.begin();
+    for ( fit = _foreignKeys.begin(); fit != _foreignKeys.end(); ++fit ) {
+        if ( *( fit ) != *( fito ) )
+            return false;
+        else
+            fito++;
     }
     return true;
 }
@@ -150,15 +160,14 @@ const std::string WSqlTable::columnName( int index ) const
     int sz = _columns.size();
     if ( !sz || index < 0 || index > sz - 1 )
         return strToReturn;
-    std::list<WSqlColumn>::const_iterator it = _columns.begin();
-    for ( int i = 0; i != index; ++i )
-        ++it;
+    std::vector<WSqlColumn>::const_iterator it = _columns.begin();
+    it += index;
     return it->columnName();
 }
 
 /*!
  Returns the WSqlColumn at postion \a index
- If the index is out of range it returns an empty string.
+ If the index is out of range it returns an empty WSqlColumn object.
  */
 WSqlColumn WSqlTable::column( int index ) const
 {
@@ -166,15 +175,14 @@ WSqlColumn WSqlTable::column( int index ) const
     int sz = _columns.size();
     if ( !sz || index < 0 || index > sz - 1 )
         return clmToReturn;
-    std::list<WSqlColumn>::const_iterator it = _columns.begin();
-    for ( int i = 0; i != index; ++i )
-        ++it;
+    std::vector<WSqlColumn>::const_iterator it = _columns.begin();
+    it += index;
     return *it;
 }
 
 /*!
  Returns the WSqlColumn with (column) name \a fldname
- If the index is out of range it returns an empty string.
+ If the index is out of range it returns an empty WSqlColumn object.
  */
 WSqlColumn WSqlTable::column( const std::string &fldname ) const
 {
@@ -182,7 +190,7 @@ WSqlColumn WSqlTable::column( const std::string &fldname ) const
     if ( _columns.empty() )
         return clmToReturn;
 
-    std::list<WSqlColumn>::const_iterator it;
+    std::vector<WSqlColumn>::const_iterator it;
     for ( it = _columns.begin(); it != _columns.end(); ++it ) 
     {
         if ( it->columnName().compare( fldname ) == 0 ) 
@@ -197,7 +205,7 @@ WSqlColumn WSqlTable::column( const std::string &fldname ) const
 /*!
  Returns a list containing all the WSqlColumns in the table (which may be empty).
  */
-const std::list<WSqlColumn>& WSqlTable::columns() const
+const std::vector<WSqlColumn>& WSqlTable::columns() const
 {
     return _columns;
 }
@@ -207,7 +215,7 @@ const std::list<WSqlColumn>& WSqlTable::columns() const
 std::vector<std::string> WSqlTable::columnNames() const
 {
     std::vector<std::string> vecToReturn;
-    std::list<WSqlColumn>::const_iterator it;
+    std::vector<WSqlColumn>::const_iterator it;
     for ( it = _columns.begin(); it != _columns.end(); ++it )
         vecToReturn.push_back( it->columnName() );
     return vecToReturn;
@@ -224,7 +232,7 @@ int WSqlTable::indexOf( const std::string &columnname ) const
     if ( _columns.empty() )
         return intToReturn;
     int i = 0;
-    std::list<WSqlColumn>::const_iterator it;
+    std::vector<WSqlColumn>::const_iterator it;
     for ( it = _columns.begin(); it != _columns.end() ; ++it ) {
         if ( it->columnName().compare( columnname ) == 0 ) {
             intToReturn = i;
@@ -250,12 +258,10 @@ void WSqlTable::insert( int pos, const WSqlColumn& column, bool replace )
     int sz = _columns.size();
     if ( !sz || pos < 0 || pos > sz - 1 )
         return;
-    std::list<WSqlColumn>::iterator it = _columns.begin();
-    int i = 0;
-    while ( i++ != pos )
-        ++it;
+    std::vector<WSqlColumn>::iterator it = _columns.begin();
+    it += pos;
     if ( replace )
-        _columns.remove( *it );
+        _columns.erase( it );
     _columns.insert( it, 1, column );
 }
 
@@ -264,11 +270,9 @@ void WSqlTable::remove( int pos )
     int sz = _columns.size();
     if ( !sz || pos < 0 || pos > sz - 1 )
         return;
-    std::list<WSqlColumn>::iterator it = _columns.begin();
-    int i = 0;
-    while ( i++ != pos )
-        ++it;
-    _columns.remove( *it );
+    std::vector<WSqlColumn>::iterator it = _columns.begin();
+    it += pos;
+    _columns.erase( it );
 }
 
 bool WSqlTable::isEmpty() const

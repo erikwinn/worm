@@ -316,6 +316,8 @@ std::vector< std::string > WMysqlDriver::tableNames()
  */
 WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
 {
+    std::vector<std::string> column_names;
+    std::vector<std::string>::const_iterator column_names_it;
     WSqlTable tblToReturn(tableName);
     std::string sql("show columns in ");sql.append(tableName);
     execute(sql);
@@ -332,6 +334,7 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
         clm.setDefaultValue( record.field("Default").data<std::string>());
         bool isauto = (record.field("Extra").data<std::string>().find("auto_increment") != std::string::npos);*/
         clm.setColumnName(record.field(0).data<std::string>());
+        column_names.push_back(clm.columnName());
         initColumnType(clm, record.field(1).data<std::string>());
         bool nullable = (record.field(2).data<std::string>().compare("NO") == 0);
         bool primarykey = (record.field(3).data<std::string>().compare("PRI") == 0);
@@ -343,7 +346,10 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
         tblToReturn.append(clm);
         record = _result->fetchNext();
     }
-    
+    for(column_names_it = column_names.begin();column_names_it != column_names.end(); column_names_it++)
+    {
+        sql = "select constraint_name, column_name, referenced_table_schema,  referenced_table_name, referenced_column_name from key_column_usage where table_schema like 'quasicms'";
+    }
     return tblToReturn;
 }
 

@@ -22,9 +22,10 @@
 
 #include <string>
 #include <vector>
-#include <list>
+//#include <list>
 
 #include "wsqlcolumn.h"
+#include "wsqlforeignkey.h"
 
 namespace WSql {
 
@@ -36,7 +37,7 @@ public:
         NORMAL,
         VIEW,
         JOIN,
-        TYPETABLE // tricky - these are simple two column tables, like an extensible enum type, crud available
+        TYPETABLE // tricky - see comments
     };
     
     WSqlTable();
@@ -52,7 +53,7 @@ public:
     const std::string columnName(int i) const;
     WSqlColumn column(int i) const;
     WSqlColumn column(const std::string &name) const;
-	const std::list<WSqlColumn>& columns() const;
+	const std::vector<WSqlColumn>& columns() const;
 	std::vector<std::string> columnNames() const;
 
 	int count() const;
@@ -71,7 +72,8 @@ public:
     bool isValid()const{return _isValid;}
 protected:
     //TODO: change this to a vector
-	std::list<WSqlColumn> _columns;
+	std::vector<WSqlColumn> _columns;
+    std::vector<WSqlForeignKey> _foreignKeys;
 	std::string _name;
     bool _isValid;
 	Type _type;

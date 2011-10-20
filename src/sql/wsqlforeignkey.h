@@ -33,18 +33,27 @@ class WSqlForeignKey
         virtual ~WSqlForeignKey();
         virtual WSqlForeignKey& operator=( const WSqlForeignKey& other );
         virtual bool operator==( const WSqlForeignKey& other ) const;
+        inline bool operator!=( const WSqlForeignKey& other ) const {
+            return !operator==( other );
+        }
         
+        void setKeyName(std::string name){_keyName=name;}
         void setColumnName(std::string name){_columnName=name;}
-        void setForeignTableName(std::string name){_foreignTableName=name;}
-        void setForeignColumnName(std::string name){_foreignColumnName=name;}
+        void setReferencedTableName(std::string name){_referencedTableName=name;}
+        void setReferencedColumnName(std::string name){_referencedColumnName=name;}
+        void setReferencedSchemaName(std::string name){_referencedSchemaName=name;}
+        const std::string& keyName()const{return _keyName;}
         const std::string& columnName()const{return _columnName;}
-        const std::string& foreignColumnName()const{return _foreignColumnName;}
-        const std::string& foreigTableName()const{return _foreignTableName;}
+        const std::string& referencedColumnName()const{return _referencedColumnName;}
+        const std::string& referencedTableName()const{return _referencedTableName;}
+        const std::string& referencedSchemaName()const{return _referencedSchemaName;}
         
     private:
+        std::string _keyName;
         std::string _columnName;
-        std::string _foreignTableName;
-        std::string _foreignColumnName;
+        std::string _referencedTableName;
+        std::string _referencedColumnName;
+        std::string _referencedSchemaName;
 };
 
 }//namespace WSql

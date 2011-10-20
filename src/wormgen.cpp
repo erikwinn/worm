@@ -27,7 +27,7 @@
 void print_help( int exval )
 {
     std::cout << PACKAGE << " " << VERSION <<  "\n Usage:\n" << std::endl;
-    std::cout << PACKAGE << " [-hVv] [-o outputdir] [-u username] [-p password] [-s hostname]<-d database>\n" << std::endl;
+    std::cout << PACKAGE << " [-hVv] [-o outputdir] [-u username] [-p password] [-s hostname] [-D driver]<-d database>\n" << std::endl;
     std::cout << "  -h              print this help and exit" << std::endl;
     std::cout << "  -V              print version and exit" << std::endl;
     std::cout << "  -v              set verbose flag" << std::endl;
@@ -36,8 +36,20 @@ void print_help( int exval )
     std::cout << "  -p password            set password" << std::endl;
     std::cout << "  -s server              set server or hostname" << std::endl;
     std::cout << "  -o DIRECTORY           set output directory" << std::endl;
-
+    std::cout << "  -D driver           set database driver (default MYSQL)" << std::endl
+    << "Note: driver may be one of: 'mysql' or 'sqlite'. ";
+    
     exit( exval );
+}
+
+WSql::DriverType getDriver(const std::string drivername)
+{
+    if(drivername.compare("mysql")==0)
+        return WSql::WMYSQL;
+    if(drivername.compare("sqlite")==0)
+        return WSql::WSQLITE;
+    std::cout << PACKAGE << ": Error - driver not supported:" << drivername << " \n" << std::endl;
+    print_help( 1 );    
 }
 
 int main( int argc, char ** argv )
@@ -51,6 +63,7 @@ int main( int argc, char ** argv )
     std::string username = "root";
     std::string password = "";
     std::string outputdir = ".";
+    WSql::DriverType drivertype = WSql::WMYSQL;
 
     while (( opt = getopt( argc, argv, "hVvf:o:u:d:p:s:" ) ) != -1 ) {
         switch ( opt ) {
@@ -69,6 +82,9 @@ int main( int argc, char ** argv )
                 break;
             case 'd':
                 dbname = optarg;
+                break;
+            case 'D':
+                drivertype = getDriver(std::string(optarg));
                 break;
             case 'p':
                 password = optarg;
@@ -94,7 +110,7 @@ int main( int argc, char ** argv )
         print_help( 1 );
     }
 
-    WSql::WSqlDatabase db( WSql::WMYSQL );
+    WSql::WSqlDatabase db( drivertype );
     db.setDatabaseName( dbname );
     db.setUserName( username );
     db.setHostName( hostname );
@@ -186,6 +202,10 @@ int main( int argc, char ** argv )
         if ( verbose )
             std::cout << "Wrote : " << metatable.name() << " to " << fname << std::endl;
         it++;
+        std::vector<WSql::WSqlForeignKey>fkeys = metatable.foreignKeys();
+        std::vector<WSql::WSqlForeignKey>::const_iterator fkit = fkeys.begin();
+        for(;fkit != fkeys.end();++fkit)
+            std::cout << " foreignKey: " << fkit->columnName() << std::endl;
     }
     return 0;
 }

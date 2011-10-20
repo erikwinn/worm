@@ -200,12 +200,19 @@ int main( int argc, char ** argv )
         f << code;
         f.close();
         if ( verbose )
+        {
             std::cout << "Wrote : " << metatable.name() << " to " << fname << std::endl;
+            std::vector<WSql::WSqlForeignKey>fkeys = metatable.foreignKeys();
+            std::vector<WSql::WSqlForeignKey>::const_iterator fkit = fkeys.begin();
+            for(;fkit != fkeys.end();++fkit)
+            {
+                std::cout << " foreign key: " << fkit->columnName() 
+                    << ", keyname: " << fkit->keyName() <<  std::endl
+                    << "   *  references: " << fkit->referencedColumnName() 
+                    << " in " << fkit->referencedTableName() <<std::endl;
+            }
+        }
         it++;
-        std::vector<WSql::WSqlForeignKey>fkeys = metatable.foreignKeys();
-        std::vector<WSql::WSqlForeignKey>::const_iterator fkit = fkeys.begin();
-        for(;fkit != fkeys.end();++fkit)
-            std::cout << " foreignKey: " << fkit->columnName() << std::endl;
     }
     return 0;
 }

@@ -55,7 +55,8 @@ public:
     WSqlColumn column(const std::string &name) const;
 	const std::vector<WSqlColumn>& columns() const;
 	std::vector<std::string> columnNames() const;
-
+    const std::vector<WSqlForeignKey>& foreignKeys() const;
+    
 	int count() const;
 	int indexOf(const std::string &columnname) const;
 	const Type type()const{return _type;}
@@ -67,11 +68,15 @@ public:
     void replace(int pos, const WSqlColumn& column);
     void insert(int pos, const WSqlColumn& column, bool replace=false);
     void remove(int pos);
-
+    void addForeignKey(const WSqlForeignKey & fk);
+    void removeForeignKey(const WSqlForeignKey & fk);
+    void removeForeignKey(int pos);
+    void removeForeignKey(const std::string keyname);
+    
     bool isEmpty()const;
     bool isValid()const{return _isValid;}
+
 protected:
-    //TODO: change this to a vector
 	std::vector<WSqlColumn> _columns;
     std::vector<WSqlForeignKey> _foreignKeys;
 	std::string _name;

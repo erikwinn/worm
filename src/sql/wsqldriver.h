@@ -48,7 +48,9 @@ class WSqlDriver
         virtual WSqlError error() const { return _error;}
         virtual bool isValid()const { return _isValid;}
         virtual bool isOpen()const { return _isOpen;}
-
+        
+        WSqlTable findTable( std::string tablename )const;
+        
         bool hasError()const { return _hasError;}
 
 //note: maybe auto disconnect/reconnect here?  or, do we even need this?              
@@ -60,19 +62,15 @@ class WSqlDriver
         void setIsOpen( bool o ) { _isOpen = o;}
         void setHasError( bool e ) { _hasError = e;}
         
-        void setError(const char * text){setError(std::string(text));}
-        void setError(const WSqlError& e ) {
-            if(_hasError)  _errors.push_back(_error);
-            _error = e; 
-            _hasError = true;
-        }
-        void setError(const std::string& text){
+        void setError(const WSqlError& e );
+        void setError(const std::string& text,
+                      WSqlError::ErrorType type,
+                      WSqlError::ErrorSeverity severity,
+                      bool isvalid = true );
+        inline void setError(const std::string& text){
             setError(text,WSql::WSqlError::DRIVER, WSql::WSqlError::WARNING);
         }
-        void setError(const std::string& text,
-                                    WSqlError::ErrorType type,
-                                    WSqlError::ErrorSeverity severity,
-                                    bool isvalid = true );
+        inline void setError(const char * text){setError(std::string(text));}
         
         WSqlDatabase *_database;
         WSqlResult * _result;

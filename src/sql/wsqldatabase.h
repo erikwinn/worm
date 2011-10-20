@@ -82,7 +82,8 @@ public:
     //Metadata
     const std::vector<std::string>& tableNames(WSql::TableType type = WSql::Tables);
     WSqlTable tableMetaData( const std::string &tableName ) const;
-    
+    void initMetaData();
+   
     //Query interaction - wrapper around driver ..
     bool execute(const std::string& sql );
     WSqlResult* result(bool iscached=true);

@@ -451,11 +451,12 @@ WSqlError WSqlDatabase::error() const
   if empty it is initialized by a request to the driver for the names. If the names
   are not available an empty vector is returned.
   
-  \note WARNING: This method will invalidate previous WSqlResults returned - nesting
-  calls to this method inside of a loop iterating over WSqlResults will not work. Obtain
-  the list \em first and \em aftwards execute a query and fetch the result set using
-  result().
-
+  \warning If the table metadata has not been initialized yet this method will invalidate 
+  any previous WSqlResult pointer returned - in this case nesting calls to this method inside 
+  of a loop iterating over WSqlResults WILL NOT WORK. Obtain the WSqlTable \em first and 
+  \em then execute() a query and fetch the result set using result() or use initMetaData()
+  to initialize the metadata for all tables at once.
+  
 TODO: Use the table type - currently does nothing.
 
   \sa WSql::TableType
@@ -494,10 +495,11 @@ const std::vector<std::string>& WSqlDatabase::tableNames(WSql::TableType type)
  
  \endcode
  
- \note WARNING: This method will invalidate previous WSqlResults returned - nesting
- calls to this method inside of a loop iterating over WSqlResults will not work. Obtain
- the WSqlTable \em first and \em then execute() a query and fetch the result set using
- result().
+ \warning If the table metadata has not been initialized yet this method will invalidate 
+ any previous WSqlResult pointer returned - in this case nesting calls to this method inside 
+ of a loop iterating over WSqlResults WILL NOT WORK. Obtain the WSqlTable \em first and 
+ \em then execute() a query and fetch the result set using result() or use initMetaData()
+ to initialize the metadata for all tables at once.
  
  \param string the name of the table to use
  \retval WSqlTable an object containing metadata 
@@ -509,6 +511,28 @@ WSqlTable WSqlDatabase::tableMetaData( const std::string& tablename ) const
         return WSqlTable();
     return _driver->tableMetaData(tablename);
 }
+
+/*!  \brief Initializes the metadata for all tables in the database
+ 
+ This method can be used to initialize all the metadata for the the database
+ at once - this is convenient if one wishes to then use table metadata while
+ also conducting queries. If this is called before tableMetaData() the metadata
+ for all tables is cached in the driver and will be returned for a given table from
+ the cache.
+ 
+ \sa tableMetaData() tableNames()
+*/
+
+void WSqlDatabase::initMetaData()
+{
+    tableNames();
+    std::vector<std::string>::const_iterator it = _tableNames.begin();
+    for(;it != _tableNames.end();++it )
+    {
+        tableMetaData(*it);
+    }
+}
+
 
 /*! \brief Sets the connection options for this database server
     

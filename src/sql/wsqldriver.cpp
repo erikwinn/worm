@@ -54,14 +54,16 @@ WSqlDriver::WSqlDriver(WSqlDatabase* db)
 /*!\brief Destroys the driver and created resources
  * 
  * Note that the result pointer obtained from result() is \em invalid after the 
- * object is destroyed! This means you do not need to delete result but must be
- * careful not to use it after a WSqlDriver object has been destroyed.
+ * object is destroyed! This means you do not need to (and should not) delete 
+ * a result from the driver and that you also must be careful not to use it after 
+ * a WSqlDriver object has been destroyed.
  */
 WSqlDriver::~WSqlDriver()
 {
     delete _result;
     _result = 0;
     _tables.clear();
+    _errors.clear();
 }
 
 /*!\brief Set an error with \a text and types and also set isValid
@@ -82,6 +84,39 @@ void WSqlDriver::setError(const std::string& text, WSqlError::ErrorType type,
 	setIsValid(isvalid);
 	setHasError(true);
 }
+/*! \brief Sets the the current error to \a error
+ * 
+ *    This method sets the current error and pushes any previous error
+ *    onto the error stack.
+ *    \param WSqlError error - the error to set
+ */
+void WSqlDriver::setError(const WSqlError& error ) 
+{
+    if(_hasError)  
+        _errors.push_back(_error);
+    _error = error; 
+    _hasError = true;
+}
+
+/*! \brief Locate the metadata table for \a tablename in the cache
+ 
+ This returns a WSqlTable of metadata for a given table by looking
+ it up in the local cache. If the table has been initialized it will be returned
+ if not an invalid (ie. empty) WSqlTable object will be returned.
+     \param std::string tablename - the name of the table to find
+     \retval WSqlTable valid if found in cache
+ */
+WSqlTable WSqlDriver::findTable( std::string tablename ) const
+{
+    if ( !_tables.empty() ) {
+        std::vector<WSqlTable>::const_iterator it = _tables.begin();
+        for ( ; it != _tables.end();++it )
+            if ( it->name().compare( tablename ) == 0 )
+                return *it;
+    }
+    return WSqlTable();
+}
+
 
 /*!
     \fn bool WSqlDriver::open()
@@ -152,5 +187,5 @@ void WSqlDriver::setError(const std::string& text, WSqlError::ErrorType type,
 
     \sa WSqlTable WSqlColumn
  */
-
+    
 } //namespace WSql

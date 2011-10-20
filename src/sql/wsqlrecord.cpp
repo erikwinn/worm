@@ -163,7 +163,7 @@ int WSqlRecord::indexOf( const std::string& name ) const
     std::vector<WSqlField>::const_iterator it;
     for ( it = _fields.begin(); it != _fields.end() ; ++it ) 
     {
-        if ( it->columnName().compare( name ) == 0 ) 
+        if ( it->name().compare( name ) == 0 ) 
         {
             intToReturn = i;
             break;

@@ -158,7 +158,9 @@ bool WMysqlDriver::execute(std::string sqlstring )
     if(!isOpen())
         return false;
     
-    std::string sql = local_escape_string(sqlstring);
+// TODO: RESOLVE - this also escapes LIKE quotes ..    
+// FIXME       std::string sql = local_escape_string(sqlstring);
+    std::string sql = sqlstring;
     if(sql.empty() )
         setError("WARNING: WMysqlDriver string escape failed.");
     
@@ -323,7 +325,6 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
     execute(sql);
     result();
     WSqlRecord record = _result->fetchFirst();
-    //while(record.isValid())
     while(!record.empty())
     {
         WSqlColumn clm;
@@ -348,7 +349,24 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
     }
     for(column_names_it = column_names.begin();column_names_it != column_names.end(); column_names_it++)
     {
-        sql = "select constraint_name, column_name, referenced_table_schema,  referenced_table_name, referenced_column_name from key_column_usage where table_schema like 'quasicms'";
+        WSqlForeignKey fk;
+        
+        sql = "select constraint_name, referenced_table_schema,  referenced_table_name,"
+        " referenced_column_name from information_schema.key_column_usage "
+        " where table_name like `" + tableName + "` and column_name like `" + *column_names_it + "`";
+        execute(sql);
+        result();
+        WSqlRecord record = _result->fetchFirst();
+        while(!record.empty())
+        {
+            fk.setColumnName(*column_names_it);
+            fk.setKeyName(record["constraint_name"]);
+            fk.setReferencedColumnName(record["referenced_column_name"]);
+            fk.setReferencedSchemaName(record["referenced_schema_name"]);
+            fk.setReferencedTableName(record["referenced_table_name"]);
+            tblToReturn.addForeignKey(fk);
+            record = _result->fetchNext();
+        }        
     }
     return tblToReturn;
 }

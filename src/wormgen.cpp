@@ -120,6 +120,8 @@ int main( int argc, char ** argv )
         std::cerr << "Failed to open: " << db.error().text() << std::endl;
         return 1;
     }
+    //initialize all the metadata in advance to avoid query result invalidations in loops
+    db.initMetaData(); 
     std::vector<std::string>tables = db.tableNames();
     if ( db.hasError() )
         std::cout << "error: " << db.error().text() << std::endl;
@@ -127,15 +129,18 @@ int main( int argc, char ** argv )
     std::vector<std::string>::iterator it = tables.begin();
     WSql::WSqlTable metatable;
     int numflds = 0;
-    while ( it != tables.end() ) {
+    while ( it != tables.end() ) 
+    {
         metatable = db.tableMetaData( *it );
         std::string code = "#include <Wt/Dbo/Dbo>\n#include <string>\n\nnamespace dbo = Wt::Dbo;\n\nclass ";
         code.append( metatable.name() + " {\n\n    public:\n" );
         numflds = metatable.count();
-        for ( int i = 0; i < numflds; ++i ) {
+        for ( int i = 0; i < numflds; ++i ) 
+        {
             WSql::WSqlColumn clm = metatable.column( i );
             std::string variable =  clm.columnName();
-            switch ( clm.dataType() ) {
+            switch ( clm.dataType() ) 
+            {
                 case WSql::WSqlDataType::NCHAR:
                 case WSql::WSqlDataType::CHAR:
                     code.append( "\n    char " + variable + ";" );
@@ -188,7 +193,8 @@ int main( int argc, char ** argv )
             }
         }
         code.append( "\n\n    template<class Action> void persist(Action& a)\n    {" );
-        for ( int i = 0; i < numflds; ++i ) {
+        for ( int i = 0; i < numflds; ++i ) 
+        {
             std::string variable =  metatable.column( i ).columnName();
             code.append( "\n        dbo::field(a, " + variable + ", \"" + variable + "\");" );
         }

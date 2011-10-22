@@ -27,6 +27,8 @@ WSqlForeignKey::WSqlForeignKey()
 WSqlForeignKey::WSqlForeignKey( const WSqlForeignKey& other )
 {
     _keyName=other._keyName;
+    _tableName=other._tableName;
+    _schemaName=other._schemaName;
     _columnName=other._columnName;
     _referencedColumnName=other._referencedColumnName;
     _referencedTableName=other._referencedTableName;
@@ -40,6 +42,8 @@ WSqlForeignKey::~WSqlForeignKey()
 WSqlForeignKey& WSqlForeignKey::operator=( const WSqlForeignKey & other )
 {
     _keyName=other._keyName;
+    _tableName=other._tableName;
+    _schemaName=other._schemaName;
     _columnName=other._columnName;
     _referencedColumnName=other._referencedColumnName;
     _referencedTableName=other._referencedTableName;
@@ -50,6 +54,8 @@ WSqlForeignKey& WSqlForeignKey::operator=( const WSqlForeignKey & other )
 bool WSqlForeignKey::operator==( const WSqlForeignKey& other ) const
 {
    return( _keyName.compare(other._keyName) == 0 
+   && _tableName.compare(other._tableName)== 0
+   && _schemaName.compare(other._schemaName)== 0
    && _columnName.compare(other._columnName)== 0
    && _referencedColumnName.compare(other._referencedColumnName)== 0
    && _referencedSchemaName.compare(other._referencedSchemaName)== 0

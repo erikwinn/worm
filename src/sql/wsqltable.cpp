@@ -18,8 +18,8 @@
 
 #include "wsqltable.h"
 
-namespace WSql
-{
+namespace WSql {
+    
 /*!
     \class WSqlTable
     \brief WSqlTable is an abstraction for a single table, collection or view in a database.
@@ -92,6 +92,7 @@ WSqlTable::WSqlTable( const WSqlTable &other )
     _name = other._name;
     _columns = other._columns;
     _foreignKeys = other._foreignKeys;
+    _referencedKeys = other._referencedKeys;
 }
 /*!
     Sets this table equal to \a other.
@@ -103,6 +104,7 @@ WSqlTable& WSqlTable::operator=( const WSqlTable& other )
     _name = other._name;
     _columns = other._columns;
     _foreignKeys = other._foreignKeys;
+    _referencedKeys = other._referencedKeys;
     return *this;
 }
 /*!
@@ -112,6 +114,7 @@ WSqlTable::~WSqlTable()
 {
     _columns.clear();
     _foreignKeys.clear();
+    _referencedKeys.clear();
 }
 /*!
     \fn bool WSqlTable::operator!=(const WSqlTable &other) const
@@ -140,19 +143,30 @@ bool WSqlTable::operator==( const WSqlTable &other ) const
 
     std::vector<WSqlColumn>::const_iterator it;
     std::vector<WSqlColumn>::const_iterator ito = other._columns.begin();
-    for ( it = _columns.begin(); it != _columns.end(); ++it ) {
-        if ( *( it ) != *( ito ) )
+    for ( it = _columns.begin();it != _columns.end();++it ) 
+     {
+         if ( ito == other._columns.end() || *( it ) != *( ito ) )
             return false;
         else
             ito++;
     }
     std::vector<WSqlForeignKey>::const_iterator fit;
     std::vector<WSqlForeignKey>::const_iterator fito = other._foreignKeys.begin();
-    for ( fit = _foreignKeys.begin(); fit != _foreignKeys.end(); ++fit ) {
-        if ( *( fit ) != *( fito ) )
+    for ( fit = _foreignKeys.begin(); fit != _foreignKeys.end(); ++fit ) 
+    {
+        if (  fito == other._foreignKeys.end() || *( fit ) != *( fito ) )
             return false;
         else
             fito++;
+    }
+    std::vector<WSqlReferencedKey>::const_iterator rfit;
+    std::vector<WSqlReferencedKey>::const_iterator rfito = other._referencedKeys.begin();
+    for ( rfit = _referencedKeys.begin();rfit != _referencedKeys.end();++rfit ) 
+    {
+        if ( rfito == other._referencedKeys.end() || *( rfit ) != *( rfito ) )
+            return false;
+        else
+            rfito++;
     }
     return true;
 }
@@ -288,7 +302,20 @@ bool WSqlTable::isEmpty() const
 
 }
 
-void WSqlTable::addForeignKey( const WSql::WSqlForeignKey& fk )
+WSqlForeignKey WSqlTable::foreignKey( const std::string columnname ) const
+{
+    std::vector<WSqlForeignKey>::const_iterator it = _foreignKeys.begin();
+    for(;it != _foreignKeys.end(); ++it)
+    {
+        if (it->columnName().compare(columnname) == 0)
+        {
+            return *it;
+        }
+    }
+    return WSqlForeignKey();
+}
+
+void WSqlTable::addForeignKey( const WSqlForeignKey& fk )
 {
     _foreignKeys.push_back(fk);
 }
@@ -298,7 +325,7 @@ const std::vector< WSqlForeignKey >& WSqlTable::foreignKeys() const
     return _foreignKeys;
 }
 
-void WSqlTable::removeForeignKey( const WSql::WSqlForeignKey& fk )
+void WSqlTable::removeForeignKey( const WSqlForeignKey& fk )
 {
     std::vector<WSqlForeignKey>::iterator it = _foreignKeys.begin();
     for(;it != _foreignKeys.end(); ++it)
@@ -319,7 +346,8 @@ void WSqlTable::removeForeignKey( int pos )
     it += pos;
     _foreignKeys.erase( it );
 }
-void WSqlTable::removeForeignKey( const std::string keyname )
+void WSqlTable::removeForeignKey( const std::string& keyname
+ )
 {
     if ( _foreignKeys.empty() )
         return;
@@ -335,4 +363,60 @@ void WSqlTable::removeForeignKey( const std::string keyname )
     }
 }
 
-} // namespace WORM
+WSqlReferencedKey WSqlTable::referencedKey( const std::string columnname ) const
+{
+    std::vector<WSqlReferencedKey>::const_iterator it = _referencedKeys.begin();
+    for(;it != _referencedKeys.end(); ++it)
+        if (it->columnName().compare(columnname) == 0)
+            return *it;
+    return WSqlReferencedKey(WSqlForeignKey());
+}
+
+void WSqlTable::addReferencedKey( const WSqlReferencedKey& fk )
+{
+    _referencedKeys.push_back(fk);
+}
+
+const std::vector< WSqlReferencedKey >& WSqlTable::referencedKeys() const
+{
+    return _referencedKeys;
+}
+
+void WSqlTable::removeReferencedKey( const WSqlReferencedKey& rk )
+{
+    std::vector<WSqlReferencedKey>::iterator it = _referencedKeys.begin();
+    for(;it != _referencedKeys.end(); ++it)
+    {
+        if (*(it) == rk)
+        {
+            _referencedKeys.erase(it);
+            break;
+        }
+    }
+}
+void WSqlTable::removeReferencedKey( int pos )
+{
+    int sz = _referencedKeys.size();
+    if ( !sz || pos < 0 || pos > sz - 1 )
+        return;
+    std::vector<WSqlReferencedKey>::iterator it = _referencedKeys.begin();
+    it += pos;
+    _referencedKeys.erase( it );
+}
+void WSqlTable::removeReferencedKey( const std::string& columnname )
+{
+    if ( _referencedKeys.empty() )
+        return;
+    
+    std::vector<WSqlReferencedKey>::iterator it;
+    for ( it = _referencedKeys.begin(); it != _referencedKeys.end(); ++it ) 
+    {
+        if ( it->columnName().compare( columnname ) == 0 ) 
+        {
+            _referencedKeys.erase(it);
+            break;
+        }
+    }
+}
+
+} // namespace WSql

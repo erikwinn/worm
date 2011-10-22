@@ -38,11 +38,15 @@ class WSqlForeignKey
         }
         
         void setKeyName(std::string name){_keyName=name;}
+        void setTableName(std::string name){_keyName=name;}
+        void setSchemaName(std::string name){_keyName=name;}
         void setColumnName(std::string name){_columnName=name;}
         void setReferencedTableName(std::string name){_referencedTableName=name;}
         void setReferencedColumnName(std::string name){_referencedColumnName=name;}
         void setReferencedSchemaName(std::string name){_referencedSchemaName=name;}
         const std::string& keyName()const{return _keyName;}
+        const std::string& tableName()const{return _tableName;}
+        const std::string& schemaName()const{return _schemaName;}
         const std::string& columnName()const{return _columnName;}
         const std::string& referencedColumnName()const{return _referencedColumnName;}
         const std::string& referencedTableName()const{return _referencedTableName;}
@@ -51,6 +55,8 @@ class WSqlForeignKey
     private:
         std::string _keyName;
         std::string _columnName;
+        std::string _tableName;
+        std::string _schemaName;
         std::string _referencedTableName;
         std::string _referencedColumnName;
         std::string _referencedSchemaName;

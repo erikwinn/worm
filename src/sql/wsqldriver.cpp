@@ -99,12 +99,12 @@ void WSqlDriver::setError(const WSqlError& error )
 }
 
 /*! \brief Locate the metadata table for \a tablename in the cache
- 
- This returns a WSqlTable of metadata for a given table by looking
- it up in the local cache. If the table has been initialized it will be returned
- if not an invalid (ie. empty) WSqlTable object will be returned.
-     \param std::string tablename - the name of the table to find
-     \retval WSqlTable valid if found in cache
+ * 
+ * This returns a WSqlTable of metadata for a given table by looking
+ * it up in the local cache. If the table has been initialized it will be returned
+ * if not an invalid (ie. empty) WSqlTable object will be returned.
+ *     \param std::string tablename - the name of the table to find
+ *     \retval WSqlTable valid if found in cache
  */
 WSqlTable WSqlDriver::findTable( std::string tablename ) const
 {
@@ -117,6 +117,30 @@ WSqlTable WSqlDriver::findTable( std::string tablename ) const
     return WSqlTable();
 }
 
+/*! \brief Return a reference to the metadata table for \a tablename in the cache
+ * 
+ * This returns a reference to the WSqlTable of metadata for a given table by looking
+ * it up in the local cache. If the table has been initialized it will be returned
+ * if not  a null (0) pointer will be returned. This function is used internally to modify 
+ * tables - it is not recommended for use otherwise.
+ * 
+ *     \param std::string tablename - the name of the table to find
+ *     \retval WSqlTable* valid if found in cache
+ */
+WSqlTable* WSqlDriver::getTable( const std::string& tablename )
+{
+    WSqlTable* ptrToReturn = 0;
+    if ( !_tables.empty() ) {
+        std::vector<WSqlTable>::iterator it = _tables.begin();
+        for ( ; it != _tables.end();++it )
+            if ( it->name().compare( tablename ) == 0 )
+            {
+                ptrToReturn = &(*it);
+                break;
+            }
+    }
+    return ptrToReturn;
+}
 
 /*!
     \fn bool WSqlDriver::open()

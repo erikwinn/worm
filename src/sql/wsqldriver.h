@@ -57,7 +57,10 @@ class WSqlDriver
         void setDatabase( WSqlDatabase *dp ) { _database = dp;}
 
     protected:
+        friend class WSqlDatabase;
 
+        WSqlTable* getTable( const std::string& tablename );
+        
         void setIsValid( bool b ) { _isValid = b;}
         void setIsOpen( bool o ) { _isOpen = o;}
         void setHasError( bool e ) { _hasError = e;}

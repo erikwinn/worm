@@ -363,6 +363,7 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
         tblToReturn.append(clm);
         record = _result->fetchNext();
     }
+    //initialize foreign keys ..
     WSqlForeignKey fk;
     for(column_names_it = column_names.begin();column_names_it != column_names.end(); column_names_it++)
     {
@@ -376,8 +377,7 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
         WSqlRecord record = _result->fetchFirst();
         while(!record.empty())
         {
-            if(record["constraint_name"].compare("PRIMARY") == 0
-                || record["referenced_column_name"].compare("NULL") == 0)
+            if( record["referenced_column_name"].compare("NULL") == 0)
             {
                 record = _result->fetchNext();
                 continue;

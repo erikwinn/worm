@@ -520,6 +520,11 @@ WSqlTable WSqlDatabase::tableMetaData( const std::string& tablename ) const
  for all tables is cached in the driver and will be returned for a given table from
  the cache.
  
+ \note This also initializes the referenced tables WSqlReferencedKeys - used
+ by the ORM generation.  If you need access to this kind of metadata you must
+ use this method to initialize the referenced key lists - if you initialize table
+ metadata individually the reference keys will be omitted.
+ 
  \sa tableMetaData() tableNames()
 */
 
@@ -528,8 +533,20 @@ void WSqlDatabase::initMetaData()
     tableNames();
     std::vector<std::string>::const_iterator it = _tableNames.begin();
     for(;it != _tableNames.end();++it )
-    {
         tableMetaData(*it);
+    std::vector<WSqlTable>::const_iterator tbl_it = _driver->_tables.begin();
+    for(;tbl_it != _driver->_tables.end();++tbl_it)
+    {
+        std::vector<WSqlForeignKey>::const_iterator fk_it = tbl_it->foreignKeys().begin();
+        for(;fk_it != tbl_it->foreignKeys().end();++fk_it)
+        {
+            WSqlTable *table = _driver->getTable( fk_it->referencedTableName());
+            if(table)
+            {
+                WSqlReferencedKey rfk(*fk_it);
+                table->addReferencedKey(rfk);
+            }
+        }
     }
 }
 

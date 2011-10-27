@@ -150,9 +150,18 @@ namespace WSqlDataType {
         size_t size = strToReturn.size();
         if(!size)
             return strToReturn;
-        if('s' == strToReturn[size-1])
+        if('s' == strToReturn[size-1] && 's' != strToReturn[size-2])//dont fix dress, address ..
         {
             strToReturn.erase(size-1);
+            if('e' == strToReturn[size-2])
+            {//eg. Cities to City ..
+                if( 'i' == strToReturn[size-3])
+                {
+                    strToReturn.erase(size-3);
+                    strToReturn.append("y");
+                }else if( 'h' == strToReturn[size-3])//eg. Bushes .. might need fixing ..
+                    strToReturn.erase(size-2);                
+            }
             return strToReturn;
         }
         /*        std::string cmp = boost::to_lower_copy(strToReturn);
@@ -164,7 +173,7 @@ namespace WSqlDataType {
     {
         std::string strToReturn = name;
         strToReturn.append("s");
-        //TODO make me a little smarter .. people, fish, etc.
+        //TODO make me a little smarter .. people, fish, sheep etc.
         return strToReturn;
     }
     
@@ -185,7 +194,7 @@ namespace WSqlDataType {
         pos = strToReturn.find('_');
         while(pos != std::string::npos)
         {
-            strToReturn.erase(pos);
+            strToReturn.erase(pos,1);
             if((pos + 1) < strToReturn.size())
                 strToReturn[pos]= toupper(strToReturn[pos]);
             pos = strToReturn.find('_');

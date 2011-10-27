@@ -17,18 +17,17 @@
  */
 #include "sql/wsqldatabase.h"
 #include "orm/wormclassgenerator.h"
-//#include "sql/wsqldatatype.h"
 #include <iostream>
 #include <fstream>
 #include <getopt.h>
 
 #define PACKAGE    "wormgen"
-#define VERSION    "0.0.1"
+#define VERSION    "0.2"
 
 void print_help( int exval )
 {
     std::cout << PACKAGE << " " << VERSION <<  "\n Usage:\n" << std::endl;
-    std::cout << PACKAGE << " [-hVv] [-o outputdir] [-u username] [-p password] [-s hostname] [-D driver] <-d database>\n" << std::endl;
+    std::cout << PACKAGE << " [-hVv] <-d database> [-t templates_dir ] [-o outputdir] [-u username] [-p password] [-s hostname] [-D driver] \n" << std::endl;
     std::cout << "  -h              print this help and exit" << std::endl;
     std::cout << "  -V              print version and exit" << std::endl;
     std::cout << "  -v              set verbose flag" << std::endl;
@@ -37,6 +36,7 @@ void print_help( int exval )
     std::cout << "  -p password            set password" << std::endl;
     std::cout << "  -s server              set server or hostname" << std::endl;
     std::cout << "  -o DIRECTORY           set output directory" << std::endl;
+    std::cout << "  -t DIRECTORY          set templates directory" << std::endl;
     std::cout << "  -D driver              set database driver (default MYSQL)" << std::endl
     << "Note: driver may be one of: 'mysql' or 'sqlite'. " << std::endl;
     
@@ -64,9 +64,10 @@ int main( int argc, char ** argv )
     std::string username = "root";
     std::string password = "";
     std::string outputdir = ".";
+    std::string templatesdir = "./src/orm/templates";
     WSql::DriverType drivertype = WSql::WMYSQL;
 
-    while (( opt = getopt( argc, argv, "hVvf:o:u:d:D:p:s:" ) ) != -1 ) {
+    while (( opt = getopt( argc, argv, "hVvf:o:u:d:D:p:s:t:" ) ) != -1 ) {
         switch ( opt ) {
             case 'h':
                 print_help( 0 );
@@ -96,6 +97,9 @@ int main( int argc, char ** argv )
             case 'o':
                 outputdir = optarg;
                 break;
+            case 't':
+                templatesdir = optarg;
+                break;
             case ':':
                 std::cout << PACKAGE << ": Error - Option " << optopt << " requires a value\n" << std::endl;
                 print_help( 1 );
@@ -111,6 +115,7 @@ int main( int argc, char ** argv )
         print_help( 1 );
     }
 
+//OK, lets go!
     WSql::WSqlDatabase db( drivertype );
     db.setDatabaseName( dbname );
     db.setUserName( username );
@@ -122,7 +127,7 @@ int main( int argc, char ** argv )
         return 1;
     }
     WSql::WormClassGenerator gen(db);
-    gen.setTemplateDirectory("/home/erik/src/kdevelop/worm/src/orm/templates/");
+    gen.setTemplateDirectory(templatesdir);
     gen.setOutputDirectory(outputdir);
     gen.init();
     gen.run();

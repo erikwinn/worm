@@ -488,6 +488,7 @@ void WSqliteDriver::parseSchema( std::string& sql )
         }
         definitions.clear();
     }
+    //map to local map 
     mapColumns(columns);
 }
 

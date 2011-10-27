@@ -60,13 +60,16 @@ class WSqlColumn
         
         const std::string& columnName() const;
         const std::string& variableName() const;
+        std::string typeDeclaration()const;
         const int maxLength() const;
         const int precision() const;
-        const WSqlDataType::Type dataType() const;
+        const WSqlDataType::Type type() const;
         bool isAutoIncremented() const {return _isAutoIncremented; }
         bool canBeNull() const;
         bool isPrimaryKey() const {return _isPrimaryKey;}
         bool isUnsigned() const {return _isUnsigned;}
+        
+        bool typeIsSupported()const;
 
     private:
         

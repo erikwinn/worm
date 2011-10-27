@@ -48,7 +48,8 @@ public:
     virtual bool operator==(const WSqlTable& other) const;
     inline bool operator!=(const WSqlTable &other) const { return !operator==(other); }
 
-	const std::string& name()const {return _name;}
+    const std::string& name()const {return _name;}
+    const std::string& className()const {return _className;}
 
     const std::string columnName(int i) const;
     WSqlColumn column(int i) const;
@@ -60,8 +61,9 @@ public:
 	int indexOf(const std::string &columnname) const;
 	const Type type()const{return _type;}
 	
-	void setName(const std::string &n){_name = n;}
-    void setIsValid(bool b){_isValid = b;}
+	void setName(const std::string &n);
+	void setClassName(const std::string &n){_className = n;}
+	void setIsValid(bool b){_isValid = b;}
     void setType(Type t){_type=t;}
 	void append(const WSqlColumn& column);
     void replace(int pos, const WSqlColumn& column);
@@ -91,6 +93,7 @@ protected:
     std::vector<WSqlForeignKey> _foreignKeys;
     std::vector<WSqlReferencedKey> _referencedKeys;
     std::string _name;
+    std::string _className;
     bool _isValid;
 	Type _type;
 };

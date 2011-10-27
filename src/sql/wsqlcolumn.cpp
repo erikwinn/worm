@@ -155,11 +155,13 @@ void WSqlColumn::setDataType(WSqlDataType::Type type)
 }
 
 
-/*!
- *    Sets the column name to \a name. This is the name of the column
- * as defined in the database, eg. "first_name"
+/*! \brief Set the column name to be \a name
  * 
- *   TODO: translate this and set _variableName automatically ..
+ * This sets the column name to \a name. This refers to the name of 
+ * the column as defined in the database, eg. "first_name". Additionally
+ * this method will set the _variableName as a transformed version of
+ * the column name. Eg. "first_name" will be set as a variable name of
+ * "firstName"
  * 
  *    \sa columnName() setVariableName()
  */
@@ -167,11 +169,19 @@ void WSqlColumn::setDataType(WSqlDataType::Type type)
 void WSqlColumn::setColumnName(const std::string& name)
 {
     _columnName = name;
+    _variableName = WSqlDataType::columnNameToVariable(name);
 }
-/*!
- *    Sets the variable name to \a name. This is the name of the class variable
+/*! \brief Manually set the variableName to \a name
+ * 
+ *  This sets the variable name to \a name. This is the name of the class variable
  * corresponding to the column name. So, for instance "first_name" will be a
- * variable _firstName with gettor firstName() and settor setFirstName(string)
+ * variable firstName with ORM generated gettor firstName() and settor 
+ * setFirstName(string).
+ * 
+ *  Note that manually setting the variable name is not normally used - it
+ * is done automatically by setColumnName(). This is provided to override
+ * the default behavior in cases like a view or alias where the column name
+ * may be different from the field name.
  * 
  *    \sa columnName()
  */
@@ -205,7 +215,7 @@ const std::string& WSqlColumn::variableName() const
  * 
  *    \sa setDefaultValue() defaultValue() setDataType()
  */
-const WSqlDataType::Type WSqlColumn::dataType() const
+const WSqlDataType::Type WSqlColumn::type() const
 {
     return _type;
 }
@@ -242,6 +252,86 @@ const int WSqlColumn::maxLength() const
 const int WSqlColumn::precision() const
 {
     return _precision;
+}
+/*! \brief Returns a C++ type declaration
+ * This method returns a string suitable for a type declaration of a variable in C++ code.
+ */
+std::string WSqlColumn::typeDeclaration() const
+{
+    std::string strToReturn;
+    switch(_type){
+        case WSqlDataType::NCHAR:
+        case WSqlDataType::CHAR:
+            strToReturn = "char";
+            break;
+        case WSqlDataType::TEXT:
+        case WSqlDataType::TINYTEXT:
+        case WSqlDataType::LONGTEXT:
+        case WSqlDataType::MEDIUMTEXT:
+        case WSqlDataType::VARCHAR:
+        case WSqlDataType::NVARCHAR:
+        case WSqlDataType::DATE:
+        case WSqlDataType::DATETIME:
+        case WSqlDataType::YEAR:
+        case WSqlDataType::TIME:
+        case WSqlDataType::TIMESTAMP:
+        case WSqlDataType::TIMESTAMPTZ:
+            strToReturn = "std::string";
+            break;
+        case WSqlDataType::TINYINT:
+            strToReturn = "short";
+            break;
+        case WSqlDataType::SMALLINT:
+        case WSqlDataType::MEDIUMINT:
+        case WSqlDataType::INT:
+            strToReturn = "int";
+            break;
+        case WSqlDataType::BIGINT:
+            strToReturn = "long";
+            break;
+        case WSqlDataType::FLOAT:
+            strToReturn = "float";
+            break;
+        case WSqlDataType::DECIMAL:
+        case WSqlDataType::DOUBLE:
+            strToReturn = "double";
+            break;
+        default:
+            strToReturn = WSqlDataType::toString(_type);
+    }
+    return strToReturn;
+}
+/*! \brief Returns true if the datatype of the column is supported by the ORM generator
+ */
+bool WSqlColumn::typeIsSupported() const
+{
+    switch(_type){
+        case WSqlDataType::NCHAR:
+        case WSqlDataType::CHAR:
+        case WSqlDataType::TEXT:
+        case WSqlDataType::TINYTEXT:
+        case WSqlDataType::LONGTEXT:
+        case WSqlDataType::MEDIUMTEXT:
+        case WSqlDataType::VARCHAR:
+        case WSqlDataType::NVARCHAR:
+        case WSqlDataType::DATE:
+        case WSqlDataType::DATETIME:
+        case WSqlDataType::YEAR:
+        case WSqlDataType::TIME:
+        case WSqlDataType::TIMESTAMP:
+        case WSqlDataType::TIMESTAMPTZ:
+        case WSqlDataType::TINYINT:
+        case WSqlDataType::SMALLINT:
+        case WSqlDataType::MEDIUMINT:
+        case WSqlDataType::INT:
+        case WSqlDataType::BIGINT:
+        case WSqlDataType::FLOAT:
+        case WSqlDataType::DECIMAL:
+        case WSqlDataType::DOUBLE:
+            return true;
+        default:
+            return false;
+    }
 }
 
 // template<> std::string WSqlColumn::defaultValue<std::string>()

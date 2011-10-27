@@ -141,7 +141,80 @@ namespace WSqlDataType {
             if ( name.compare(TypeNames[i]) == 0 )
                 return static_cast<Type>(i);
         return static_cast<Type>(0);//NOTYPE
-    }    
+    }
+    
+    //! Attempt to return a singularized form of \a name
+    static std::string toSingular(const std::string& name)
+    {
+        std::string strToReturn = name;
+        size_t size = strToReturn.size();
+        if(!size)
+            return strToReturn;
+        if('s' == strToReturn[size-1])
+        {
+            strToReturn.erase(size-1);
+            return strToReturn;
+        }
+        /*        std::string cmp = boost::to_lower_copy(strToReturn);
+         *TODO        if(cmp.compare("people") .. or some such ..*/
+        return strToReturn;
+    }
+    //! Attempt to return a pluralized form of \name
+    static std::string toPlural(const std::string& name)
+    {
+        std::string strToReturn = name;
+        strToReturn.append("s");
+        //TODO make me a little smarter .. people, fish, etc.
+        return strToReturn;
+    }
+    
+    /*! \brief Return a transformed column name as a variable name
+     *     
+     *     This translates a column name as defined in a database to a variable name.
+     *     A table name should have the format string[_string], eg. "order_id" - this
+     *     will be rendered as "orderId". Note that in contrast to tableNameToClass
+     *     the first letter is not capitalized and plural are left plural.
+     *     
+     *     \param std::string columnname - the name to transform
+     *     \retval std::string a string suitable for a variable name
+     */
+    static std::string columnNameToVariable(const std::string& columnname)
+    {
+        std::string strToReturn = columnname;
+        size_t pos = 0;
+        pos = strToReturn.find('_');
+        while(pos != std::string::npos)
+        {
+            strToReturn.erase(pos);
+            if((pos + 1) < strToReturn.size())
+                strToReturn[pos]= toupper(strToReturn[pos]);
+            pos = strToReturn.find('_');
+        }
+        return strToReturn;
+    }
+    
+    /*! \brief Return a transformed table name as a class name
+     *     
+     *     This translates a table name as defined in a database to a class name.
+     *     A table name should have the format string[_string], eg. "order_items"
+     *     or "orders." Note that in keeping with accepted convention the table
+     *     names are plural - these will also be singularized; this results in the 
+     *     table "orders" being rendered as "Order" and "order_items" as OrderItem
+     * 
+     *     \note This assumes that tables are named according to convention as
+     *      found also in Rails - tablenames without this convention are left as
+     *      is - which may cause problems with class instance declarations.    
+     * 
+     *     \param std::string tablename - the name to transform
+     *     \retval std::string a string suitable for a class name
+     */
+    static std::string tableNameToClass(const std::string& tablename)
+    {
+        std::string strToReturn = toSingular(tablename);
+        strToReturn[0] = toupper(strToReturn[0]);
+        return columnNameToVariable(strToReturn);
+    }
+
 } //namespace WSqlDataType
     
 }// namespace WSql

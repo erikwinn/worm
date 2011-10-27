@@ -90,6 +90,7 @@ WSqlTable::WSqlTable( const WSqlTable &other )
     _type = other._type;
     _isValid = other._isValid;
     _name = other._name;
+    _className = other._className;
     _columns = other._columns;
     _foreignKeys = other._foreignKeys;
     _referencedKeys = other._referencedKeys;
@@ -102,6 +103,7 @@ WSqlTable& WSqlTable::operator=( const WSqlTable& other )
     _type = other._type;
     _isValid = other._isValid;
     _name = other._name;
+    _className = other._className;
     _columns = other._columns;
     _foreignKeys = other._foreignKeys;
     _referencedKeys = other._referencedKeys;
@@ -299,7 +301,6 @@ void WSqlTable::remove( int pos )
 bool WSqlTable::isEmpty() const
 {
     return _columns.empty();
-
 }
 
 WSqlForeignKey WSqlTable::foreignKey( const std::string columnname ) const
@@ -337,6 +338,7 @@ void WSqlTable::removeForeignKey( const WSqlForeignKey& fk )
         }
     }
 }
+
 void WSqlTable::removeForeignKey( int pos )
 {
     int sz = _foreignKeys.size();
@@ -346,8 +348,8 @@ void WSqlTable::removeForeignKey( int pos )
     it += pos;
     _foreignKeys.erase( it );
 }
-void WSqlTable::removeForeignKey( const std::string& keyname
- )
+
+void WSqlTable::removeForeignKey( const std::string& keyname )
 {
     if ( _foreignKeys.empty() )
         return;
@@ -394,6 +396,7 @@ void WSqlTable::removeReferencedKey( const WSqlReferencedKey& rk )
         }
     }
 }
+
 void WSqlTable::removeReferencedKey( int pos )
 {
     int sz = _referencedKeys.size();
@@ -403,6 +406,7 @@ void WSqlTable::removeReferencedKey( int pos )
     it += pos;
     _referencedKeys.erase( it );
 }
+
 void WSqlTable::removeReferencedKey( const std::string& columnname )
 {
     if ( _referencedKeys.empty() )
@@ -417,6 +421,12 @@ void WSqlTable::removeReferencedKey( const std::string& columnname )
             break;
         }
     }
+}
+
+void WSqlTable::setName( const std::string& tablename )
+{
+    _name=tablename;
+    _className=WSqlDataType::tableNameToClass(tablename);
 }
 
 } // namespace WSql

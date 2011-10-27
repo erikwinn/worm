@@ -16,7 +16,8 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "sql/wsqldatabase.h"
-#include "sql/wsqldatatype.h"
+#include "orm/wormclassgenerator.h"
+//#include "sql/wsqldatatype.h"
 #include <iostream>
 #include <fstream>
 #include <getopt.h>
@@ -120,105 +121,11 @@ int main( int argc, char ** argv )
         std::cerr << "Failed to open: " << db.error().text() << std::endl;
         return 1;
     }
-    //initialize all the metadata in advance to avoid query result invalidations in loops
-    db.initMetaData(); 
-    std::vector<std::string>tables = db.tableNames();
-    if ( db.hasError() )
-        std::cout << "error: " << db.error().text() << std::endl;
-
-    std::vector<std::string>::iterator it = tables.begin();
-    WSql::WSqlTable metatable;
-    int numflds = 0;
-    while ( it != tables.end() ) 
-    {
-        metatable = db.tableMetaData( *it );
-        std::string code = "#include <Wt/Dbo/Dbo>\n#include <string>\n\nnamespace dbo = Wt::Dbo;\n\nclass ";
-        code.append( metatable.name() + " {\n\n    public:\n" );
-        numflds = metatable.count();
-        for ( int i = 0; i < numflds; ++i ) 
-        {
-            WSql::WSqlColumn clm = metatable.column( i );
-            std::string variable =  clm.columnName();
-            switch ( clm.type() ) 
-            {
-                case WSql::WSqlDataType::NCHAR:
-                case WSql::WSqlDataType::CHAR:
-                    code.append( "\n    char " + variable + ";" );
-                    break;
-                case WSql::WSqlDataType::TEXT:
-                case WSql::WSqlDataType::TINYTEXT:
-                case WSql::WSqlDataType::LONGTEXT:
-                case WSql::WSqlDataType::MEDIUMTEXT:
-                case WSql::WSqlDataType::VARCHAR:
-                case WSql::WSqlDataType::NVARCHAR:
-                case WSql::WSqlDataType::DATE:
-                case WSql::WSqlDataType::DATETIME:
-                case WSql::WSqlDataType::YEAR:
-                case WSql::WSqlDataType::TIME:
-                case WSql::WSqlDataType::TIMESTAMP:
-                case WSql::WSqlDataType::TIMESTAMPTZ:
-                    code.append( "\n    std::string " + variable + ";" );
-                    break;
-                case WSql::WSqlDataType::TINYINT:
-                    if ( clm.isUnsigned() )
-                        code.append( "\n    unsigned short " + variable + ";" );
-                    else
-                        code.append( "\n    short " + variable + ";" );
-                    break;
-                case WSql::WSqlDataType::SMALLINT:
-                case WSql::WSqlDataType::MEDIUMINT:
-                case WSql::WSqlDataType::INT:
-                    if ( clm.isUnsigned() )
-                        code.append( "\n    unsigned int " + variable + ";" );
-                    else
-                        code.append( "\n    int " + variable + ";" );
-                    break;
-                case WSql::WSqlDataType::BIGINT:
-                    if ( clm.isUnsigned() )
-                        code.append( "\n    unsigned long " + variable + ";" );
-                    else
-                        code.append( "\n    long " + variable + ";" );
-                    break;
-                case WSql::WSqlDataType::FLOAT:
-                    code.append( "\n    float " + variable + ";" );
-                    break;
-                case WSql::WSqlDataType::DECIMAL:
-                case WSql::WSqlDataType::DOUBLE:
-                    code.append( "\n    double " + variable + ";" );
-                    break;
-                default:
-                    code.append( "\n    // unsupported " + WSql::WSqlDataType::toString( clm.type() )
-                                 + " " + variable + ";" );
-                    //TODO: handle enum and blobs
-            }
-        }
-        code.append( "\n\n    template<class Action> void persist(Action& a)\n    {" );
-        for ( int i = 0; i < numflds; ++i ) 
-        {
-            std::string variable =  metatable.column( i ).columnName();
-            code.append( "\n        dbo::field(a, " + variable + ", \"" + variable + "\");" );
-        }
-        code.append( "\n    }\n};\n" );
-        std::ofstream f;
-        std::string fname = outputdir + "/" + metatable.name();
-        fname.append( ".h" );
-        f.open( fname.c_str() );
-        f << code;
-        f.close();
-        if ( verbose )
-        {
-            std::cout << "Wrote : " << metatable.name() << " to " << fname << std::endl;
-            std::vector<WSql::WSqlForeignKey>fkeys = metatable.foreignKeys();
-            std::vector<WSql::WSqlForeignKey>::const_iterator fkit = fkeys.begin();
-            for(;fkit != fkeys.end();++fkit)
-            {
-                std::cout << " foreign key: " << fkit->columnName() 
-                    << ", keyname: " << fkit->keyName() <<  std::endl
-                    << "   *  references: " << fkit->referencedColumnName() 
-                    << " in " << fkit->referencedTableName() <<std::endl;
-            }
-        }
-        it++;
-    }
+    WSql::WormClassGenerator gen(db);
+    gen.setTemplateDirectory("/home/erik/src/kdevelop/worm/src/orm/templates/");
+    gen.setOutputDirectory(outputdir);
+    gen.init();
+    gen.run();
+    
     return 0;
 }

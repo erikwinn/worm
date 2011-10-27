@@ -410,7 +410,7 @@ void WMysqlDriver::initColumnType( WSqlColumn &clm, std::string description )
     if ( pos != std::string::npos)
     {
         clm.setIsUnsigned(true);
-        description.erase(pos,8 );
+        description.erase(pos, 8);
     }
     pos = description.find_first_of("(");
     if(pos != std::string::npos)

@@ -52,7 +52,7 @@ bool WormClassGenerator::init()
         while ((ent = readdir (dir)) != NULL) 
         {
             std::string entry = ent->d_name;
-            if(entry.compare("..") == 0 ||entry.compare(".") == 0)
+            if('~' == entry[entry.size()-1] || entry.compare("..") == 0 ||entry.compare(".") == 0)
                 continue;
             tpl.setUri(entry);
             _templates.push_back(tpl);
@@ -112,12 +112,16 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSql:
     {
         TemplateDictionary *coldict = topdict.AddSectionDictionary(kcd_COLUMNS);
         const std::string type_declaration = col_it->typeDeclaration();
-        if(type_declaration.compare("std::string"))
+        if(type_declaration.compare("std::string") == 0)
             has_string=true;
         if(! col_it->typeIsSupported())
             coldict->ShowSection(kcd_UNSUPPORTED);
-        if(col_it->isUnsigned())
+/*FIXME always unsigned ..        if(col_it->isUnsigned())
+        {
             coldict->ShowSection(kcd_UNSIGNED);
+            std::cerr << "in table " << tbl.className() << " " << col_it->columnName() << "is unsigned .." << std::endl
+            << "        type: " << WSqlDataType::toString(col_it->type()) << std::endl; 
+        }    */
         coldict->SetValue(kcd_COLUMN_NAME, col_it->columnName());
         coldict->SetValue(kcd_DATATYPE, col_it->typeDeclaration());
         coldict->SetValue(kcd_VARIABLE_NAME, col_it->variableName());
@@ -165,6 +169,19 @@ bool WormClassGenerator::writeFile( const std::string content, const std::string
     fs << content;
     fs.close();
     return true;
+}
+
+void WormClassGenerator::setOutputDirectory( const std::string dir )
+{
+    _outputDirectory = dir;
+    if('/' != _outputDirectory[ _outputDirectory.size()-1])
+        _outputDirectory.append("/");
+}
+void WormClassGenerator::setTemplateDirectory( const std::string dir )
+{
+    _templateDirectory = dir;
+    if('/' != _templateDirectory[ _templateDirectory.size()-1])
+        _templateDirectory.append("/");
 }
 
 

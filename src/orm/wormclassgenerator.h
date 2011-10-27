@@ -38,8 +38,8 @@ class WormClassGenerator
         bool init();
         
         void addTable(const std::string tablename){_tablesToGenerate.push_back(tablename);}
-        void setTemplateDirectory(const std::string dir){_templateDirectory=dir;}
-        void setOutputDirectory(const std::string dir){_outputDirectory=dir;}
+        void setTemplateDirectory(const std::string dir);
+        void setOutputDirectory(const std::string dir);
     private:
     
         bool writeFile(const std::string content, const std::string filename);

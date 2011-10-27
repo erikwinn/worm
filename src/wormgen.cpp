@@ -139,7 +139,7 @@ int main( int argc, char ** argv )
         {
             WSql::WSqlColumn clm = metatable.column( i );
             std::string variable =  clm.columnName();
-            switch ( clm.dataType() ) 
+            switch ( clm.type() ) 
             {
                 case WSql::WSqlDataType::NCHAR:
                 case WSql::WSqlDataType::CHAR:
@@ -187,7 +187,7 @@ int main( int argc, char ** argv )
                     code.append( "\n    double " + variable + ";" );
                     break;
                 default:
-                    code.append( "\n    // unsupported " + WSql::WSqlDataType::toString( clm.dataType() )
+                    code.append( "\n    // unsupported " + WSql::WSqlDataType::toString( clm.type() )
                                  + " " + variable + ";" );
                     //TODO: handle enum and blobs
             }

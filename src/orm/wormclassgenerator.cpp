@@ -23,14 +23,14 @@
 
 using namespace ctemplate;
 
-static const StaticTemplateString kcd_INCLUDES = STS_INIT_WITH_HASH(kcd_INCLUDES, "INCLUDES", 7699670683738647257LLU);
-static const StaticTemplateString kcd_CLASS_NAME = STS_INIT_WITH_HASH(kcd_CLASS_NAME, "CLASS_NAME", 13981977283673860485LLU);
-static const StaticTemplateString kcd_COLUMNS = STS_INIT_WITH_HASH(kcd_COLUMNS, "COLUMNS", 15302874640052016969LLU);
-static const StaticTemplateString kcd_UNSUPPORTED = STS_INIT_WITH_HASH(kcd_UNSUPPORTED, "UNSUPPORTED", 8112833089436120679LLU);
-static const StaticTemplateString kcd_UNSIGNED = STS_INIT_WITH_HASH(kcd_UNSIGNED, "UNSIGNED", 10867561526856517727LLU);
-static const StaticTemplateString kcd_DATATYPE = STS_INIT_WITH_HASH(kcd_DATATYPE, "DATATYPE", 6518949878326190781LLU);
-static const StaticTemplateString kcd_VARIABLE_NAME = STS_INIT_WITH_HASH(kcd_VARIABLE_NAME, "VARIABLE_NAME", 5051229879184672055LLU);
-static const StaticTemplateString kcd_COLUMN_NAME = STS_INIT_WITH_HASH(kcd_COLUMN_NAME, "COLUMN_NAME", 16524890828269290931LLU);
+static const ::ctemplate::StaticTemplateString kcd_INCLUDES = STS_INIT_WITH_HASH(kcd_INCLUDES, "INCLUDES", 7699670683738647257LLU);
+static const ::ctemplate::StaticTemplateString kcd_CLASS_NAME = STS_INIT_WITH_HASH(kcd_CLASS_NAME, "CLASS_NAME", 13981977283673860485LLU);
+static const ::ctemplate::StaticTemplateString kcd_COLUMNS = STS_INIT_WITH_HASH(kcd_COLUMNS, "COLUMNS", 15302874640052016969LLU);
+static const ::ctemplate::StaticTemplateString kcd_UNSUPPORTED = STS_INIT_WITH_HASH(kcd_UNSUPPORTED, "UNSUPPORTED", 8112833089436120679LLU);
+static const ::ctemplate::StaticTemplateString kcd_UNSIGNED = STS_INIT_WITH_HASH(kcd_UNSIGNED, "UNSIGNED", 10867561526856517727LLU);
+static const ::ctemplate::StaticTemplateString kcd_DATATYPE = STS_INIT_WITH_HASH(kcd_DATATYPE, "DATATYPE", 6518949878326190781LLU);
+static const ::ctemplate::StaticTemplateString kcd_VARIABLE_NAME = STS_INIT_WITH_HASH(kcd_VARIABLE_NAME, "VARIABLE_NAME", 5051229879184672055LLU);
+static const ::ctemplate::StaticTemplateString kcd_COLUMN_NAME = STS_INIT_WITH_HASH(kcd_COLUMN_NAME, "COLUMN_NAME", 16524890828269290931LLU);
 
 namespace WSql {
 
@@ -43,7 +43,7 @@ bool WormClassGenerator::init()
     //load available templates
     DIR *dir;
     struct dirent *ent;
-    
+        
     dir = opendir (_templateDirectory.c_str());
     if (dir != NULL) 
     {
@@ -52,15 +52,16 @@ bool WormClassGenerator::init()
         while ((ent = readdir (dir)) != NULL) 
         {
             std::string entry = ent->d_name;
-            if(entry.compare(".") == 0 ||entry.compare(".") == 0)
+            if(entry.compare("..") == 0 ||entry.compare(".") == 0)
                 continue;
             tpl.setUri(entry);
-/* maybe use, pass a string to ctemplate:            std::string tmp;
+            _templates.push_back(tpl);
+            /* maybe use, pass a string to ctemplate:            std::string tmp;
             fs.open(entry.c_str());
             while(fs)
                 std::getline(fs,tmp);
             tpl.setContent(tmp);
-            _templates.push_back(tpl);*/
+            */
         }
         closedir (dir);
     } else {
@@ -72,6 +73,12 @@ bool WormClassGenerator::init()
 }
 void WormClassGenerator::run()
 {
+    if(_tablesToGenerate.empty())
+    {
+        std::cerr << "No tables specified - assuming all tables .." << std::endl;
+        _tablesToGenerate = _db.tableNames();
+    }
+    
     std::string outbuffer;
     std::string outfilename;
     std::vector<WormCodeTemplate>::iterator tpl_it;
@@ -83,7 +90,7 @@ void WormClassGenerator::run()
         //foreach template, expand for this table
         for(tpl_it = _templates.begin(); tpl_it != _templates.end();++ tpl_it)
         {
-            const std::string tplfilename = _templateDirectory + "/" + tpl_it->uri();
+            const std::string tplfilename = _templateDirectory + tpl_it->uri();
             outbuffer = expand(tplfilename, table);
             outfilename = createOutFileName(tpl_it->type(), table);
             if(!writeFile(outbuffer, outfilename))
@@ -92,8 +99,7 @@ void WormClassGenerator::run()
     }
 }
 
-std::string WormClassGenerator::expand( const std::string& filename, const WSql::WSqlTable& tbl
- )
+std::string WormClassGenerator::expand( const std::string& filename, const WSql::WSqlTable& tbl)
 {    
     std::string strToReturn;
     bool has_string=false;
@@ -107,15 +113,19 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSql:
         TemplateDictionary *coldict = topdict.AddSectionDictionary(kcd_COLUMNS);
         const std::string type_declaration = col_it->typeDeclaration();
         if(type_declaration.compare("std::string"))
-            has_string=true;        
+            has_string=true;
         if(! col_it->typeIsSupported())
             coldict->ShowSection(kcd_UNSUPPORTED);
+        if(col_it->isUnsigned())
+            coldict->ShowSection(kcd_UNSIGNED);
         coldict->SetValue(kcd_COLUMN_NAME, col_it->columnName());
         coldict->SetValue(kcd_DATATYPE, col_it->typeDeclaration());
         coldict->SetValue(kcd_VARIABLE_NAME, col_it->variableName());
     }
+    
     if(has_string)
-        topdict.SetValue(kcd_INCLUDES,"#include <string>");
+        topdict.SetValueAndShowSection("INCLUDE","#include <string>", kcd_INCLUDES);
+    
     ExpandTemplate(filename,DO_NOT_STRIP,&topdict,&strToReturn);
     return strToReturn;
 }

@@ -7,7 +7,7 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
- 2011-10-14 - initial release: UNSTABLE
+2011-10-28 - Version 0.2 UNSTABLE
 
 WORM is a Data Abstraction Layer for acces to database servers and an
 Object Relational Mapping system.  It consists of libraries providing a
@@ -17,10 +17,13 @@ given arbitrary database schema - "wormgen".  wormgen accepts a few
 arguments setting the database to use and optionally username, password,
 output directory, etc. - "wormgen -h" shows usage.
 
-At this writing the wormgen only supports SQlite3 and MySQL databases
-and the output supports Wt's (Web Toolkit http://webtoolkit.eu) Dbo
+At this writing the wormgen only supports SQlite3 and MySQL databases.
+and the default output supports Wt's (Web Toolkit http://webtoolkit.eu) Dbo
 library.  It generates header files that (with a little adjustment sometimes)
 will work with Dbo for the specified existing database schemata.
+
+The output is configurable using the WORM template system which uses
+google's ctemplate for output templating.
 
 Additionally the libraries provide a general API for basic database access
 including query execution with structured result sets and runtime metadata 
@@ -39,6 +42,7 @@ Requirements:
 * SQlite3 libraries - you may comment out the sqlite driver in src/CMakeLists.txt
 if you don't want SQlite3 support
 * libmysqlclient - same applies, you may comment this out
+* libctemplate (currently the no threads version - this can be changed in the cmake files)
 
 Build Instructions:
 
@@ -74,9 +78,57 @@ wormgen -h gives help on usage.
 The database argument is the only required argument - you must have 
 a database already set up and access to it.  By default it assumes the username
 is root with no password - for an SQlite3 database pass the filename as the
-argument for -d database; eg. wormgen -d /home/jane/worm/examples/blog.db
+argument for -d database; eg.:
+
+wormgen -d ./examples/blog.db
+
 This will generate files in the current directory - to specify a different output
 directory use -o /path/to/output
+
+Other commandline arguments include:
+-D driver ([default]mysql or sqlite)
+-t template directory (default ./src/orm/templates)
+-u username
+-p password
+
+Output:
+The output can be configured by editing or creating new template files
+in the template directory - any files in this directory are assumed to be 
+templates to use. These are the supported template types:
+
+base class header - generates FooBase.h:
+ClassDeclarationBase,               //class_declaration_base.tpl
+base class source - generates FooBase.cpp:
+ClassDefinitionBase,                  //class_definition_base.tpl
+class header - generates Foo.h:
+ClassDeclaration,                       //class_declaration.tpl
+class source - generates Foo.cpp:
+ClassDefinition,                          //class_definition.tpl
+
+These are not yet implemented but will be soon:
+
+EditViewDeclarationBase,       //edit_view_declaration_base.tpl
+EditViewDeclaration,                //edit_view_declaration.tpl
+EditViewDefinitionBase,          //edit_view_definition_base.tpl
+EditViewDefinition,                  //edit_view_definition.tpl
+ListViewDeclarationBase,       //list_view_declaration_base.tpl
+ListViewDeclaration,               //list_view_declaration.tpl
+ListViewDefinitionBase,          //list_view_definition_base.tpl
+ListViewDefinition                   //list_view_definition.tpl
+
+Database and class naming conventions:
+ A table in the database should be named in lowercase with underscores
+for best results (Note: this is optional but will avoid naming conflicts - wormgen
+will still generate files for camel case naming schema). Ex: some_persons will
+be transformed to a class SomePerson.  Columns like first_name will transform
+to firstName.  Underscores for private variables, accessors, etc can be established
+in the templates. Table names should be plural and will be transformed to singular.
+
+Templates:
+The templates use ctemplate and currently support only the tags in the default
+template (which generates Wt::Dbo object headers). A decent introduction to
+ctemplate syntax is available at the ctemplate website. The supported tags are
+quite simple and self-explanatory - see the default template for more.
 
 Library Usage and Documentation:
 There are some small example programs under examples/ - I recommend

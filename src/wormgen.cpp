@@ -31,7 +31,7 @@ void print_help( int exval )
     std::cout << "  -h              print this help and exit" << std::endl;
     std::cout << "  -V              print version and exit" << std::endl;
     std::cout << "  -v              set verbose flag" << std::endl;
-    std::cout << "  -d database            set datbase name" << std::endl;
+    std::cout << "  -d database            set database schema to use" << std::endl;
     std::cout << "  -u username            set username" << std::endl;
     std::cout << "  -p password            set password" << std::endl;
     std::cout << "  -s server              set server or hostname" << std::endl;

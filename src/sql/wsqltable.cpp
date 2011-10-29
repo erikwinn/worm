@@ -39,6 +39,7 @@ namespace WSql {
     Note: For NoSQL databases this class may not be useful for column metadata.
     \sa WSqlColumn WSqlDatum WSqlDataType
 */
+
 /*! \enum WSqlTable::Type
     \brief A flag indicating the type of table this is
     Tables can be of various types:

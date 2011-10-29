@@ -27,6 +27,7 @@
 namespace WSql {
 
 namespace WSqlDataType {
+    
     /*! \namespace WSqlDataType 
      * \brief WSqlDataType namespace - flags for supported SQL data types
      * 
@@ -50,7 +51,6 @@ namespace WSqlDataType {
      * \include datatypes.txt
      */
     
-
     /*!\enum Type - flags representing data types
      * The types currently supported - adjust this if/when new strings
      * are added.
@@ -168,7 +168,8 @@ namespace WSqlDataType {
          *TODO        if(cmp.compare("people") .. or some such ..*/
         return strToReturn;
     }
-    //! Attempt to return a pluralized form of \name
+    
+    //! Attempt to return a pluralized form of \a name
     static std::string toPlural(const std::string& name)
     {
         std::string strToReturn = name;
@@ -184,8 +185,8 @@ namespace WSqlDataType {
      *     will be rendered as "orderId". Note that in contrast to tableNameToClass
      *     the first letter is not capitalized and plural are left plural.
      *     
-     *     \param std::string columnname - the name to transform
-     *     \retval std::string a string suitable for a variable name
+     *     \param std::string - columnname - the name to transform
+     *     \retval std::string - a string suitable for a variable name
      */
     static std::string columnNameToVariable(const std::string& columnname)
     {
@@ -215,7 +216,7 @@ namespace WSqlDataType {
      *      is - which may cause problems with class instance declarations.    
      * 
      *     \param std::string tablename - the name to transform
-     *     \retval std::string a string suitable for a class name
+     *     \retval std::string - a string suitable for a class name
      */
     static std::string tableNameToClass(const std::string& tablename)
     {

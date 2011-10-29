@@ -33,12 +33,15 @@ namespace WSql {
      * These are hashed string constants for refering to the marker tags used in the templates
      */
     static const ::ctemplate::StaticTemplateString kcd_INCLUDES = STS_INIT_WITH_HASH(kcd_INCLUDES, "INCLUDES", 7699670683738647257LLU);
+    static const ::ctemplate::StaticTemplateString kcd_INCLUDE = STS_INIT_WITH_HASH(kcd_INCLUDE, "INCLUDE", 434435386609578605LLU);
     static const ::ctemplate::StaticTemplateString kcd_CLASS_NAME = STS_INIT_WITH_HASH(kcd_CLASS_NAME, "CLASS_NAME", 13981977283673860485LLU);
     static const ::ctemplate::StaticTemplateString kcd_COLUMNS = STS_INIT_WITH_HASH(kcd_COLUMNS, "COLUMNS", 15302874640052016969LLU);
     static const ::ctemplate::StaticTemplateString kcd_UNSUPPORTED = STS_INIT_WITH_HASH(kcd_UNSUPPORTED, "UNSUPPORTED", 8112833089436120679LLU);
     static const ::ctemplate::StaticTemplateString kcd_UNSIGNED = STS_INIT_WITH_HASH(kcd_UNSIGNED, "UNSIGNED", 10867561526856517727LLU);
     static const ::ctemplate::StaticTemplateString kcd_DATATYPE = STS_INIT_WITH_HASH(kcd_DATATYPE, "DATATYPE", 6518949878326190781LLU);
+    static const ::ctemplate::StaticTemplateString kcd_VARIABLE_GETTOR = STS_INIT_WITH_HASH(kcd_VARIABLE_GETTOR, "VARIABLE_GETTOR", 4376112485907229951LLU);
     static const ::ctemplate::StaticTemplateString kcd_VARIABLE_NAME = STS_INIT_WITH_HASH(kcd_VARIABLE_NAME, "VARIABLE_NAME", 5051229879184672055LLU);
+    static const ::ctemplate::StaticTemplateString kcd_VARIABLE_SETTOR = STS_INIT_WITH_HASH(kcd_VARIABLE_SETTOR, "VARIABLE_SETTOR", 18309610407346123363LLU);
     static const ::ctemplate::StaticTemplateString kcd_COLUMN_NAME = STS_INIT_WITH_HASH(kcd_COLUMN_NAME, "COLUMN_NAME", 16524890828269290931LLU);
     /** @} */
     
@@ -190,25 +193,38 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
     const std::vector<WSqlColumn>& columns = table.columns();
     std::vector<WSqlColumn>::const_iterator col_it = columns.begin();
     
+    std::string type_declaration;
+    std::string variable_name;
+    std::string variable_settor;
+    std::string variable_gettor;
+    
     for(;col_it != columns.end();++col_it)
     {
         TemplateDictionary *coldict = topdict.AddSectionDictionary(kcd_COLUMNS);
-        const std::string type_declaration = col_it->typeDeclaration();
+        type_declaration = col_it->typeDeclaration();
+        variable_name = col_it->variableName();
+        std::string tmp = variable_name;
+        tmp[0] = toupper(tmp[0]);
+        variable_settor = "set" + tmp;
+        variable_gettor = "get" + tmp;
         if(type_declaration.compare("std::string") == 0)
             has_string=true;
         if(! col_it->typeIsSupported())
             coldict->ShowSection(kcd_UNSUPPORTED);
-//FIXME always unsigned .. deep strangeness ..        
-/*      if(col_it->isUnsigned())
-        {
-            coldict->ShowSection(kcd_UNSIGNED);
-            std::cerr << "in table " << tbl.className() << " " << col_it->columnName() << "is unsigned .." << std::endl
-            << "        type: " << WSqlDataType::toString(col_it->type()) << std::endl; 
-        }    */
         coldict->SetValue(kcd_COLUMN_NAME, col_it->columnName());
-        coldict->SetValue(kcd_DATATYPE, col_it->typeDeclaration());
-        coldict->SetValue(kcd_VARIABLE_NAME, col_it->variableName());
-    }
+        coldict->SetValue(kcd_DATATYPE, type_declaration);
+        coldict->SetValue(kcd_VARIABLE_NAME, variable_name );        
+        coldict->SetValue(kcd_VARIABLE_SETTOR, variable_settor);
+        coldict->SetValue(kcd_VARIABLE_GETTOR, variable_gettor);
+        
+    //FIXME always unsigned .. deep strangeness ..        
+    /*      if(col_it->isUnsigned())
+            {
+                coldict->ShowSection(kcd_UNSIGNED);
+                std::cerr << "in table " << tbl.className() << " " << col_it->columnName() << "is unsigned .." << std::endl
+                << "        type: " << WSqlDataType::toString(col_it->type()) << std::endl; 
+            }    */
+         }
     
     //TODO: stub - add a addInclude or such .. currently we only support string
     if(has_string)

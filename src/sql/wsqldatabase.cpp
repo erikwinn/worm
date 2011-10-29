@@ -530,11 +530,14 @@ WSqlTable WSqlDatabase::tableMetaData( const std::string& tablename ) const
 
 void WSqlDatabase::initMetaData()
 {
+    //load all tablenames
     tableNames();
+    //init metadata for all tables
     std::vector<std::string>::const_iterator it = _tableNames.begin();
     for(;it != _tableNames.end();++it )
         tableMetaData(*it);
     std::vector<WSqlTable>::const_iterator tbl_it = _driver->_tables.begin();
+    //add referenced keys
     for(;tbl_it != _driver->_tables.end();++tbl_it)
     {
         std::vector<WSqlForeignKey>::const_iterator fk_it = tbl_it->foreignKeys().begin();

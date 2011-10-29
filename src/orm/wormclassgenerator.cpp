@@ -34,7 +34,13 @@ namespace WSql {
      */
     static const ::ctemplate::StaticTemplateString kcd_INCLUDES = STS_INIT_WITH_HASH(kcd_INCLUDES, "INCLUDES", 7699670683738647257LLU);
     static const ::ctemplate::StaticTemplateString kcd_INCLUDE = STS_INIT_WITH_HASH(kcd_INCLUDE, "INCLUDE", 434435386609578605LLU);
+    static const ::ctemplate::StaticTemplateString kcd_FORWARD_DECLARATIONS = STS_INIT_WITH_HASH(kcd_FORWARD_DECLARATIONS, "FORWARD_DECLARATIONS", 15273852411010322531LLU);
+    static const ::ctemplate::StaticTemplateString kcd_REFERENCED_CLASSNAME = STS_INIT_WITH_HASH(kcd_REFERENCED_CLASSNAME, "REFERENCED_CLASSNAME", 5376938313052943395LLU);
     static const ::ctemplate::StaticTemplateString kcd_CLASS_NAME = STS_INIT_WITH_HASH(kcd_CLASS_NAME, "CLASS_NAME", 13981977283673860485LLU);
+    static const ::ctemplate::StaticTemplateString kcd_BELONGS_TO = STS_INIT_WITH_HASH(kcd_BELONGS_TO, "BELONGS_TO", 15166195752158467517LLU);
+    static const ::ctemplate::StaticTemplateString kcd_HAS_MANY = STS_INIT_WITH_HASH(kcd_HAS_MANY, "HAS_MANY", 12417993436827992317LLU);
+    static const ::ctemplate::StaticTemplateString kcd_FOREIGNKEY_CLASSNAME = STS_INIT_WITH_HASH(kcd_FOREIGNKEY_CLASSNAME, "FOREIGNKEY_CLASSNAME", 14113744978891695861LLU);
+    static const ::ctemplate::StaticTemplateString kcd_FOREIGNKEY_CLASS_PLURAL = STS_INIT_WITH_HASH(kcd_FOREIGNKEY_CLASS_PLURAL, "FOREIGNKEY_CLASS_PLURAL", 13464148753922874173LLU);
     static const ::ctemplate::StaticTemplateString kcd_COLUMNS = STS_INIT_WITH_HASH(kcd_COLUMNS, "COLUMNS", 15302874640052016969LLU);
     static const ::ctemplate::StaticTemplateString kcd_UNSUPPORTED = STS_INIT_WITH_HASH(kcd_UNSUPPORTED, "UNSUPPORTED", 8112833089436120679LLU);
     static const ::ctemplate::StaticTemplateString kcd_UNSIGNED = STS_INIT_WITH_HASH(kcd_UNSIGNED, "UNSIGNED", 10867561526856517727LLU);
@@ -43,6 +49,7 @@ namespace WSql {
     static const ::ctemplate::StaticTemplateString kcd_VARIABLE_NAME = STS_INIT_WITH_HASH(kcd_VARIABLE_NAME, "VARIABLE_NAME", 5051229879184672055LLU);
     static const ::ctemplate::StaticTemplateString kcd_VARIABLE_SETTOR = STS_INIT_WITH_HASH(kcd_VARIABLE_SETTOR, "VARIABLE_SETTOR", 18309610407346123363LLU);
     static const ::ctemplate::StaticTemplateString kcd_COLUMN_NAME = STS_INIT_WITH_HASH(kcd_COLUMN_NAME, "COLUMN_NAME", 16524890828269290931LLU);
+    static const ::ctemplate::StaticTemplateString kcd_REFERENCED_TABLENAME = STS_INIT_WITH_HASH(kcd_REFERENCED_TABLENAME, "REFERENCED_TABLENAME", 14486319327059551333LLU);
     /** @} */
     
 /*! \class WormClassGenerator  An ORM generator class
@@ -183,7 +190,8 @@ void WormClassGenerator::run()
  * \retval std::string an expanded template
  */
 std::string WormClassGenerator::expand( const std::string& filename, const WSqlTable& table)
-{    
+{
+    std::cerr << "=============   Processing table " << table.name() << std::endl;
     std::string strToReturn;
     bool has_string=false;
     
@@ -197,6 +205,39 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
     std::string variable_name;
     std::string variable_settor;
     std::string variable_gettor;
+//    std::string fk_classname;
+    TemplateDictionary *forwarddecls_dict = 0;
+    if(table.hasForeignKeys())
+    {
+        TemplateDictionary *belongsto_dict = topdict.AddSectionDictionary(kcd_BELONGS_TO);
+        std::vector< WSqlForeignKey >fks = table.foreignKeys();
+        std::vector< WSqlForeignKey >::const_iterator fks_it = fks.begin();
+        for(;fks_it != fks.end();++fks_it)
+        {
+            fks_it->dump();
+            forwarddecls_dict = topdict.AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
+            forwarddecls_dict->SetValue(kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName());            
+            belongsto_dict->SetValue(kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName()); 
+            belongsto_dict->SetValue(kcd_REFERENCED_TABLENAME, fks_it->referencedTableName());
+        }       
+    }
+    
+    if(table.hasReferencedKeys())
+    {
+//        if(!forwarddecls_dict)
+            forwarddecls_dict = topdict.AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
+        TemplateDictionary *hasmany_dict = topdict.AddSectionDictionary(kcd_HAS_MANY);
+        std::vector< WSqlReferencedKey >rks = table.referencedKeys();
+        std::vector< WSqlReferencedKey >::const_iterator rks_it = rks.begin();
+        for(;rks_it != rks.end();++rks_it)
+        {
+            rks_it->dump();
+            forwarddecls_dict->SetValue(kcd_REFERENCED_CLASSNAME, rks_it->referingClassName());            
+            hasmany_dict->SetValue(kcd_FOREIGNKEY_CLASSNAME, rks_it->referingClassName());
+            hasmany_dict->SetValue(kcd_FOREIGNKEY_CLASS_PLURAL, rks_it->referingClassNamePlural());
+            hasmany_dict->SetValue(kcd_REFERENCED_TABLENAME, rks_it->referingTableName());
+        }
+    }
     
     for(;col_it != columns.end();++col_it)
     {

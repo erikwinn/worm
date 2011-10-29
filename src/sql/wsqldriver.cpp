@@ -26,21 +26,20 @@ namespace WSql {
     \class WSqlDriver
     \brief The WSqlDriver class is an abstract base class for database drivers
 
-    This class can not be used directly. Use either WSqlDriverFactory to create
-    a driver for a specific database (eg. SQLite or PostgreSQL ) or WSqlDatabase
-    to access the database (recommended).
+    This class can not be used directly. This must be implemented for a specific 
+    database server (eg. SQLite or MySQL ).Also, prefer not to use a driver directly but
+    rather an instance of WSqlDatabase to access the database (recommended).
 
-	This class must be subclassed by specific driver classes for any supported
-	database server.
 	\sa WSqlDatabase WSqliteDriver WMysqlDriver
 */
 /*!\brief Construct a driver with the given database \a db
  * 
-Constructs a driver with a pointer to the database - note that this is the only
-way to create a driver; all connection information (eg. database name, user name, etc. )
-is managed by WSqlDatabase - the driver will obtain what it needs to know from there.
+    Constructs a driver with a pointer to the database - note that this is the only
+    way to create a driver; all connection information (eg. database name, user name, etc. )
+    is  set in and managed by WSqlDatabase - the driver will obtain what it needs to know 
+    from there.
 
-\param WSqlDatabase* db - the database using this driver.
+    \param WSqlDatabase* db - the database using this driver.
  */
 WSqlDriver::WSqlDriver(WSqlDatabase* db)
 {

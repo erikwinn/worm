@@ -158,8 +158,10 @@ bool WMysqlDriver::execute(std::string sqlstring )
     if(!isOpen())
         return false;
     
-// TODO: RESOLVE - this also escapes LIKE quotes ..    
+// TODO: RESOLVE - this also escapes LIKE quotes .. need a way to handle this.
+// for now it is disabled
 // FIXME       std::string sql = local_escape_string(sqlstring);
+        
     std::string sql = sqlstring;
     if(sql.empty() )
         setError("WARNING: WMysqlDriver string escape failed.");
@@ -383,6 +385,7 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
                 continue;
             }
             fk.setColumnName(*column_names_it);
+            fk.setTableName(tblToReturn.name());
             fk.setKeyName(record["constraint_name"]);
             fk.setReferencedColumnName(record["referenced_column_name"]);
             fk.setReferencedSchemaName(record["referenced_schema_name"]);

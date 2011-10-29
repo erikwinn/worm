@@ -50,17 +50,18 @@ public:
 
     const std::string& name()const {return _name;}
     const std::string& className()const {return _className;}
-
+    bool isEmpty()const;
+    bool isValid()const{return _isValid;}
+    int count() const;
+    int indexOf(const std::string &columnname) const;
+    const Type type()const{return _type;}
+    
     const std::string columnName(int i) const;
     WSqlColumn column(int i) const;
     WSqlColumn column(const std::string &name) const;
 	const std::vector<WSqlColumn>& columns() const;
 	std::vector<std::string> columnNames() const;
-    
-	int count() const;
-	int indexOf(const std::string &columnname) const;
-	const Type type()const{return _type;}
-	
+    	
 	void setName(const std::string &n);
 	void setClassName(const std::string &n){_className = n;}
 	void setIsValid(bool b){_isValid = b;}
@@ -69,11 +70,6 @@ public:
     void replace(int pos, const WSqlColumn& column);
     void insert(int pos, const WSqlColumn& column, bool replace=false);
     void remove(int pos);
-
-    WSqlForeignKey foreignKey(const std::string columnname)const;
-    WSqlReferencedKey referencedKey(const std::string columnname)const;
-    const std::vector<WSqlForeignKey>& foreignKeys() const;
-    const std::vector<WSqlReferencedKey>& referencedKeys() const;
     
     void addForeignKey(const WSqlForeignKey & fk);
     void removeForeignKey(const WSqlForeignKey & fk);
@@ -85,9 +81,13 @@ public:
     void removeReferencedKey(int pos);
     void removeReferencedKey(const std::string& columnname);
     
-    bool isEmpty()const;
-    bool isValid()const{return _isValid;}
-
+    bool hasForeignKeys()const{return ! _foreignKeys.empty();}
+    bool hasReferencedKeys()const{return ! _referencedKeys.empty();}
+    WSqlForeignKey foreignKey(const std::string columnname)const;
+    WSqlReferencedKey referencedKey(const std::string columnname)const;
+    const std::vector<WSqlForeignKey>& foreignKeys() const;
+    const std::vector<WSqlReferencedKey>& referencedKeys() const;
+    
 protected:
 	std::vector<WSqlColumn> _columns;
     std::vector<WSqlForeignKey> _foreignKeys;

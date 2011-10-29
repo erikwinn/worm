@@ -36,13 +36,19 @@ public:
     inline bool operator!=( const WSqlReferencedKey& other ) const {
         return !operator==( other );
     }
-        
+    
+    std::string referingClassName()const;
+    std::string referingClassNamePlural()const;
+    
     const std::string& columnName()const{return _referingKey.referencedColumnName();}
+    const std::string& tableName()const{return _referingKey.referencedTableName();}
+    const std::string& schemaName()const{return _referingKey.referencedSchemaName();}
     const std::string& referingKeyName()const{return _referingKey.keyName();}
     const std::string& referingColumnName()const{return _referingKey.columnName();}
     const std::string& referingTableName()const{return _referingKey.tableName();}
     const std::string& referingSchemaName()const{return _referingKey.schemaName();}
     
+    void dump()const;
 private:
     WSqlForeignKey _referingKey;
     

@@ -18,6 +18,7 @@
 
 
 #include "wsqlforeignkey.h"
+#include "wsqldatatype.h"
 namespace WSql{
     
 WSqlForeignKey::WSqlForeignKey()
@@ -60,6 +61,29 @@ bool WSqlForeignKey::operator==( const WSqlForeignKey& other ) const
    && _referencedColumnName.compare(other._referencedColumnName)== 0
    && _referencedSchemaName.compare(other._referencedSchemaName)== 0
    && _referencedTableName.compare(other._referencedTableName)== 0);
+}
+
+std::string WSqlForeignKey::referencedClassName() const
+{
+    return WSqlDataType::tableNameToClass(_referencedTableName);
+}
+std::string WSqlForeignKey::referencedClassNamePlural() const
+{
+    return WSqlDataType::toPlural(referencedClassName());
+}
+void WSqlForeignKey::dump() const
+{
+    std::cerr << "*****************  Foreign Key: *****************" << std::endl;
+    std::cerr << "keyName()" << keyName() << std::endl;
+    std::cerr << "tableName() " << tableName() << std::endl;
+    std::cerr << "schemaName() " << schemaName() << std::endl;
+    std::cerr << "columnName() " << columnName() << std::endl;
+    std::cerr << "referencedColumnName() " << referencedColumnName() << std::endl;
+    std::cerr << "referencedTableName() " << referencedTableName() << std::endl;
+    std::cerr << "referencedSchemaName() " << referencedSchemaName() << std::endl;
+    std::cerr << "referencedclassName() " << referencedClassName() << std::endl;
+    std::cerr << "referencedclassNamePlural() " << referencedClassNamePlural() << std::endl;
+    std::cerr << "*****************************************" << std::endl;
 }
 
 }//namespace WSql

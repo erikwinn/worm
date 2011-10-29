@@ -22,7 +22,6 @@
 
 #include <string>
 #include <vector>
-//#include <map>
 #include "wsqldatabase.h"
 #include "wormcodetemplate.h"
 
@@ -44,7 +43,7 @@ class WormClassGenerator
     
         bool writeFile(const std::string content, const std::string filename);
         std::string createOutFileName(const WormCodeTemplate::Type type, const WSqlTable& table);    
-        std::string expand( const std::string& filename, const WSql::WSqlTable& tbl );
+        std::string expand( const std::string& filename, const WSqlTable& table );
         
         WSqlDatabase& _db;
         std::string _templateDirectory;

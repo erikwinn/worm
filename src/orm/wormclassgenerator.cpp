@@ -16,15 +16,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+//class_definition.tpl is currently the shortest ..
+#define MIN_TPL_FILENAME_SIZE 20  
+
 #include "wormclassgenerator.h"
 #include <ctemplate/template.h>
 #include <dirent.h>
+#include <errno.h>
 #include <fstream>
 
 using namespace ctemplate;
 
 namespace WSql {
-    /** @name ctemplate strings */
     /** @{ */
     /**
      * These are hashed string constants for refering to the marker tags used in the templates
@@ -79,6 +82,8 @@ WormClassGenerator::WormClassGenerator(WSqlDatabase& db):_db(db)
  * templates. It must be called (and optionally checked for success) \em before
  * run().
  * 
+ * On failure this sets a message in the database object and returns false.
+ * 
  * \retval bool - true if templates and metadata successfully initialized.
  */
 bool WormClassGenerator::init()
@@ -91,14 +96,21 @@ bool WormClassGenerator::init()
     if (dir != NULL) 
     {
         WormCodeTemplate tpl;
-        //std::ifstream fs;
         while ((ent = readdir (dir)) != NULL) 
         {
+            if(ent->d_type != DT_REG)
+                continue;
             std::string entry = ent->d_name;
-            if('~' == entry[entry.size()-1] || entry.compare("..") == 0 ||entry.compare(".") == 0)
+            size_t sz = entry.size();
+            if(sz < MIN_TPL_FILENAME_SIZE )
+                continue;
+            //only accept .tpl files
+            std::string ext = entry.substr(sz - 4);
+            if( ext.compare(".tpl"))
                 continue;
             tpl.setUri(entry);
             _templates.push_back(tpl);
+            
             /* maybe use, pass a string to ctemplate:            std::string tmp;
             fs.open(entry.c_str());
             while(fs)
@@ -108,7 +120,10 @@ bool WormClassGenerator::init()
         }
         closedir (dir);
     } else {
-        //TODO handle error ..
+        std::string msg = "Cannot open directory: " + _templateDirectory;
+        if(errno == EACCES )
+            msg.append(" - Access denied.");
+        _db.addError(WSqlError(msg, errno,WSql::WSqlError::SYSTEM, WSql::WSqlError::FATAL));
         return false;
     }
     _db.initMetaData();
@@ -171,8 +186,10 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
     
     TemplateDictionary topdict(filename);
     topdict.SetValue(kcd_CLASS_NAME, table.className());
+    
     const std::vector<WSqlColumn>& columns = table.columns();
     std::vector<WSqlColumn>::const_iterator col_it = columns.begin();
+    
     for(;col_it != columns.end();++col_it)
     {
         TemplateDictionary *coldict = topdict.AddSectionDictionary(kcd_COLUMNS);

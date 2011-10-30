@@ -1,4 +1,4 @@
-WORM - DAL / ORM code geration framework
+WORM - DAL / ORM code generation framework
 
 Copyright (C) 2011  Erik Winn (erikwinnmail at yahoo dot com)
 
@@ -9,18 +9,18 @@ the Free Software Foundation, either version 3 of the License, or
 
 2011-10-28 - Version 0.2 UNSTABLE
 
-WORM is a Data Abstraction Layer for acces to database servers and an
+WORM is a Data Abstraction Layer for access to database servers and an
 Object Relational Mapping system.  It consists of libraries providing a
 generic API for database access and database metadata mapping of schema
 structure. On top of this there is a tool to generate C++ class files for a
 given arbitrary database schema - "wormgen".  wormgen accepts a few
 arguments setting the database to use and optionally username, password,
-output directory, etc. - "wormgen -h" shows usage.
+output directory, etc. - "wormgen -h" shows usage. See below for more information.
 
-At this writing the wormgen only supports SQlite3 and MySQL databases.
+At this writing the framework only supports SQlite3 and MySQL databases.
 and the default output supports Wt's (Web Toolkit http://webtoolkit.eu) Dbo
 library.  It generates header files that (with a little adjustment sometimes)
-will work with Dbo for the specified existing database schemata.
+will work with Wt::Dbo for existing database schemata.
 
 The output is configurable using the WORM template system which uses
 google's ctemplate for output templating.
@@ -36,17 +36,21 @@ the libraries are under heavy development.  There may be modifications
 and these should be expected until this message is removed.
 You have been warned :).
 
+NOTE: THIS IS UNTESTED ON WINDOWS or MAC AND NOT LIKELY TO WORK CURRENTLY.. 
+linux or Unices should be ok.
+
 Requirements:
+
 * cmake, make, gcc, libstdc++, stl
 * Boost - basic, header only (algorithm/string, lexical_cast)
 * SQlite3 libraries - you may comment out the sqlite driver in src/CMakeLists.txt
 if you don't want SQlite3 support
 * libmysqlclient - same applies, you may comment this out
-* libctemplate (currently the no threads version - this can be changed in the cmake files)
+* ctemplate 1.0; libctemplate (currently the no threads version - this can be changed in the cmake files)
 
 Build Instructions:
-
-cd build && cmake ..
+clone the repository and cd to the directory (ie. base of the clone)
+cd ./build && cmake ..
 make
 
 This will build the libraries and wormgen in build/src. By default the static
@@ -90,6 +94,7 @@ Other commandline arguments include:
 -t template directory (default ./src/orm/templates)
 -u username
 -p password
+-h help - use this to see all the arguments ..
 
 Output:
 The output can be configured by editing or creating new template files

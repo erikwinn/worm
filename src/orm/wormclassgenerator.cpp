@@ -50,6 +50,7 @@ namespace WSql {
     static const ::ctemplate::StaticTemplateString kcd_VARIABLE_SETTOR = STS_INIT_WITH_HASH(kcd_VARIABLE_SETTOR, "VARIABLE_SETTOR", 18309610407346123363LLU);
     static const ::ctemplate::StaticTemplateString kcd_COLUMN_NAME = STS_INIT_WITH_HASH(kcd_COLUMN_NAME, "COLUMN_NAME", 16524890828269290931LLU);
     static const ::ctemplate::StaticTemplateString kcd_REFERENCED_TABLENAME = STS_INIT_WITH_HASH(kcd_REFERENCED_TABLENAME, "REFERENCED_TABLENAME", 14486319327059551333LLU);
+    static const ::ctemplate::StaticTemplateString kcd_TABLE_NAME = STS_INIT_WITH_HASH(kcd_TABLE_NAME, "TABLE_NAME", 3760310134096538793LLU);
     /** @} */
     
 /*! \class WormClassGenerator  An ORM generator class
@@ -191,12 +192,13 @@ void WormClassGenerator::run()
  */
 std::string WormClassGenerator::expand( const std::string& filename, const WSqlTable& table)
 {
-    std::cerr << "=============   Processing table " << table.name() << std::endl;
+//    std::cerr << "=============   Processing table " << table.name() << std::endl;
     std::string strToReturn;
     bool has_string=false;
     
     TemplateDictionary topdict(filename);
     topdict.SetValue(kcd_CLASS_NAME, table.className());
+    topdict.SetValue(kcd_TABLE_NAME, table.name());
     
     const std::vector<WSqlColumn>& columns = table.columns();
     std::vector<WSqlColumn>::const_iterator col_it = columns.begin();
@@ -209,14 +211,14 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
     TemplateDictionary *forwarddecls_dict = 0;
     if(table.hasForeignKeys())
     {
-        TemplateDictionary *belongsto_dict = topdict.AddSectionDictionary(kcd_BELONGS_TO);
         std::vector< WSqlForeignKey >fks = table.foreignKeys();
         std::vector< WSqlForeignKey >::const_iterator fks_it = fks.begin();
         for(;fks_it != fks.end();++fks_it)
         {
-            fks_it->dump();
+            //fks_it->dump();
             forwarddecls_dict = topdict.AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
             forwarddecls_dict->SetValue(kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName());            
+            TemplateDictionary *belongsto_dict = topdict.AddSectionDictionary(kcd_BELONGS_TO);
             belongsto_dict->SetValue(kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName()); 
             belongsto_dict->SetValue(kcd_REFERENCED_TABLENAME, fks_it->referencedTableName());
         }       
@@ -224,18 +226,17 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
     
     if(table.hasReferencedKeys())
     {
-//        if(!forwarddecls_dict)
-            forwarddecls_dict = topdict.AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
-        TemplateDictionary *hasmany_dict = topdict.AddSectionDictionary(kcd_HAS_MANY);
         std::vector< WSqlReferencedKey >rks = table.referencedKeys();
         std::vector< WSqlReferencedKey >::const_iterator rks_it = rks.begin();
         for(;rks_it != rks.end();++rks_it)
         {
-            rks_it->dump();
+            //rks_it->dump();
+            forwarddecls_dict = topdict.AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
+            TemplateDictionary *hasmany_dict = topdict.AddSectionDictionary(kcd_HAS_MANY);
             forwarddecls_dict->SetValue(kcd_REFERENCED_CLASSNAME, rks_it->referingClassName());            
             hasmany_dict->SetValue(kcd_FOREIGNKEY_CLASSNAME, rks_it->referingClassName());
             hasmany_dict->SetValue(kcd_FOREIGNKEY_CLASS_PLURAL, rks_it->referingClassNamePlural());
-            hasmany_dict->SetValue(kcd_REFERENCED_TABLENAME, rks_it->referingTableName());
+//            hasmany_dict->SetValue(kcd_REFERENCED_TABLENAME, rks_it->referingTableName());
         }
     }
     

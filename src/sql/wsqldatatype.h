@@ -173,7 +173,19 @@ namespace WSqlDataType {
     static std::string toPlural(const std::string& name)
     {
         std::string strToReturn = name;
-        strToReturn.append("s");
+        size_t sz = name.size();
+        if(sz && 's' == strToReturn[sz - 1])
+            strToReturn.append("es");
+        else if(sz > 2 && 'y' == strToReturn[sz - 1])
+        {
+            if('o' != strToReturn[sz - 2])
+            {
+                strToReturn.erase(sz - 1);
+                strToReturn.append("ies");
+            }
+        }
+        else
+            strToReturn.append("s");
         //TODO make me a little smarter .. people, fish, sheep etc.
         return strToReturn;
     }

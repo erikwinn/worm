@@ -25,7 +25,7 @@ class <%CLASS_NAME%> {
         <%/COLUMNS%>
         <%#BELONGS_TO%>dbo::belongsTo(a, ptr<%REFERENCED_CLASSNAME%>, "<%REFERENCED_TABLENAME%>");
         <%/BELONGS_TO%>
-        <%#HAS_MANY%>dbo::hasMany(a, ptr<%FOREIGNKEY_CLASS_PLURAL%>, dbo::ManyToOne, "<%REFERENCED_TABLENAME%>");
+        <%#HAS_MANY%>dbo::hasMany(a, ptr<%FOREIGNKEY_CLASS_PLURAL%>, dbo::ManyToOne, "<%TABLE_NAME%>");
         <%/HAS_MANY%>
     }
     

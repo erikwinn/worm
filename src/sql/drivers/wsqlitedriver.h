@@ -36,8 +36,6 @@ class WSqliteDriver : public WSqlDriver
         //    WSqliteDriver();
         WSqliteDriver( WSqlDatabase* db );
         ~WSqliteDriver();
-        WSqliteDriver& operator=( const WSqliteDriver& other );
-        bool operator==( const WSqliteDriver& other ) const;
         bool open();
         void close();
         bool execute( std::string sql );
@@ -59,8 +57,9 @@ class WSqliteDriver : public WSqlDriver
         void parseSchema( std::string& sql);
         bool columnIsAutoIncrement(const std::string& columnname)const;
         void mapColumns(std::vector<std::string> &column_definitions);
+        //temporary buffers; cleared after each metatable init ..
         std::map<std::string, std::string> _columns_map;
-        std::map<std::string, std::string> _constraints_map;
+        std::vector<WSqlForeignKey> _foreign_keys;
 };
 
 }//namespace WSql

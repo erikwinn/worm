@@ -159,7 +159,7 @@ namespace WSqlDataType {
                 {
                     strToReturn.erase(size-3);
                     strToReturn.append("y");
-                }else if( 'h' == strToReturn[size-3])//eg. Bushes .. might need fixing ..
+                }else if( 'h' == strToReturn[size-3])//eg. bushes .. might need fixing ..
                     strToReturn.erase(size-2);                
             }
             return strToReturn;
@@ -176,13 +176,12 @@ namespace WSqlDataType {
         size_t sz = name.size();
         if(sz && 's' == strToReturn[sz - 1])
             strToReturn.append("es");
-        else if(sz > 2 && 'y' == strToReturn[sz - 1])
+        else if(sz > 2 && 'y' == strToReturn[sz - 1]
+            && 'o' != strToReturn[sz - 2]
+            && 'a' != strToReturn[sz - 2])
         {
-            if('o' != strToReturn[sz - 2])
-            {
                 strToReturn.erase(sz - 1);
                 strToReturn.append("ies");
-            }
         }
         else
             strToReturn.append("s");

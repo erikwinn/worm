@@ -195,6 +195,11 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
 //    std::cerr << "=============   Processing table " << table.name() << std::endl;
     std::string strToReturn;
     bool has_string=false;
+    std::string type_declaration;
+    std::string variable_name;
+    std::string variable_settor;
+    std::string variable_gettor;
+    std::vector<std::string> forward_declarations;
     
     TemplateDictionary topdict(filename);
     topdict.SetValue(kcd_CLASS_NAME, table.className());
@@ -203,12 +208,6 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
     const std::vector<WSqlColumn>& columns = table.columns();
     std::vector<WSqlColumn>::const_iterator col_it = columns.begin();
     
-    std::string type_declaration;
-    std::string variable_name;
-    std::string variable_settor;
-    std::string variable_gettor;
-//    std::string fk_classname;
-    TemplateDictionary *forwarddecls_dict = 0;
     if(table.hasForeignKeys())
     {
         std::vector< WSqlForeignKey >fks = table.foreignKeys();
@@ -216,14 +215,18 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
         for(;fks_it != fks.end();++fks_it)
         {
             //fks_it->dump();
-            forwarddecls_dict = topdict.AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
-            forwarddecls_dict->SetValue(kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName());            
+            std::vector<std::string>::const_iterator it = std::find(forward_declarations.begin(), forward_declarations.end(), fks_it->referencedClassName());           
+            if (it== forward_declarations.end())
+            {
+                TemplateDictionary *forwarddecls_dict = topdict.AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
+                forwarddecls_dict->SetValue(kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName());
+                forward_declarations.push_back(fks_it->referencedClassName());
+            }            
             TemplateDictionary *belongsto_dict = topdict.AddSectionDictionary(kcd_BELONGS_TO);
             belongsto_dict->SetValue(kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName()); 
             belongsto_dict->SetValue(kcd_REFERENCED_TABLENAME, fks_it->referencedTableName());
         }       
-    }
-    
+    }    
     if(table.hasReferencedKeys())
     {
         std::vector< WSqlReferencedKey >rks = table.referencedKeys();
@@ -231,15 +234,18 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
         for(;rks_it != rks.end();++rks_it)
         {
             //rks_it->dump();
-            forwarddecls_dict = topdict.AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
+            std::vector<std::string>::const_iterator it = std::find(forward_declarations.begin(), forward_declarations.end(), rks_it->referingClassName());           
+            if (it == forward_declarations.end())
+            {
+                TemplateDictionary *forwarddecls_dict = topdict.AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
+                forwarddecls_dict->SetValue(kcd_REFERENCED_CLASSNAME, rks_it->referingClassName());
+                forward_declarations.push_back(rks_it->referingClassName());
+            }            
             TemplateDictionary *hasmany_dict = topdict.AddSectionDictionary(kcd_HAS_MANY);
-            forwarddecls_dict->SetValue(kcd_REFERENCED_CLASSNAME, rks_it->referingClassName());            
             hasmany_dict->SetValue(kcd_FOREIGNKEY_CLASSNAME, rks_it->referingClassName());
             hasmany_dict->SetValue(kcd_FOREIGNKEY_CLASS_PLURAL, rks_it->referingClassNamePlural());
-//            hasmany_dict->SetValue(kcd_REFERENCED_TABLENAME, rks_it->referingTableName());
         }
     }
-    
     for(;col_it != columns.end();++col_it)
     {
         TemplateDictionary *coldict = topdict.AddSectionDictionary(kcd_COLUMNS);
@@ -260,15 +266,15 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
         coldict->SetValue(kcd_VARIABLE_GETTOR, variable_gettor);
         
     //FIXME always unsigned .. deep strangeness ..        
-    /*      if(col_it->isUnsigned())
-            {
-                coldict->ShowSection(kcd_UNSIGNED);
-                std::cerr << "in table " << tbl.className() << " " << col_it->columnName() << "is unsigned .." << std::endl
-                << "        type: " << WSqlDataType::toString(col_it->type()) << std::endl; 
-            }    */
-         }
+/*      if(col_it->isUnsigned())
+        {
+            coldict->ShowSection(kcd_UNSIGNED);
+            std::cerr << "in table " << tbl.className() << " " << col_it->columnName() << "is unsigned .." << std::endl
+            << "        type: " << WSqlDataType::toString(col_it->type()) << std::endl; 
+        }    */
+    }
     
-    //TODO: stub - add a addInclude or such .. currently we only support string
+    //TODO: stub - add an addInclude method or such .. currently we only support string
     if(has_string)
         topdict.SetValueAndShowSection("INCLUDE","#include <string>", kcd_INCLUDES);
     

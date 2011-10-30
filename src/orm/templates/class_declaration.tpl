@@ -22,9 +22,9 @@ class <%CLASS_NAME%> {
         <%/BELONGS_TO%>
         <%#HAS_MANY%>dbo::collection<dbo::ptr<<%FOREIGNKEY_CLASSNAME%>>> <%FOREIGNKEY_CLASS_PLURAL%>(){return ptr<%FOREIGNKEY_CLASS_PLURAL%>;}
         <%/HAS_MANY%>
-        <%#BELONGS_TO%>void set<%REFERENCED_CLASSNAME%>(dbo::ptr<<%REFERENCED_CLASSNAME%>> p){ptr<%REFERENCED_CLASSNAME%>=obj;}
+        <%#BELONGS_TO%>void set<%REFERENCED_CLASSNAME%>(dbo::ptr<<%REFERENCED_CLASSNAME%>> p){ptr<%REFERENCED_CLASSNAME%>=p;}
         <%/BELONGS_TO%>
-        <%#HAS_MANY%>void set<%FOREIGNKEY_CLASS_PLURAL%>(dbo::collection< dbo::ptr<<%FOREIGNKEY_CLASSNAME%>>> c){ptr<%FOREIGNKEY_CLASS_PLURAL%>=p;}
+        <%#HAS_MANY%>void set<%FOREIGNKEY_CLASS_PLURAL%>(dbo::collection< dbo::ptr<<%FOREIGNKEY_CLASSNAME%>>> c){ptr<%FOREIGNKEY_CLASS_PLURAL%>=c;}
         <%/HAS_MANY%>
         template<class Action> void persist(Action& a)
         {

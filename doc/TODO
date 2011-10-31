@@ -3,19 +3,18 @@ In addition to misc punchlist items flagged in the code:
 
 * always, documentation can be improved ..
 * unit tests
-* check for mem leaks
-* some optimization
-* 
+* some optimization 
 * Possibly: revert to a varient style WSqlDatum. In any case, handle bad casts
 * Possibly: move from WSqlError to WSqlException .. including a backtrace stack, this would
 provide much more meaningful errors which might be displayed on a web page for 
 developers.
-* WSqlTable: add foriegn keys, new class
-* WSqlTable: add constraints
-* 
-* Implement foriegn key support
+* Implement many to many support (class ManyToManyRelationship)
+* Implement 
 * Implement type table support
-* wormgen to generate accordingly for dbo (hasOne, hasMany, etc.)
+* wormgen:
+    - manytomany
+    - add include files for forward declarations
+    - templates for definitions, base, edit and list
 
 * in DAL (database api, drivers)
     - statements, transactions,  binding parameters, etc
@@ -25,10 +24,13 @@ developers.
       Mongodb
     - stablize API
     - in mysql: use uncached result sets.  also, there is an awkwardness to not allowing
-    nested queries .. think.
-    - in sqlite: clean up parsing, support full metadata and fks.
+    nested queries .. thinking .. Possible: two methods - query() returns results, execute() not.
+    execute() can open another connection ..?
+    - wrap all executes in transactions.
+    
+    - in sqlite: clean up, parsing, various .. eh, actually needs to be largely rewritten
     
 * design/architecture for ORM layer and generation:
-    - templating system
-    - ORM class design (using the templating)
     - CRUD scaffolding for Wt (using the templating)
+    - directory layout (possibly like rails, eg. models/ views/ controllers/ etc ..)
+    

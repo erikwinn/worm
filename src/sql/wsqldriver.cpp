@@ -23,14 +23,15 @@
 namespace WSql {
 
 /*!
-    \class WSqlDriver
-    \brief The WSqlDriver class is an abstract base class for database drivers
-
-    This class can not be used directly. This must be implemented for a specific 
-    database server (eg. SQLite or MySQL ).Also, prefer not to use a driver directly but
-    rather an instance of WSqlDatabase to access the database (recommended).
-
-	\sa WSqlDatabase WSqliteDriver WMysqlDriver
+ *    \class WSqlDriver
+ *    \brief The WSqlDriver class is an abstract base class for database drivers
+ * 
+ *    This class can not be used directly. This must be implemented for a specific 
+ *    database server (eg. SQLite or MySQL ).Also, prefer not to use a driver directly but
+ *    rather an instance of WSqlDatabase to access the database (recommended).
+ *    
+ *   \ingroup WSql
+ *	   \sa WSqlDatabase WSqliteDriver WMysqlDriver
 */
 /*!\brief Construct a driver with the given database \a db
  * 

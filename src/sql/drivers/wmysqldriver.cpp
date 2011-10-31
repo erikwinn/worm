@@ -29,9 +29,10 @@ namespace WSql {
 * \li (only) cached result sets
 * \li metadata retrieval
 * 
-* TODO: uncached results, transactions, prepared statements .. and
+* \todo uncached results, transactions, prepared statements .. and
 * fix string escaping...
 * 
+*    \ingroup WSql
 */
     
 /*! \brief Constructs a WMysqlDriver with the database \a db
@@ -120,7 +121,7 @@ bool WMysqlDriver::open()
         close();
     if ( !init() ) 
         return false;
-//TODO: set connection options here, esp. utf* and friends
+//!\todo set connection options here, esp. utf* and friends
 // - CLIENT_MULTI_STATEMENTS if we intend to CALL any procedures
 // but for now kiss, worm doesn't need much ..
     mysql_options(_mysql,MYSQL_READ_DEFAULT_GROUP,"worm");
@@ -158,7 +159,7 @@ bool WMysqlDriver::execute(std::string sqlstring )
     if(!isOpen())
         return false;
     
-// TODO: RESOLVE - this also escapes LIKE quotes .. need a way to handle this.
+// \todo RESOLVE - this also escapes LIKE quotes .. need a way to handle this.
 // for now it is disabled
 // FIXME       std::string sql = local_escape_string(sqlstring);
         
@@ -211,7 +212,7 @@ WSqlResult* WMysqlDriver::result( bool iscached )
 {
     delete _result;
     _result = new WMysqlResult(this);
-    if(!iscached)//TODO
+    if(!iscached)//!\todo
         std::cerr << "Warning: WMysqlDriver noncached results unimplemented!" << std::endl;
     //local result to avoid annoying static_cast ..
     MYSQL_RES *res = mysql_store_result(_mysql);
@@ -432,7 +433,7 @@ void WMysqlDriver::initColumnType( WSqlColumn &clm, std::string description )
     clm.setDataType(WSqlDataType::toType(tname));    
 }
 
-//!use mysql to escape some things .. TODO: something more robust.
+//!use mysql to escape some things .. \todo something more robust.
 std::string WMysqlDriver::local_escape_string(std::string& escapeme)
 {
     if(escapeme.empty())

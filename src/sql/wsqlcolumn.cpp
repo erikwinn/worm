@@ -16,9 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//TODO: FINISH ME .. comments
+//!\todo FINISH ME .. comments
 // also, tests ..
-//TODO: CHECKME ..test
+//!\todo CHECKME ..test
 
 #include "wsqlcolumn.h"
 
@@ -42,7 +42,9 @@ namespace WSql{
  queries, results, etc.  As yet seting values here has no effect on the database
  - this is used primarily by the ORM generator. It may also be used to get 
  metadata about columns but for actual interaction with the database use WSqlField.
-    
+   
+   \ingroup WSql
+   
     \sa WSqlTable WSqlDataType WSqlRecord WSqlField
 */
 
@@ -73,7 +75,7 @@ WSqlColumn::WSqlColumn( const WSqlColumn& other )
     _precision = other._precision;
     _maxLength = other._maxLength;
     _type = other._type;
-    //TODO: test this!!
+    //!\todo test this!!
     _default = other._default;
 }
 
@@ -127,7 +129,7 @@ bool WSqlColumn::operator==( const WSqlColumn& other ) const
  *    Sets the column's floating point \a precision. This only affects numeric columns.
  * 
  * Note also that this does not (yet) change the actual definition in the database.
- * TODO: the note above ..
+ * \todo the note above ..
  * 
  *    \sa getPrecision()
  */

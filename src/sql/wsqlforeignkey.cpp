@@ -21,6 +21,16 @@
 #include "wsqldatatype.h"
 namespace WSql{
     
+    /*! \class WSqlForeignKey
+     * \brief WSqlForeignKey provides an abstraction of a foreign key in a database
+     * 
+     * This class provides a generic interface to foreign key relationships in databases
+     * including information about tables and columns to which the foreign key refers.
+     * 
+     * \ingroup WSql
+     * \sa WSqlReferencedKey
+     */
+    
 WSqlForeignKey::WSqlForeignKey()
 {
 }

@@ -110,7 +110,8 @@
  * ./build/src/wormgen
  * \endcode
  * 
- * \subsection step4 Step 4: Generating code
+ * \section usage Using WORM
+ * \subsection  codegen Generating code:
  * wormgen Usage:
  * \code
  * wormgen -h
@@ -124,14 +125,14 @@
  * generate files from the sample Sqlite3 database thus:
  * 
  * \code
- * wormgen -d ./examples/blog.db
+ * wormgen -D sqlite -d ./examples/blog.db
  * \endcode
  * 
  * This will generate files in the current directory - to specify a different output
  * directory use -o /path/to/output, for example:
  * 
  * \code
- * wormgen -d ./examples/blog.db -o /tmp
+ * wormgen -D sqlite -d ./examples/blog.db -o /tmp
  * \endcode
  *
  * will place the generated files under /tmp
@@ -143,7 +144,7 @@
  * -p password
  * -h help - use this to see all the arguments ..
  * 
- * \subsection step5 Step 5: Customizing the output
+ * \subsection customizing Customizing the output
  * The output can be configured by editing or creating new template files
  * in the template directory - any files in this directory are assumed to be 
  * templates to use.
@@ -151,7 +152,7 @@
  * The default template directory is /usr/local/share/worm - the option [-t DIRECTORY]
  * will tell wormgen to look in DIRECTORY for templates, eg:
  * \code
- * wormgen -d ./examples/blog.db -o /tmp -t $HOME/my_worm_templates/
+ * wormgen -D sqlite -d ./examples/blog.db -o /tmp -t $HOME/my_worm_templates/
  * \endcode
  * This means that you can copy the default template to my_worm_templates/ and
  * experiment with it or create other templates.  Each template must have a filename
@@ -160,13 +161,13 @@
  * 
  * These are the currently supported template types:
  * 
- * \li base class header - generates FooBase.h:
+ * \li base class header - generates FooBase.h:<br>
  * ClassDeclarationBase,               //class_declaration_base.tpl
- * \li base class source - generates FooBase.cpp:
+ * \li base class source - generates FooBase.cpp:<br>
  * ClassDefinitionBase,                  //class_definition_base.tpl
- * \li class header - generates Foo.h:
+ * \li class header - generates Foo.h:<br>
  * ClassDeclaration,                       //class_declaration.tpl
- * \li class source - generates Foo.cpp:
+ * \li class source - generates Foo.cpp:<br>
  * ClassDefinition,                          //class_definition.tpl
  * 
  * Database and class naming conventions:
@@ -183,7 +184,7 @@
  * ctemplate syntax is available at the ctemplate website. The supported tags are
  * quite simple and self-explanatory - see the default template for more.
  * 
- * \subsection step6 Step 6: Using the library.
+ * \section library Using the library
  * 
  * Note that the library API is still unstable and may change.
  * 

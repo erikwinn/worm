@@ -53,6 +53,9 @@ namespace WSql {
      *  
      * See the following for more information on the specific data types:
      * \include datatypes.txt
+     * 
+     * \ingroup WSql
+     * 
      */
     
     namespace WSqlDataType {
@@ -142,7 +145,7 @@ namespace WSql {
     {
         boost::to_upper(name);
         boost::trim(name);
-        //TODO: intelligence - support more type names, translate to ours ..
+        //!\todo intelligence - support more type names, translate to ours ..
         int i = 0;
         for ( ; i < number_of_datatypes; ++i)
             if ( name.compare(TypeNames[i]) == 0 )
@@ -171,8 +174,8 @@ namespace WSql {
             }
             return strToReturn;
         }
-        /*        std::string cmp = boost::to_lower_copy(strToReturn);
-         *TODO        if(cmp.compare("people") .. or some such ..*/
+        /*!\todo add intelligence:        std::string cmp = boost::to_lower_copy(strToReturn);
+         *        if(cmp.compare("people") .. or some such ..*/
         return strToReturn;
     }
     
@@ -192,7 +195,7 @@ namespace WSql {
         }
         else
             strToReturn.append("s");
-        //TODO make me a little smarter .. people, fish, sheep etc.
+        //!\todo make me a little smarter .. people, fish, sheep etc.
         return strToReturn;
     }
     

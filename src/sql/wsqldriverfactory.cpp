@@ -19,7 +19,7 @@
 
 #include "wsqldriverfactory.h"
 
-namespace WORM{
+namespace WSql{
 
 
 WSqlDriverFactory::WSqlDriverFactory()
@@ -44,7 +44,7 @@ WSqlDriverFactory& WSqlDriverFactory::operator=(const WSqlDriverFactory& other)
 
 bool WSqlDriverFactory::operator==(const WSqlDriverFactory& other) const
 {
-///TODO: return ...;
+///!\todo return ...;
 }
 
 }//namespace WSql

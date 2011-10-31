@@ -29,6 +29,7 @@ namespace WSql{
  a stub - no methods have been implemented.
  
  todo: uncached results if possible.
+ \ingroup WSql
  
  */
 WSqliteResult::WSqliteResult( const WSqliteDriver* driver ): 

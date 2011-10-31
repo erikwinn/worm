@@ -71,7 +71,7 @@ class WSqlField
         std::string _columnName;
         std::string _name;
         WSqlDatum _data;
-        //TODO: - maybe add a _little metadata? .. like, length, isNull and readOnly?
+        //!\todo - maybe add a _little metadata? .. like, length, isNull and readOnly?
         // the real question is whether to stay light or subclass WSqlColumn??
 
 };

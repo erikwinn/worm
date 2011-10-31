@@ -56,6 +56,7 @@ namespace WSql {
 
     WSqlRecord is used to populate a WSqlResult set.
 
+    \ingroup WSql
     \sa WSqlField WSqlResult.
     
 */
@@ -71,7 +72,7 @@ WSqlRecord::WSqlRecord( const WSql::WSqlRecord& other )
 }
 WSqlRecord::~WSqlRecord()
 {
-//TODO
+//!\todo
 }
 
 WSqlRecord& WSqlRecord::operator=( const WSql::WSqlRecord& other )
@@ -83,7 +84,7 @@ WSqlRecord& WSqlRecord::operator=( const WSql::WSqlRecord& other )
 bool WSqlRecord::operator==( const WSql::WSqlRecord& other ) const
 {
     return false;
-//TODO
+//!\todo
 }
 void WSqlRecord::setNull( const std::string& name )
 {

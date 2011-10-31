@@ -80,6 +80,7 @@ namespace WSql {
  * 
  * \endcode
  *  
+ *    \ingroup WSql
  */
 
 /*! \brief Constructs a generator with the database \a db
@@ -278,7 +279,7 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
         }    */
     }
     
-    //TODO: stub - add an addInclude method or such .. currently we only support string
+    //!\todo stub - add an addInclude method or such .. currently we only support string
     if(has_string)
         topdict->SetValueAndShowSection("INCLUDE","#include <string>", kcd_INCLUDES);
     
@@ -327,9 +328,9 @@ std::string WormClassGenerator::createOutFileName(const WormCodeTemplate::Type t
 bool WormClassGenerator::writeFile( const std::string content, const std::string filename )
 {
     std::ofstream fs;
-    std::string target = _outputDirectory + "/" + filename; //TODO; not portable FIXME
+    std::string target = _outputDirectory + "/" + filename; //!\todo; not portable FIXME
     fs.open(target.c_str());
-    if(!fs)//TODO capture error ..
+    if(!fs)//!\todo capture error ..
         return false;
     fs << content;
     fs.close();
@@ -338,7 +339,7 @@ bool WormClassGenerator::writeFile( const std::string content, const std::string
 
 /*! 
  * Sets the output directory to \a dir - also appends directory separator if necessary.
- * TODO: make portable.
+ * \todo make portable.
  * \param std::string dir - write generated files to this directory
  */
 void WormClassGenerator::setOutputDirectory( const std::string dir )
@@ -349,7 +350,7 @@ void WormClassGenerator::setOutputDirectory( const std::string dir )
 }
 /*! 
  * Sets the templates directory to \a dir - also appends directory separator if necessary.
- * TODO: make portable.
+ * \todo make portable.
  * \param std::string dir - look for templates in this directory
  */
 void WormClassGenerator::setTemplateDirectory( const std::string dir )

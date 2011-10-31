@@ -56,7 +56,8 @@ while(!record.empty())
 }
 \endcode
 
-    \sa WSqlRecord WSqlField WSqlDatabase
+\ingroup WSql
+\sa WSqlRecord WSqlField WSqlDatabase
 */
 
 
@@ -208,7 +209,7 @@ bool WSqlResult::previous()
     return seek(-1, true);
 }
 
-//TODO: test this
+//!\todo test this
 bool WSqlResult::seek( int pos, bool relative )
 {
     long curpos = (const_cur_record_it - _records.begin());

@@ -35,7 +35,7 @@ public:
     WSqlResult( const WSql::WSqlResult& other);
     virtual ~WSqlResult();
     virtual WSqlResult& operator=(const WSqlResult& other);
-//TODO:     virtual bool operator==(const WSqlResult& other) const;
+//!\todo     virtual bool operator==(const WSqlResult& other) const;
 //     inline bool operator!=( const WSqlResult &other ) const { return !operator==( other ); }
 
 	void addRecord(WSqlRecord& r){_records.push_back(r);}

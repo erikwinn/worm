@@ -18,7 +18,7 @@
 
 
 #include "wsqldabatasemanager.h"
-namespace WORM{
+namespace WSql{
 
 WSqlDabataseManager::WSqlDabataseManager()
 {
@@ -42,7 +42,7 @@ WSqlDabataseManager& WSqlDabataseManager::operator=(const WSqlDabataseManager& o
 
 bool WSqlDabataseManager::operator==(const WSqlDabataseManager& other) const
 {
-///TODO: return ...;
+///!\todo return ...;
 }
 
 }//namespace WSql

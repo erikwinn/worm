@@ -42,7 +42,7 @@ class WSqlDatum
                 _data = boost::lexical_cast<std::string>( t );
             }
             catch ( boost::bad_lexical_cast &e ) {
-                //TODO: handle exception
+                //!\todo handle exception
             }
         };
 
@@ -51,7 +51,7 @@ class WSqlDatum
                 return boost::lexical_cast<T>( _data );
             }
             catch ( boost::bad_lexical_cast &e ) {
-                //TODO: handle exception
+                //!\todo handle exception
                 //well, gotta do _something ..
                 return T();
             }

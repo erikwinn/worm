@@ -21,9 +21,14 @@
 namespace WSql {
 
 /*!
-    \class WSqlError
-    \brief The WSqlError class provides SQL database and driver error information.
-
+ *    \class WSqlError
+ *    \brief The WSqlError class provides SQL database and driver error information.
+ * 
+ * WSqlError provides an error object with type and severity flags as well as convenience
+ * methods for setting the error message or number.
+ * 
+ *   \ingroup WSql
+ * 
 */
 
 /*!

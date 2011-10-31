@@ -2,7 +2,8 @@
 #ifndef WSQL_H
 #define WSQL_H
 
-/*!\namespace WSql Worm/WtSql namespace containing type flags and convenience functions.
+/*!\namespace WSql WSql namespace contains both DAL and ORM classes as well as
+ * type flags and convenience functions.
  */
 namespace WSql
 {

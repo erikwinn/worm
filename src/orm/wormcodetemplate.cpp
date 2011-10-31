@@ -66,7 +66,7 @@ void WormCodeTemplate::setUri( const std::string& uri )
         return;
     _uri=uri;
     std::string tmp;
-    size_t pos = uri.rfind('/'); //TODO: NOT PORTABLE, FIXME
+    size_t pos = uri.rfind('/'); //!\todo NOT PORTABLE, FIXME
     if(std::string::npos == pos)
     {
         pos = uri.rfind('\\');

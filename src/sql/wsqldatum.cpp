@@ -19,7 +19,18 @@
 #include "wsqldatum.h"
 
 namespace WSql{    
-
+    /*!
+     *    \class WSqlDatum
+     *    \brief The WSqlDatum class represents an abstraction of a data element retrieved from a database
+     *    
+     *    This class provides a flexible type container for a single value found in a database column. It can
+     *    be instatiated to hold the types supported by WSqlDataType. It includes methods for conversion
+     *   to various types on demand.
+     *    
+     *    \ingroup WSql
+     *    \sa WSqlDataType WSqlField WSqlColumn
+     */
+    
 WSqlDatum::WSqlDatum()
 {
 }

@@ -37,6 +37,8 @@ namespace WSql {
     as it will effect the style of the generated code.
 
     Note: For NoSQL databases this class may not be useful for column metadata.
+    
+    \ingroup WSql
     \sa WSqlColumn WSqlDatum WSqlDataType
 */
 

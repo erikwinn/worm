@@ -77,9 +77,10 @@ if(!db.execute(sql))
 }
 
 \endcode
-    
+
+    \ingroup WSql
+
     \sa WSqlResult WSqlRecord WSqlField WSql::DriverType WSqlDriver
-    \addtogroup WSql
 */
 
 /*!  \brief Creates a WSqlDatabase object with a driver.
@@ -273,7 +274,7 @@ bool WSqlDatabase::isOpen() const
 
 bool WSqlDatabase::hasError() const
 {
-    //TODO: resolve this - there is also the local errorStack ..
+    //!\todo resolve this - there is also the local errorStack ..
     return _driver->hasError();
 }
 
@@ -434,7 +435,7 @@ WSqlError WSqlDatabase::error() const
 /*!
  *    Returns all the errors that have occurred on the database or in the 
  * driver as a vector of strings.
- * TODO .. decide if we use this ..
+ * \todo .. decide if we use this ..
  *    \sa WSqlError
  */
 
@@ -457,7 +458,7 @@ WSqlError WSqlDatabase::error() const
   \em then execute() a query and fetch the result set using result() or use initMetaData()
   to initialize the metadata for all tables at once.
   
-TODO: Use the table type - currently does nothing.
+\todo Use the table type - currently does nothing.
 
   \sa WSql::TableType
   \param WSql::TableType

@@ -23,51 +23,52 @@ namespace WSql
 {
 
 /*!
-    \class WSqlField
-    \brief The WSqlField class represents a field in a record
-    
-    WSqlField represents the data contained a single field of a record in a result set
-    returned from a query. Each field contains the value stored as a WSqlDatum and the
-    name of the field associated is a string. Note that the name of the field corresponds to
-    either the column name as defined in the database or the alias defined in the query.
-    The column name defined in the database is available using columnName(). Drivers
-    should initialize both of these when constructing a field for a result set; users should
-    initialize at least name and preferable columnName if using the field for an insert or
-    update.
-    
-    \note Inserts and updates using WSqlField are not yet supported (10/2011) .
-    
-    WSqlFields are used to populate a WSqlRecord in a WSqlResult. See below for an example.
-    
-    The data value is converted on demand to supported types (currently native C++ types
-    and std::string) and can be retrieved using the function data(). Alternately, the full
-    WSqlDatum can be retrieved using rawData(). For example:
-
-    \code
-
-//assume a record is available ..
-WSqlField fldName = record.field(string("user_name"));
-string name = fldName.data<string>();
-
-//or
-int idnumber = record.field(string("user_id")).data<int>();
-
-//or
-WSqlDatum datum = field.rawData();
-//do something with the datum ..
-
-    \endcode
-        
-    Other methods provide more infomation about the field. columnName() returns the
-    name of the column as defined in the database table (or view), isDirty() returns true
-    if the field has been modified - note that this must be set by the user.
-        
-    The value of the data can be set using setData() which provides several overloads to
-    all setting the data with the supported types. Note that the types are coverted to string
-    and stored in the WSqlDatum.
-    
-    \sa data() name() columnName() setData()
-    \sa WSqlRecord WSqlDatum WSqlDataType
+ *    \class WSqlField
+ *    \brief The WSqlField class represents a field in a record
+ *    
+ *    WSqlField represents the data contained a single field of a record in a result set
+ *    returned from a query. Each field contains the value stored as a WSqlDatum and the
+ *    name of the field associated is a string. Note that the name of the field corresponds to
+ *    either the column name as defined in the database or the alias defined in the query.
+ *    The column name defined in the database is available using columnName(). Drivers
+ *    should initialize both of these when constructing a field for a result set; users should
+ *    initialize at least name and preferable columnName if using the field for an insert or
+ *    update.
+ *    
+ *    \note Inserts and updates using WSqlField are not yet supported (10/2011) .
+ *    
+ *    WSqlFields are used to populate a WSqlRecord in a WSqlResult. See below for an example.
+ *    
+ *    The data value is converted on demand to supported types (currently native C++ types
+ *    and std::string) and can be retrieved using the function data(). Alternately, the full
+ *    WSqlDatum can be retrieved using rawData(). For example:
+ * 
+ *    \code
+ * 
+ * //assume a record is available ..
+ * WSqlField fldName = record.field(string("user_name"));
+ * string name = fldName.data<string>();
+ * 
+ * //or
+ * int idnumber = record.field(string("user_id")).data<int>();
+ * 
+ * //or
+ * WSqlDatum datum = field.rawData();
+ * //do something with the datum ..
+ * 
+ *    \endcode
+ *        
+ *    Other methods provide more infomation about the field. columnName() returns the
+ *    name of the column as defined in the database table (or view), isDirty() returns true
+ *    if the field has been modified - note that this must be set by the user.
+ *        
+ *    The value of the data can be set using setData() which provides several overloads to
+ *    all setting the data with the supported types. Note that the types are coverted to string
+ *    and stored in the WSqlDatum.
+ *    
+ *   \ingroup WSql
+ *   \sa data() name() columnName() setData()
+ *   \sa WSqlRecord WSqlDatum WSqlDataType
  */
 
 /*!
@@ -160,7 +161,7 @@ WSqlField::~WSqlField()
     point precision for setting the value is 2 - greater precision can be
     had by using setPrecision() before setting the value.
     
-    TODO: implement that last sentence . set precision is tbd.
+    \todo implement that last sentence . set precision is tbd.
     .
     To set the value to NULL, use clear().
 
@@ -213,7 +214,7 @@ void WSqlField::clear()
 
 /*!
     Returns the field's type as defined in the database.
-TODO: decide if WSqlField needs/supports this (and other metadata) - also readOnly and
+\todo decide if WSqlField needs/supports this (and other metadata) - also readOnly and
 so on ..
     \sa setDataType()
  */

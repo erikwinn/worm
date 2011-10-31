@@ -27,8 +27,10 @@ namespace WSql
     * \note Results from mysql are _always_ cached at the moment so this class is mostly
     * a stub - no methods have been implemented.
     * 
-    * TODO: uncached results if possible.
+    * \todo uncached results if possible.
     * 
+    *    \ingroup WSql
+    *    \sa WSqlResult
     */    
 WMysqlResult::WMysqlResult( const WSql::WSqlDriver* driver ): WSqlResult( driver )
 {
@@ -47,13 +49,13 @@ WMysqlResult::~WMysqlResult()
 
 // WMysqlResult& WMysqlResult::operator=( const WMysqlResult & other )
 // {
-//     ///TODO: 
+//     ///!\todo 
 //     return *this;
 // }
 // 
 // bool WMysqlResult::operator==( const WMysqlResult& other ) const
 // {
-// ///TODO: return ...;
+// ///!\todo return ...;
 // }
 
 void WMysqlResult::freeresult()

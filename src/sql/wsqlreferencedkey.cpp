@@ -20,6 +20,16 @@
 #include "wsqlreferencedkey.h"
 #include "wsqldatatype.h"
 namespace WSql{
+    /*! \class WSqlReferencedKey
+     * \brief WSqlReferencedKey provides an abstraction of a referenced column in a database
+     * 
+     * This class provides a generic interface to a column referenced by a foreign key in databases
+     * including information about tables and columns to which the foreign key refers and the
+     * information about the refering key, column and table.
+     * 
+     * \ingroup WSql
+     * \sa WSqlForeignKey
+     */
 WSqlReferencedKey::WSqlReferencedKey( const WSql::WSqlForeignKey& fk )
 {
     _referingKey=fk;

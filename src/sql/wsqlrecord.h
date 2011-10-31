@@ -55,11 +55,11 @@ class WSqlRecord
         inline int size()const{return _fields.size();}
         inline int count()const{return _fields.size();}
         
-//TODO: THIS maybe should be  const std::vector<WSqlField *>& fields() const {return _fields;};
+//!\todo THIS maybe should be  const std::vector<WSqlField *>& fields() const {return _fields;};
         //JUST rushing .. fixme.
         const std::vector<WSqlField>& fields() const {return _fields;};
         
-//TODO         template <typename T> void setData( T t, int pos ) {
+//!\todo         template <typename T> void setData( T t, int pos ) {
 //             if ( pos > _fields.size() ) {
 //                 return;
 //             }
@@ -82,7 +82,7 @@ class WSqlRecord
         std::vector<WSqlField>::const_iterator const_cur_field_it;
         std::vector<WSqlField>::iterator field_it;
 
-        //TODO: optimize - make this pointers .. but needs thinking so for now:
+        //!\todo optimize - make this pointers .. but needs thinking so for now:
         std::vector<WSqlField> _fields;
 };
 

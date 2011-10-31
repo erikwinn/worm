@@ -31,7 +31,7 @@ PROJECT_NAME           = WORM
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = 0.1
+PROJECT_NUMBER         = 0.2
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer
@@ -44,7 +44,7 @@ PROJECT_BRIEF          = "A C++ DAL/ORM code generation framework"
 # exceed 55 pixels and the maximum width should not exceed 200 pixels. 
 # Doxygen will copy the logo to the output directory.
 
-PROJECT_LOGO           = 
+PROJECT_LOGO           = /home/erik/src/kdevelop/worm/doc/worm_sm.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
@@ -284,7 +284,7 @@ DISTRIBUTE_GROUP_DOC   = NO
 # NO to prevent subgrouping. Alternatively, this can be done per class using 
 # the \nosubgrouping command.
 
-SUBGROUPING            = YES
+SUBGROUPING            = NO
 
 # When TYPEDEF_HIDES_STRUCT is enabled, a typedef of a struct, union, or enum 
 # is documented as struct, union, or enum with the name of the typedef. So 
@@ -326,7 +326,7 @@ EXTRACT_ALL            = YES
 # If the EXTRACT_PRIVATE tag is set to YES all private members of a class 
 # will be included in the documentation.
 
-EXTRACT_PRIVATE        = YES
+EXTRACT_PRIVATE        = NO
 
 # If the EXTRACT_STATIC tag is set to YES all static members of a file 
 # will be included in the documentation.
@@ -352,7 +352,7 @@ EXTRACT_LOCAL_METHODS  = YES
 # name of the file that contains the anonymous namespace. By default 
 # anonymous namespaces are hidden.
 
-EXTRACT_ANON_NSPACES   = YES
+EXTRACT_ANON_NSPACES   = NO
 
 # If the HIDE_UNDOC_MEMBERS tag is set to YES, Doxygen will hide all 
 # undocumented members of documented classes, files or namespaces. 
@@ -1303,7 +1303,7 @@ RTF_EXTENSIONS_FILE    =
 # If the GENERATE_MAN tag is set to YES (the default) Doxygen will 
 # generate man pages
 
-GENERATE_MAN           = NO
+GENERATE_MAN           = YES
 
 # The MAN_OUTPUT tag is used to specify where the man pages will be put. 
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be 
@@ -1322,7 +1322,7 @@ MAN_EXTENSION          = .3
 # only source the real man page, but without them the man command 
 # would be unable to find the correct page. The default is NO.
 
-MAN_LINKS              = NO
+MAN_LINKS              = YES
 
 #---------------------------------------------------------------------------
 # configuration options related to the XML output

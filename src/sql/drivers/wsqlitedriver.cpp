@@ -33,7 +33,7 @@ namespace WSql
  * 
  * DANGER: USE AT YOUR OWN RISK!!  NOT RECOMMENDED.
  * 
- * TODO: This driver is unfinished. Basic functionality is there but it is not, ah, elegant.
+ * \todo This driver is unfinished. Basic functionality is there but it is not, ah, elegant.
  * Metadata is incomplete, all results are cached locally and there may be strange behavior.
  * Basically I have done enough to get sufficient metadata for the ORM generator (except
  * foreign keys and indices still) and execute() will perform the query and return a result
@@ -42,7 +42,7 @@ namespace WSql
  * It quite is crude at the moment - your milage may vary. It _might_ work for you but
  * at this point I don't recommend it for production (10/10/2011)
  * 
- * TBD(at a minimum) :
+ * (at a minimum) :
  * \li finish initializing the foreign keys and indices and fully initialize a WSqlTable.
  * \li clean up some of the logic and make use of execute() rather than reproducing code
  * for queries.
@@ -58,7 +58,8 @@ namespace WSql
  * \li redo the columns mapping mess .. std::map is overkill, a quick fix..
  * \li general safety checks, eliminate code duplication, memory checks, testing .. etc.
  * 
- * \sa WSqlPostgresDriver WSqlMysqlDriver
+ * \ingroup WSql
+ * \sa WSqlDriver WSqlMysqlDriver
  */    
     
 /*! \internal - dont use this.*/
@@ -227,7 +228,7 @@ bool WSqliteDriver::init()
                   WSqlError::FATAL, false );
         return false;
     }
-    //TODO: in this case we just use name as a file name - RESOLVE: change hostname to uri in wsqldatabase..?
+    //!\todo in this case we just use name as a file name - RESOLVE: change hostname to uri in wsqldatabase..?
     if (_database->databaseName().empty() ) {
         setError( std::string( "WSqliteDriver: No database specified!" ), WSqlError::DRIVER,
                   WSqlError::FATAL, false );
@@ -270,7 +271,7 @@ void WSqliteDriver::close()
 
 //WSqlResult WSqliteDriver::exec(const WSqlQuery &queryObject){}
 
-//TODO: refactor this using metadata to construct a proper result set ..
+//!\todo refactor this using metadata to construct a proper result set ..
 // sqlite doesn't return things in orderly fashion - if a field is empty
 // (i.e. NULL) it just doesn't include it in the results (ARG!), i _think_
 // and other strange random behavior is observed ..- so, we need
@@ -348,7 +349,7 @@ WSqlResult* WSqliteDriver::result(bool iscached)
     return _result;
 }
 
-//TODO: support table type flag .. views, information schema
+//!\todo support table type flag .. views, information schema
 std::vector<std::string> WSqliteDriver::tableNames()
 {
     std::vector<std::string> vecToReturn;
@@ -447,7 +448,7 @@ WSqlTable WSqliteDriver::tableMetaData( const std::string &tableName )
 /*! \internal - dont use this.*/
 bool WSqliteDriver::columnIsAutoIncrement( const std::string& columnname )const
 {
-    //TODO - add arg for table name and look up in _tables if possible ..
+    //!\todo - add arg for table name and look up in _tables if possible ..
     
     std::map<std::string, std::string>::const_iterator it = _columns_map.find(columnname);
     if(_columns_map.end() == it)

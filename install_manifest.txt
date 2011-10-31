@@ -1,0 +1,3 @@
+/usr/local/share/worm/class_declaration.tpl
+/usr/local/bin/wormgen
+/usr/local/lib/libworm.a

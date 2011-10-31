@@ -26,23 +26,27 @@
 
 namespace WSql {
 
-namespace WSqlDataType {
-    
-    /*! \namespace WSqlDataType 
-     * \brief WSqlDataType namespace - flags for supported SQL data types
+    /*! \namespace WSql::WSqlDataType 
+     * \brief WSqlDataType namespace - Utilities and definitions of supported data types
      * 
      * This is a container for type flags and convenience functions for the supported
-     * SQL datatypes.
+     * SQL datatypes. In this namespace are definitions for datatypes, facilities for 
+     * translating these to and from other naming conventions as well as facilities for
+     * generating transformations of datatypes into various strings used in the ORM
+     * generating classes.
      * 
-     * These are the ANSI SQl standard types supported by WSQL - these will be mapped to
-     * native C++ data types in ORM class generation.  For example  a TINYINT column
-     * will declared as a member of type "short", a VARCHAR or TEXT as type std::string,
-     * a DECIMAL to a double, etc.
-     * .
-     *  The following is a list of the types with specifications - Implementers of drivers should
-     * use this as a guide for translating types for a particular DBMS.
+     * This provides a central utility namespace for transformations and definitions
+     * related to data types as defined in DBMSs and C++, including ORM mapping
+     * of table names to class names, column names and types to variable names and
+     * types, etc.
+     * 
+     * Below is a list the ANSI SQl standard types supported by WSQL - these will be 
+     * mapped to native C++ data types in ORM class generation.  For example  a 
+     * TINYINT column will declared as a member of type "short", a VARCHAR or 
+     * TEXT as type std::string, a DECIMAL to a double, etc. Implementers of drivers 
+     * can use this as a guide for translating types for a particular DBMS.
      *
-     * Writers of drivers should translate any proprietary or other data types specific to the
+     * Writers of drivers must translate any proprietary or other data types specific to the
      * DBMS of the driver to these types. Most DBMS metadata is returned in a string identifier
      * of one of these types and can usually be mapped conveniently by using the functions 
      * toString(type) or toType(string).
@@ -50,6 +54,9 @@ namespace WSqlDataType {
      * See the following for more information on the specific data types:
      * \include datatypes.txt
      */
+    
+    namespace WSqlDataType {
+    
     
     /*!\enum Type - flags representing data types
      * The types currently supported - adjust this if/when new strings
@@ -189,12 +196,12 @@ namespace WSqlDataType {
         return strToReturn;
     }
     
-    /*! \brief Return a transformed column name as a variable name
+    /*! \brief Returns a suitable variable name transformed from \a columnname
      *     
      *     This translates a column name as defined in a database to a variable name.
-     *     A table name should have the format string[_string], eg. "order_id" - this
-     *     will be rendered as "orderId". Note that in contrast to tableNameToClass
-     *     the first letter is not capitalized and plural are left plural.
+     *     A column name should have the format "name" or "some_name", eg. "user" or 
+     *     "order_id" - these will be rendered as "user" and "orderId". Note that in contrast 
+     *     to tableNameToClass() the first letter is not capitalized and plural are left plural.
      *     
      *     \param std::string - columnname - the name to transform
      *     \retval std::string - a string suitable for a variable name
@@ -214,17 +221,19 @@ namespace WSqlDataType {
         return strToReturn;
     }
     
-    /*! \brief Return a transformed table name as a class name
+    /*! \brief Returns a transformed table name as a class name
      *     
      *     This translates a table name as defined in a database to a class name.
-     *     A table name should have the format string[_string], eg. "order_items"
-     *     or "orders." Note that in keeping with accepted convention the table
-     *     names are plural - these will also be singularized; this results in the 
-     *     table "orders" being rendered as "Order" and "order_items" as OrderItem
+     *     A table name should have the format "names" or "some_names", eg. "users" or 
+     *     "phone_numbers" - these will be rendered as "User" and "PhoneNumber".
+     *     Note that in keeping with accepted convention the table names are plural;
+     *     these will also be singularized; this results in the table "orders" being 
+     *     rendered as "Order" and "order_items" as "OrderItem"
      * 
      *     \note This assumes that tables are named according to convention as
      *      found also in Rails - tablenames without this convention are left as
-     *      is - which may cause problems with class instance declarations.    
+     *      is - they will be rendered  but may cause problems with class instance 
+     *     declarations in generated output.    
      * 
      *     \param std::string tablename - the name to transform
      *     \retval std::string - a string suitable for a class name

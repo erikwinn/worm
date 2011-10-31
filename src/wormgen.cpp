@@ -24,7 +24,7 @@
  * Object Relational Mapping system.  It consists of libraries providing a
  * generic API for database access and database metadata mapping of schema
  * structure. On top of this there is a tool to generate C++ class files for a
- * given arbitrary database schema - "wormgen".  wormgen accepts a few
+ * given arbitrary database schema called "wormgen".  wormgen accepts a few
  * arguments setting the database to use and optionally username, password,
  * output directory, etc. - "wormgen -h" shows usage. See below for more information.
  * 
@@ -92,9 +92,15 @@
  * be installed to /usr/local/share/worm/
  * 
  * Uninstall:
+ * \code
  * rm /usr/local/bin/wormgen
  * rm /usr/local/lib/libworm*
  * rm -rf /usr/local/share/worm
+ * \endcode
+ *  Alternately you can do:
+ * \code
+ * cat install_manifest.txt | xargs rm
+ * \endcode
  * 
  * \note You can also use wormgen \em without installing by doing something like this if
  * it was built with the shared libraries:

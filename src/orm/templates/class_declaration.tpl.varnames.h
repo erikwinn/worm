@@ -1,0 +1,31 @@
+//
+// This header file auto-generated for the template
+//    class_declaration.tpl
+// by make_tpl_varnames_h
+// DO NOT MODIFY THIS FILE DIRECTLY
+//
+#ifndef TPL___CLASS_DECLARATION_TPL_VARNAMES_H_H_
+#define TPL___CLASS_DECLARATION_TPL_VARNAMES_H_H_
+
+#include <ctemplate/template_string.h>
+static const ::ctemplate::StaticTemplateString kcd_INCLUDES = STS_INIT_WITH_HASH(kcd_INCLUDES, "INCLUDES", 7699670683738647257LLU);
+static const ::ctemplate::StaticTemplateString kcd_INCLUDE = STS_INIT_WITH_HASH(kcd_INCLUDE, "INCLUDE", 434435386609578605LLU);
+static const ::ctemplate::StaticTemplateString kcd_FORWARD_DECLARATIONS = STS_INIT_WITH_HASH(kcd_FORWARD_DECLARATIONS, "FORWARD_DECLARATIONS", 15273852411010322531LLU);
+static const ::ctemplate::StaticTemplateString kcd_REFERENCED_CLASSNAME = STS_INIT_WITH_HASH(kcd_REFERENCED_CLASSNAME, "REFERENCED_CLASSNAME", 5376938313052943395LLU);
+static const ::ctemplate::StaticTemplateString kcd_CLASS_NAME = STS_INIT_WITH_HASH(kcd_CLASS_NAME, "CLASS_NAME", 13981977283673860485LLU);
+static const ::ctemplate::StaticTemplateString kcd_BELONGS_TO = STS_INIT_WITH_HASH(kcd_BELONGS_TO, "BELONGS_TO", 15166195752158467517LLU);
+static const ::ctemplate::StaticTemplateString kcd_HAS_MANY = STS_INIT_WITH_HASH(kcd_HAS_MANY, "HAS_MANY", 12417993436827992317LLU);
+static const ::ctemplate::StaticTemplateString kcd_FOREIGNKEY_CLASSNAME = STS_INIT_WITH_HASH(kcd_FOREIGNKEY_CLASSNAME, "FOREIGNKEY_CLASSNAME", 14113744978891695861LLU);
+static const ::ctemplate::StaticTemplateString kcd_FOREIGNKEY_CLASS_PLURAL = STS_INIT_WITH_HASH(kcd_FOREIGNKEY_CLASS_PLURAL, "FOREIGNKEY_CLASS_PLURAL", 13464148753922874173LLU);
+static const ::ctemplate::StaticTemplateString kcd_COLUMNS = STS_INIT_WITH_HASH(kcd_COLUMNS, "COLUMNS", 15302874640052016969LLU);
+static const ::ctemplate::StaticTemplateString kcd_UNSUPPORTED = STS_INIT_WITH_HASH(kcd_UNSUPPORTED, "UNSUPPORTED", 8112833089436120679LLU);
+static const ::ctemplate::StaticTemplateString kcd_UNSIGNED = STS_INIT_WITH_HASH(kcd_UNSIGNED, "UNSIGNED", 10867561526856517727LLU);
+static const ::ctemplate::StaticTemplateString kcd_DATATYPE = STS_INIT_WITH_HASH(kcd_DATATYPE, "DATATYPE", 6518949878326190781LLU);
+static const ::ctemplate::StaticTemplateString kcd_VARIABLE_GETTOR = STS_INIT_WITH_HASH(kcd_VARIABLE_GETTOR, "VARIABLE_GETTOR", 4376112485907229951LLU);
+static const ::ctemplate::StaticTemplateString kcd_VARIABLE_NAME = STS_INIT_WITH_HASH(kcd_VARIABLE_NAME, "VARIABLE_NAME", 5051229879184672055LLU);
+static const ::ctemplate::StaticTemplateString kcd_VARIABLE_SETTOR = STS_INIT_WITH_HASH(kcd_VARIABLE_SETTOR, "VARIABLE_SETTOR", 18309610407346123363LLU);
+static const ::ctemplate::StaticTemplateString kcd_COLUMN_NAME = STS_INIT_WITH_HASH(kcd_COLUMN_NAME, "COLUMN_NAME", 16524890828269290931LLU);
+static const ::ctemplate::StaticTemplateString kcd_REFERENCED_TABLENAME = STS_INIT_WITH_HASH(kcd_REFERENCED_TABLENAME, "REFERENCED_TABLENAME", 14486319327059551333LLU);
+static const ::ctemplate::StaticTemplateString kcd_TABLE_NAME = STS_INIT_WITH_HASH(kcd_TABLE_NAME, "TABLE_NAME", 3760310134096538793LLU);
+
+#endif  // TPL___CLASS_DECLARATION_TPL_VARNAMES_H_H_

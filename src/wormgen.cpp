@@ -249,8 +249,10 @@ int main( int argc, char ** argv )
     std::string outputdir = ".";
     std::string templatesdir = "./src/orm/templates";
     DIR *dir = opendir (DEFAULT_TPL_DIR);
-    if (dir != NULL)
+    if (dir != NULL){
         templatesdir = DEFAULT_TPL_DIR;
+        closedir(dir);
+    }
     WSql::DriverType drivertype = WSql::WMYSQL;
 
     while (( opt = getopt( argc, argv, "hVvf:o:u:d:D:p:s:t:" ) ) != -1 ) {
@@ -296,15 +298,14 @@ int main( int argc, char ** argv )
         }
     }
     
-    if ( (dir = opendir(templatesdir.c_str())) == NULL)
-    {
+    if ( (dir = opendir(templatesdir.c_str())) == NULL)  {
         std::cout << PACKAGE << " - FATAL: Cannot find template directory " << templatesdir << "!" << std::endl;
-        print_help(1);
+        print_help(2);
     }
-    
+    closedir(dir);
     if ( dbname.empty() ) {
         std::cerr << PACKAGE << ": Error - no database specified! \n" << std::endl;
-        print_help(2);
+        print_help(3);
     }
 
 //OK, lets go!
@@ -316,8 +317,9 @@ int main( int argc, char ** argv )
 
     if ( !db.open() ) {
         std::cerr << "Failed to open: " << db.error().text() << std::endl;
-        return 1;
+        return 4;
     }
+
     WSql::WormClassGenerator gen(db);
     gen.setTemplateDirectory(templatesdir);
     gen.setOutputDirectory(outputdir);

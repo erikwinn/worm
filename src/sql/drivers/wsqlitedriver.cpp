@@ -91,7 +91,7 @@ WSqlForeignKey createForeignKey(std::string sqldef)
     size_t pos = 0;
     while(pos < sz) //sqlite is case insensitive ..
         sqldef[pos] = tolower(sqldef[pos++]);
-    std::cerr << "FK def: *" << sqldef << "*" << std::endl;
+//    std::cerr << "FK def: *" << sqldef << "*" << std::endl;
     //constraint "fk_comment_post" foreign key ("post_id") references "post" ("id")
     boost::trim_if(sqldef, boost::is_any_of("\n\t "));
     
@@ -101,7 +101,7 @@ WSqlForeignKey createForeignKey(std::string sqldef)
     {
         std::string tmp = sqldef.substr(start+1, (end - start)-1);
         boost::trim_if( tmp, boost::is_any_of(" '\""));
-        std::cerr << " column: trimmed *" << tmp << "*" <<  std::endl;
+//        std::cerr << " column: trimmed *" << tmp << "*" <<  std::endl;
         start = sqldef.find_first_of("(",end);
         end = sqldef.find_first_of(")", start);
         fkToReturn.setColumnName(tmp);
@@ -109,7 +109,7 @@ WSqlForeignKey createForeignKey(std::string sqldef)
         {
             std::string tmp2 = sqldef.substr(start+1, (end - start) -1);
             boost::trim_if(tmp2, boost::is_any_of(" '\""));
-            std::cerr << "target column: trimmed *" << tmp2 << "*" <<  std::endl;
+//            std::cerr << "target column: trimmed *" << tmp2 << "*" <<  std::endl;
             fkToReturn.setReferencedColumnName(tmp2);
         }
     }else
@@ -122,7 +122,7 @@ WSqlForeignKey createForeignKey(std::string sqldef)
         end = sqldef.find("(",start);
         std::string tmp3 = sqldef.substr(start, (end-start)-1);
         boost::trim_if(tmp3, boost::is_any_of(" '\""));
-        std::cerr << "== references table: trimmed *" << tmp3 << "*" <<  std::endl;
+//        std::cerr << "== references table: trimmed *" << tmp3 << "*" <<  std::endl;
         fkToReturn.setReferencedTableName(tmp3);
     }else
         return fkToReturn;
@@ -133,7 +133,7 @@ WSqlForeignKey createForeignKey(std::string sqldef)
         end = sqldef.find_first_of("'\"",start+1);
         std::string tmp4 = sqldef.substr(start, (end-start)-1);
         boost::trim_if(tmp4, boost::is_any_of(" '\""));
-        std::cerr << "constraint name: trimmed *" << tmp4 << "*" <<  std::endl;
+//        std::cerr << "constraint name: trimmed *" << tmp4 << "*" <<  std::endl;
         fkToReturn.setKeyName(tmp4);
     }    
     return fkToReturn;

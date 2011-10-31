@@ -1,1 +1,0 @@
-/usr/bin/c++      CMakeFiles/wormgen.dir/wormgen.cpp.o  -o wormgen -rdynamic libworm.a -lsqlite3 -lmysqlclient -lctemplate_nothreads 

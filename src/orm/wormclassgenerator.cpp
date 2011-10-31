@@ -201,9 +201,13 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
     std::string variable_gettor;
     std::vector<std::string> forward_declarations;
     
-    TemplateDictionary topdict(filename);
-    topdict.SetValue(kcd_CLASS_NAME, table.className());
-    topdict.SetValue(kcd_TABLE_NAME, table.name());
+    TemplateDictionary *topdict = new TemplateDictionary(filename);
+    TemplateDictionary *forwarddecls_dict;
+    TemplateDictionary *belongsto_dict;
+    TemplateDictionary *hasmany_dict;
+    TemplateDictionary *coldict;
+    topdict->SetValue(kcd_CLASS_NAME, table.className());
+    topdict->SetValue(kcd_TABLE_NAME, table.name());
     
     const std::vector<WSqlColumn>& columns = table.columns();
     std::vector<WSqlColumn>::const_iterator col_it = columns.begin();
@@ -218,11 +222,11 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
             std::vector<std::string>::const_iterator it = std::find(forward_declarations.begin(), forward_declarations.end(), fks_it->referencedClassName());           
             if (it== forward_declarations.end())
             {
-                TemplateDictionary *forwarddecls_dict = topdict.AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
+                forwarddecls_dict = topdict->AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
                 forwarddecls_dict->SetValue(kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName());
                 forward_declarations.push_back(fks_it->referencedClassName());
             }            
-            TemplateDictionary *belongsto_dict = topdict.AddSectionDictionary(kcd_BELONGS_TO);
+            belongsto_dict = topdict->AddSectionDictionary(kcd_BELONGS_TO);
             belongsto_dict->SetValue(kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName()); 
             belongsto_dict->SetValue(kcd_REFERENCED_TABLENAME, fks_it->referencedTableName());
         }       
@@ -237,18 +241,18 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
             std::vector<std::string>::const_iterator it = std::find(forward_declarations.begin(), forward_declarations.end(), rks_it->referingClassName());           
             if (it == forward_declarations.end())
             {
-                TemplateDictionary *forwarddecls_dict = topdict.AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
+                forwarddecls_dict = topdict->AddSectionDictionary(kcd_FORWARD_DECLARATIONS);
                 forwarddecls_dict->SetValue(kcd_REFERENCED_CLASSNAME, rks_it->referingClassName());
                 forward_declarations.push_back(rks_it->referingClassName());
             }            
-            TemplateDictionary *hasmany_dict = topdict.AddSectionDictionary(kcd_HAS_MANY);
+            hasmany_dict = topdict->AddSectionDictionary(kcd_HAS_MANY);
             hasmany_dict->SetValue(kcd_FOREIGNKEY_CLASSNAME, rks_it->referingClassName());
             hasmany_dict->SetValue(kcd_FOREIGNKEY_CLASS_PLURAL, rks_it->referingClassNamePlural());
         }
     }
     for(;col_it != columns.end();++col_it)
     {
-        TemplateDictionary *coldict = topdict.AddSectionDictionary(kcd_COLUMNS);
+        coldict = topdict->AddSectionDictionary(kcd_COLUMNS);
         type_declaration = col_it->typeDeclaration();
         variable_name = col_it->variableName();
         std::string tmp = variable_name;
@@ -276,9 +280,10 @@ std::string WormClassGenerator::expand( const std::string& filename, const WSqlT
     
     //TODO: stub - add an addInclude method or such .. currently we only support string
     if(has_string)
-        topdict.SetValueAndShowSection("INCLUDE","#include <string>", kcd_INCLUDES);
+        topdict->SetValueAndShowSection("INCLUDE","#include <string>", kcd_INCLUDES);
     
-    ExpandTemplate(filename, DO_NOT_STRIP, &topdict, &strToReturn);
+    ExpandTemplate(filename, DO_NOT_STRIP, topdict, &strToReturn);
+    delete topdict;
     return strToReturn;
 }
 

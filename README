@@ -49,33 +49,50 @@ if you don't want SQlite3 support
 * ctemplate 1.0; libctemplate (currently the no threads version - this can be changed in the cmake files)
 
 Build Instructions:
-clone the repository and cd to the directory (ie. base of the clone)
-cd ./build && cmake ..
+You can either clone the repository with git:
+
+git clone https://github.com/erikwinn/worm.git
+ - which will create a directory named "worm" in your current working directory.
+
+Or, download a tar.gz and do(the number corresponds to the current version):
+tar xzvf erikwinn-worm-79a2021.tar.gz
+mv erikwinn-worm-79a2021 worm
+cd worm
+cd ./build && cmake ../
 make
 
-This will build the libraries and wormgen in build/src. By default the static
+This will build the libraries and wormgen under build/src. By default the static
 library is built - uncomment the shared library in src/CMakeLists.txt and
 comment out the static to change this (todo: add a configure script ..)
 
 libraries: libworm.so libworm.a
 binary: wormgen
 
-Installation(optional):
-cp -i build/src/libworm* /usr/local/lib/
-cp -i build/src/wormgen /usr/local/bin/
-ldconfig
+ Installation(optional):
+You must be root to install.
 
-Uninstall:
-rm /usr/local/bin/wormgen
-rm /usr/local/lib/libworm*
+ make install  (OR) sudo make install
+ ldconfig
 
-You can also use wormgen without installing by doing something like this if
+ * This will install the libraries to /usr/local/lib/libworm.* and the 
+ * binary to /usr/local/bin/wormgen.  Code generation templates will
+ * be installed to /usr/local/share/worm/
+
+NOTE: You can also use wormgen without installing by doing something like this if
 it was built with the shared libraries:
 (use a full path to work outside this directory):
 
 export LD_LIBRARY_PATH=./build/src
 ./build/src/wormgen
+ 
+ Uninstall:
+  rm /usr/local/bin/wormgen
+  rm /usr/local/lib/libworm*
+  rm -rf /usr/local/share/worm
+Alternately you can do:
+  cat install_manifest.txt | xargs rm
 
+***************  USING WORM  *******************
 wormgen Usage:
 wormgen -h gives help on usage.
 

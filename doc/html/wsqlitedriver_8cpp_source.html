@@ -67,6 +67,7 @@ function toggleVisibility(linkObj) {
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -288,7 +289,6 @@ function toggleVisibility(linkObj) {
 <a name="l00228"></a>00228                   <a class="code" href="class_w_sql_1_1_w_sql_error.html#a63b2672eb5c68164c4ff43443037f6d9ac6ac27cbc8f55f680a218784311e15a3">WSqlError::FATAL</a>, <span class="keyword">false</span> );
 <a name="l00229"></a>00229         <span class="keywordflow">return</span> <span class="keyword">false</span>;
 <a name="l00230"></a>00230     }
-<a name="l00231"></a>00231     <span class="comment">//TODO: in this case we just use name as a file name - RESOLVE: change hostname to uri in wsqldatabase..?</span>
 <a name="l00232"></a>00232     <span class="keywordflow">if</span> (<a class="code" href="class_w_sql_1_1_w_sql_driver.html#a6aac5abed866e56bd56ed20b7eef06f0">_database</a>-&gt;databaseName().empty() ) {
 <a name="l00233"></a>00233         <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa5e7841c760ffc5c7dbc7c2593f8ecb3" title="Sets the the current error to error.">setError</a>( std::string( <span class="stringliteral">&quot;WSqliteDriver: No database specified!&quot;</span> ), <a class="code" href="class_w_sql_1_1_w_sql_error.html#a8bcabd8bf1016ca27304a717ef3d78dbaf8fb16501b5e83770c4bd3b33b19292c">WSqlError::DRIVER</a>,
 <a name="l00234"></a>00234                   <a class="code" href="class_w_sql_1_1_w_sql_error.html#a63b2672eb5c68164c4ff43443037f6d9ac6ac27cbc8f55f680a218784311e15a3">WSqlError::FATAL</a>, <span class="keyword">false</span> );
@@ -331,7 +331,6 @@ function toggleVisibility(linkObj) {
 <a name="l00271"></a>00271 
 <a name="l00272"></a>00272 <span class="comment">//WSqlResult WSqliteDriver::exec(const WSqlQuery &amp;queryObject){}</span>
 <a name="l00273"></a>00273 
-<a name="l00274"></a>00274 <span class="comment">//TODO: refactor this using metadata to construct a proper result set ..</span>
 <a name="l00275"></a>00275 <span class="comment">// sqlite doesn&#39;t return things in orderly fashion - if a field is empty</span>
 <a name="l00276"></a>00276 <span class="comment">// (i.e. NULL) it just doesn&#39;t include it in the results (ARG!), i _think_</span>
 <a name="l00277"></a>00277 <span class="comment">// and other strange random behavior is observed ..- so, we need</span>
@@ -409,7 +408,6 @@ function toggleVisibility(linkObj) {
 <a name="l00349"></a>00349     <span class="keywordflow">return</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a0fcc770ae53104549e68703eab08cab9">_result</a>;
 <a name="l00350"></a>00350 }
 <a name="l00351"></a>00351 
-<a name="l00352"></a>00352 <span class="comment">//TODO: support table type flag .. views, information schema</span>
 <a name="l00353"></a><a class="code" href="class_w_sql_1_1_w_sqlite_driver.html#aa7796f2d18f519f24016a9fa1f9e2f0b">00353</a> std::vector&lt;std::string&gt; <a class="code" href="class_w_sql_1_1_w_sqlite_driver.html#aa7796f2d18f519f24016a9fa1f9e2f0b">WSqliteDriver::tableNames</a>()
 <a name="l00354"></a>00354 {
 <a name="l00355"></a>00355     std::vector&lt;std::string&gt; vecToReturn;
@@ -507,7 +505,6 @@ function toggleVisibility(linkObj) {
 <a name="l00447"></a>00447 
 <a name="l00449"></a>00449 <span class="keywordtype">bool</span> WSqliteDriver::columnIsAutoIncrement( <span class="keyword">const</span> std::string&amp; columnname )<span class="keyword">const</span>
 <a name="l00450"></a>00450 <span class="keyword"></span>{
-<a name="l00451"></a>00451     <span class="comment">//TODO - add arg for table name and look up in _tables if possible ..</span>
 <a name="l00452"></a>00452     
 <a name="l00453"></a>00453     std::map&lt;std::string, std::string&gt;::const_iterator it = _columns_map.find(columnname);
 <a name="l00454"></a>00454     <span class="keywordflow">if</span>(_columns_map.end() == it)
@@ -644,7 +641,7 @@ function toggleVisibility(linkObj) {
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 31 2011 15:02:50 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:34 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

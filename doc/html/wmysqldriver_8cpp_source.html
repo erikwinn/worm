@@ -67,6 +67,7 @@ function toggleVisibility(linkObj) {
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -178,7 +179,6 @@ function toggleVisibility(linkObj) {
 <a name="l00121"></a>00121         <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a347c2c1642d3046292688980dfc5c96b" title="Closes the connection and deallocates MYSQL objects.">close</a>();
 <a name="l00122"></a>00122     <span class="keywordflow">if</span> ( !init() ) 
 <a name="l00123"></a>00123         <span class="keywordflow">return</span> <span class="keyword">false</span>;
-<a name="l00124"></a>00124 <span class="comment">//TODO: set connection options here, esp. utf* and friends</span>
 <a name="l00125"></a>00125 <span class="comment">// - CLIENT_MULTI_STATEMENTS if we intend to CALL any procedures</span>
 <a name="l00126"></a>00126 <span class="comment">// but for now kiss, worm doesn&#39;t need much ..</span>
 <a name="l00127"></a>00127     mysql_options(_mysql,MYSQL_READ_DEFAULT_GROUP,<span class="stringliteral">&quot;worm&quot;</span>);
@@ -207,7 +207,7 @@ function toggleVisibility(linkObj) {
 <a name="l00159"></a><a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a4882c4ca53347df844e97fe360e1821a">00159</a>     <span class="keywordflow">if</span>(!<a class="code" href="class_w_sql_1_1_w_mysql_driver.html#af101556d203a540b00c53d58d6ed727e">isOpen</a>())
 <a name="l00160"></a>00160         <span class="keywordflow">return</span> <span class="keyword">false</span>;
 <a name="l00161"></a>00161     
-<a name="l00162"></a>00162 <span class="comment">// TODO: RESOLVE - this also escapes LIKE quotes .. need a way to handle this.</span>
+<a name="l00162"></a>00162 <span class="comment">// \todo RESOLVE - this also escapes LIKE quotes .. need a way to handle this.</span>
 <a name="l00163"></a>00163 <span class="comment">// for now it is disabled</span>
 <a name="l00164"></a>00164 <span class="comment">// FIXME       std::string sql = local_escape_string(sqlstring);</span>
 <a name="l00165"></a>00165         
@@ -229,7 +229,7 @@ function toggleVisibility(linkObj) {
 <a name="l00212"></a>00212 {
 <a name="l00213"></a><a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b">00213</a>     <span class="keyword">delete</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a0fcc770ae53104549e68703eab08cab9">_result</a>;
 <a name="l00214"></a>00214     <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a0fcc770ae53104549e68703eab08cab9">_result</a> = <span class="keyword">new</span> <a class="code" href="class_w_sql_1_1_w_mysql_result.html" title="WMysqlResult is the type of result set used by the MySQL driver.">WMysqlResult</a>(<span class="keyword">this</span>);
-<a name="l00215"></a>00215     <span class="keywordflow">if</span>(!iscached)<span class="comment">//TODO</span>
+<a name="l00215"></a>00215     <span class="keywordflow">if</span>(!iscached)
 <a name="l00216"></a>00216         std::cerr &lt;&lt; <span class="stringliteral">&quot;Warning: WMysqlDriver noncached results unimplemented!&quot;</span> &lt;&lt; std::endl;
 <a name="l00217"></a>00217     <span class="comment">//local result to avoid annoying static_cast ..</span>
 <a name="l00218"></a>00218     MYSQL_RES *res = mysql_store_result(_mysql);
@@ -434,7 +434,7 @@ function toggleVisibility(linkObj) {
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 31 2011 15:02:50 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:34 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

@@ -67,6 +67,7 @@ function toggleVisibility(linkObj) {
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -156,11 +157,9 @@ function toggleVisibility(linkObj) {
 <a name="l00055"></a><a class="code" href="class_w_sql_1_1_w_sql_record.html#ab8901f9dda027740e651084084d9e617">00055</a>         <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="class_w_sql_1_1_w_sql_record.html#ab8901f9dda027740e651084084d9e617">size</a>()<span class="keyword">const</span>{<span class="keywordflow">return</span> _fields.size();}
 <a name="l00056"></a><a class="code" href="class_w_sql_1_1_w_sql_record.html#aa807dec1b294186d17a550498b5aaf7f">00056</a>         <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code" href="class_w_sql_1_1_w_sql_record.html#aa807dec1b294186d17a550498b5aaf7f">count</a>()<span class="keyword">const</span>{<span class="keywordflow">return</span> _fields.size();}
 <a name="l00057"></a>00057         
-<a name="l00058"></a>00058 <span class="comment">//TODO: THIS maybe should be  const std::vector&lt;WSqlField *&gt;&amp; fields() const {return _fields;};</span>
 <a name="l00059"></a>00059         <span class="comment">//JUST rushing .. fixme.</span>
 <a name="l00060"></a><a class="code" href="class_w_sql_1_1_w_sql_record.html#a6359bd78351e9ddb536114117c26890b">00060</a>         <span class="keyword">const</span> std::vector&lt;WSqlField&gt;&amp; <a class="code" href="class_w_sql_1_1_w_sql_record.html#a6359bd78351e9ddb536114117c26890b">fields</a>()<span class="keyword"> const </span>{<span class="keywordflow">return</span> _fields;};
 <a name="l00061"></a>00061         
-<a name="l00062"></a>00062 <span class="comment">//TODO         template &lt;typename T&gt; void setData( T t, int pos ) {</span>
 <a name="l00063"></a>00063 <span class="comment">//             if ( pos &gt; _fields.size() ) {</span>
 <a name="l00064"></a>00064 <span class="comment">//                 return;</span>
 <a name="l00065"></a>00065 <span class="comment">//             }</span>
@@ -183,7 +182,6 @@ function toggleVisibility(linkObj) {
 <a name="l00082"></a>00082         std::vector&lt;WSqlField&gt;::const_iterator const_cur_field_it;
 <a name="l00083"></a>00083         std::vector&lt;WSqlField&gt;::iterator field_it;
 <a name="l00084"></a>00084 
-<a name="l00085"></a>00085         <span class="comment">//TODO: optimize - make this pointers .. but needs thinking so for now:</span>
 <a name="l00086"></a>00086         std::vector&lt;WSqlField&gt; _fields;
 <a name="l00087"></a>00087 };
 <a name="l00088"></a>00088 
@@ -206,7 +204,7 @@ function toggleVisibility(linkObj) {
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 31 2011 15:02:50 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:35 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

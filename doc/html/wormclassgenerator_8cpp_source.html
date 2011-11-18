@@ -67,6 +67,7 @@ function toggleVisibility(linkObj) {
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -310,7 +311,6 @@ function toggleVisibility(linkObj) {
 <a name="l00279"></a>00279 <span class="comment">        }    */</span>
 <a name="l00280"></a>00280     }
 <a name="l00281"></a>00281     
-<a name="l00282"></a>00282     <span class="comment">//TODO: stub - add an addInclude method or such .. currently we only support string</span>
 <a name="l00283"></a>00283     <span class="keywordflow">if</span>(has_string)
 <a name="l00284"></a>00284         topdict-&gt;SetValueAndShowSection(<span class="stringliteral">&quot;INCLUDE&quot;</span>,<span class="stringliteral">&quot;#include &lt;string&gt;&quot;</span>, <a class="code" href="namespace_w_sql.html#a32f959e9da78600affe97c38b84f2729">kcd_INCLUDES</a>);
 <a name="l00285"></a>00285     
@@ -345,9 +345,9 @@ function toggleVisibility(linkObj) {
 <a name="l00328"></a>00328 <span class="keywordtype">bool</span> WormClassGenerator::writeFile( <span class="keyword">const</span> std::string content, <span class="keyword">const</span> std::string filename )
 <a name="l00329"></a>00329 {
 <a name="l00330"></a>00330     std::ofstream fs;
-<a name="l00331"></a>00331     std::string target = _outputDirectory + <span class="stringliteral">&quot;/&quot;</span> + filename; <span class="comment">//TODO; not portable FIXME</span>
+<a name="l00331"></a>00331     std::string target = _outputDirectory + <span class="stringliteral">&quot;/&quot;</span> + filename; 
 <a name="l00332"></a>00332     fs.open(target.c_str());
-<a name="l00333"></a>00333     <span class="keywordflow">if</span>(!fs)<span class="comment">//TODO capture error ..</span>
+<a name="l00333"></a>00333     <span class="keywordflow">if</span>(!fs)
 <a name="l00334"></a>00334         <span class="keywordflow">return</span> <span class="keyword">false</span>;
 <a name="l00335"></a>00335     fs &lt;&lt; content;
 <a name="l00336"></a>00336     fs.close();
@@ -385,7 +385,7 @@ function toggleVisibility(linkObj) {
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 31 2011 15:02:50 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:34 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

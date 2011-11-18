@@ -67,6 +67,7 @@ function toggleVisibility(linkObj) {
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -203,7 +204,6 @@ function toggleVisibility(linkObj) {
 <a name="l00145"></a>00145     {
 <a name="l00146"></a>00146         boost::to_upper(name);
 <a name="l00147"></a>00147         boost::trim(name);
-<a name="l00148"></a>00148         <span class="comment">//TODO: intelligence - support more type names, translate to ours ..</span>
 <a name="l00149"></a>00149         <span class="keywordtype">int</span> i = 0;
 <a name="l00150"></a>00150         <span class="keywordflow">for</span> ( ; i &lt; <a class="code" href="namespace_w_sql_1_1_w_sql_data_type.html#a7df5a4da0b2d98b57550879481ecac16" title="Number of types supported.">number_of_datatypes</a>; ++i)
 <a name="l00151"></a>00151             <span class="keywordflow">if</span> ( name.compare(<a class="code" href="namespace_w_sql_1_1_w_sql_data_type.html#a11608ed14a49ea34ea9b019b7d32dcdb">TypeNames</a>[i]) == 0 )
@@ -231,8 +231,6 @@ function toggleVisibility(linkObj) {
 <a name="l00174"></a>00174             }
 <a name="l00175"></a>00175             <span class="keywordflow">return</span> strToReturn;
 <a name="l00176"></a>00176         }
-<a name="l00177"></a>00177         <span class="comment">/*        std::string cmp = boost::to_lower_copy(strToReturn);</span>
-<a name="l00178"></a>00178 <span class="comment">         *TODO        if(cmp.compare(&quot;people&quot;) .. or some such ..*/</span>
 <a name="l00179"></a>00179         <span class="keywordflow">return</span> strToReturn;
 <a name="l00180"></a>00180     }
 <a name="l00181"></a>00181     
@@ -251,7 +249,6 @@ function toggleVisibility(linkObj) {
 <a name="l00195"></a>00195         }
 <a name="l00196"></a>00196         <span class="keywordflow">else</span>
 <a name="l00197"></a>00197             strToReturn.append(<span class="stringliteral">&quot;s&quot;</span>);
-<a name="l00198"></a>00198         <span class="comment">//TODO make me a little smarter .. people, fish, sheep etc.</span>
 <a name="l00199"></a>00199         <span class="keywordflow">return</span> strToReturn;
 <a name="l00200"></a>00200     }
 <a name="l00201"></a>00201     
@@ -298,7 +295,7 @@ function toggleVisibility(linkObj) {
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 31 2011 15:02:50 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:35 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

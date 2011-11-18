@@ -67,6 +67,7 @@ function toggleVisibility(linkObj) {
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -129,6 +130,9 @@ Step 3: Building</h3>
 <div class="fragment"><pre class="fragment"> make install
  ldconfig
 </pre></div><p>This will install the libraries to /usr/local/lib/libworm.* and the binary to /usr/local/bin/wormgen. Code generation templates will be installed to /usr/local/share/worm/</p>
+<dl class="note"><dt><b>Note:</b></dt><dd>You can also use wormgen without installing by doing something like this if it was built with the shared libraries: (use a full path to work outside this directory): <div class="fragment"><pre class="fragment">    export LD_LIBRARY_PATH=./build/src
+    ./build/src/wormgen -h
+</pre></div></dd></dl>
 <p>Uninstall: </p>
 <div class="fragment"><pre class="fragment"> rm /usr/local/bin/wormgen
  rm /usr/local/lib/libworm*
@@ -153,7 +157,7 @@ Generating code:</h3>
 <p>Other commandline arguments include: -D driver ([default]mysql or sqlite) -t template directory (default /usr/local/share/worm/ or ./src/orm/templates) -u username -p password -h help - use this to see all the arguments ..</p>
 <h3><a class="anchor" id="customizing"></a>
 Customizing the output</h3>
-<p>The output can be configured by editing or creating new template files in the template directory - any files in this directory are assumed to be templates to use.</p>
+<p>The output can be configured by editing or creating new template files in the template directory - any files in this directory named with the extension ".tpl" are assumed to be templates to use. Note that there is a naming convention for each type of template - see the list of supported template types below.</p>
 <p>The default template directory is /usr/local/share/worm - the option [-t DIRECTORY] will tell wormgen to look in DIRECTORY for templates, eg: </p>
 <div class="fragment"><pre class="fragment"> wormgen -D sqlite -d ./examples/blog.db -o /tmp -t $HOME/my_worm_templates/
 </pre></div><p> This means that you can copy the default template to my_worm_templates/ and experiment with it or create other templates. Each template must have a filename like the one of the ones listed below - the filename will tell wormgen what kind of template it is and how to name the output files for that template.</p>
@@ -190,7 +194,7 @@ Using the library</h2>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 31 2011 15:02:50 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:34 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

@@ -138,8 +138,9 @@ it was built with the shared libraries:
  *
  * \subsection customizing Customizing the output
  * The output can be configured by editing or creating new template files
- * in the template directory - any files in this directory are assumed to be
- * templates to use.
+ * in the template directory - any files in this directory named with the extension
+ * ".tpl" are assumed to be templates to use. Note that there is a naming convention
+ * for each type of template - see the list of supported template types below.
  *
  * The default template directory is /usr/local/share/worm - the option [-t DIRECTORY]
  * will tell wormgen to look in DIRECTORY for templates, eg:

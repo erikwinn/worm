@@ -67,6 +67,7 @@ function toggleVisibility(linkObj) {
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -300,7 +301,8 @@ template&lt;typename T &gt; </div>
       </table>
 </div>
 <div class="memdoc">
-<p>Returns the field's type as defined in the database. TODO: decide if <a class="el" href="class_w_sql_1_1_w_sql_field.html" title="The WSqlField class represents a field in a record.">WSqlField</a> needs/supports this (and other metadata) - also readOnly and so on .. </p>
+<p>Returns the field's type as defined in the database. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000032">Todo:</a></b></dt><dd>decide if <a class="el" href="class_w_sql_1_1_w_sql_field.html" title="The WSqlField class represents a field in a record.">WSqlField</a> needs/supports this (and other metadata) - also readOnly and so on .. </dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd>setDataType()</dd></dl>
 <p>Returns the value of the data in various formats. Valid return values are native C++ types (eg. int, long, float, double, etc.) or std::string. Example: </p>
 <div class="fragment"><pre class="fragment">  <a class="code" href="class_w_sql_1_1_w_sql_field.html#a0dd42e00ccb9869989b1bda585c85d3f">WSqlField</a> field;
@@ -567,7 +569,7 @@ template&lt;typename T &gt; </div>
 
 <p>Functions for setting the value of the data. </p>
 <p>These functions set the value of the field to <em>value</em>. If the field is read-only (isReadOnly() returns true), nothing happens. The data type of <em>value</em> must be either a native C++ type (eg. int, long, double, etc ) or a std::string. The value is converted (if numeric) and stored as a string. The default floating point precision for setting the value is 2 - greater precision can be had by using <a class="el" href="class_w_sql_1_1_w_sql_field.html#a75ffb62cf646cae4e90b0226052c1d5a">setPrecision()</a> before setting the value.</p>
-<p>TODO: implement that last sentence . set precision is tbd. To set the value to NULL, use <a class="el" href="class_w_sql_1_1_w_sql_field.html#a2a6d7066f692882849c81b10aa9eba08">clear()</a>.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000031">Todo:</a></b></dt><dd>implement that last sentence . set precision is tbd. To set the value to NULL, use <a class="el" href="class_w_sql_1_1_w_sql_field.html#a2a6d7066f692882849c81b10aa9eba08">clear()</a>.</dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_field.html#a3f48248a0281a2beb96cecde18185bd1">data()</a> <a class="el" href="class_w_sql_1_1_w_sql_field.html#a75ffb62cf646cae4e90b0226052c1d5a">setPrecision()</a> isReadOnly() </dd></dl>
 
 <p>Definition at line <a class="el" href="wsqlfield_8h_source.html#l00043">43</a> of file <a class="el" href="wsqlfield_8h_source.html">wsqlfield.h</a>.</p>
@@ -673,7 +675,7 @@ template&lt;typename T &gt; </div>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 31 2011 15:02:51 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:36 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

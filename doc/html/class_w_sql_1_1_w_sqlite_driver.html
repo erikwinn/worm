@@ -67,6 +67,7 @@ function toggleVisibility(linkObj) {
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -140,8 +141,8 @@ Public Member Functions</h2></td></tr>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>driver for SQlite3 databases This class provides a driver for SQlite3 databases.</p>
 <p>DANGER: USE AT YOUR OWN RISK!! NOT RECOMMENDED.</p>
-<p>TODO: This driver is unfinished. Basic functionality is there but it is not, ah, elegant. Metadata is incomplete, all results are cached locally and there may be strange behavior. Basically I have done enough to get sufficient metadata for the ORM generator (except foreign keys and indices still) and <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a28493217522e636eaf144f41ed3fbdd1">execute()</a> will perform the query and return a result via <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a1cf0f135668cdd8299995c1ffff72724">result()</a>. <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aa7796f2d18f519f24016a9fa1f9e2f0b">tableNames()</a> works and <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aa74cc6840682c0ae5fe9bb2e4aa76a4d">tableMetaData()</a> works as well (with the above caveats). Transactions are not supported and I seriously doubt that this is thread safe. It quite is crude at the moment - your milage may vary. It _might_ work for you but at this point I don't recommend it for production (10/10/2011)</p>
-<p>TBD(at a minimum) : </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>This driver is unfinished. Basic functionality is there but it is not, ah, elegant. Metadata is incomplete, all results are cached locally and there may be strange behavior. Basically I have done enough to get sufficient metadata for the ORM generator (except foreign keys and indices still) and <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a28493217522e636eaf144f41ed3fbdd1">execute()</a> will perform the query and return a result via <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a1cf0f135668cdd8299995c1ffff72724">result()</a>. <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aa7796f2d18f519f24016a9fa1f9e2f0b">tableNames()</a> works and <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aa74cc6840682c0ae5fe9bb2e4aa76a4d">tableMetaData()</a> works as well (with the above caveats). Transactions are not supported and I seriously doubt that this is thread safe. It quite is crude at the moment - your milage may vary. It _might_ work for you but at this point I don't recommend it for production (10/10/2011)</dd></dl>
+<p>(at a minimum) : </p>
 <ul>
 <li>finish initializing the foreign keys and indices and fully initialize a <a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a>. </li>
 <li>clean up some of the logic and make use of <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a28493217522e636eaf144f41ed3fbdd1">execute()</a> rather than reproducing code for queries. </li>
@@ -230,8 +231,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Executes the SQL statement in <em>sql</em> and returns true if there were no errors. Note that if the query was a SELECT expecting results the <a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> is initiated before return and can be accesses using <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a1cf0f135668cdd8299995c1ffff72724">result()</a>. If there were no records returned <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a1cf0f135668cdd8299995c1ffff72724">result()</a> will return an empty result. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a1cf0f135668cdd8299995c1ffff72724">result()</a> </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>refactor this using metadata to construct a proper result set .. </dd></dl>
 
 <p>Implements <a class="el" href="class_w_sql_1_1_w_sql_driver.html#a49f611a105c8e32a9c6fb6540abc6b3f">WSql::WSqlDriver</a>.</p>
 
@@ -317,9 +317,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<p>Returns a list of the names of the tables in the database.</p>
-<p><em>tableType</em> defines what types of tables to return in the list, meaning: normal tables, views, system tables or all of the above.</p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="namespace_w_sql.html#a2860958b4a0664bf26cd4959a7aaace8">WSql::TableType</a> </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>support table type flag .. views, information schema </dd></dl>
 
 <p>Implements <a class="el" href="class_w_sql_1_1_w_sql_driver.html#adc7f0845587544ad92e3079542e844db">WSql::WSqlDriver</a>.</p>
 
@@ -346,7 +344,7 @@ Public Member Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Oct 31 2011 15:02:51 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:35 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

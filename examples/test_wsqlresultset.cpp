@@ -17,7 +17,7 @@ int main()
     while (it != tables.end()) 
     {
         std::string sql = "select * from " + *it + " ;";
-        if(!db.execute(sql))
+        if(!db.query(sql))
         {
             std::cerr << "Query Failed: " << db.error().text() << std::endl;
             it++;

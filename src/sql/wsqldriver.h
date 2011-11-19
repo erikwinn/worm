@@ -39,7 +39,8 @@ class WSqlDriver
 
         virtual bool open() = 0;
         virtual void close() = 0;
-        virtual bool execute(std::string sql) = 0;
+        virtual bool query(std::string sql) = 0;
+        //virtual bool execute(std::string sql) = 0;
         // virtual WSqlResult exec(const WSqlQuery &queryObject) = 0;
         virtual std::vector<std::string> tableNames() = 0;
         virtual WSqlTable tableMetaData( const std::string &tableName ) = 0;

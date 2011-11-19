@@ -7,7 +7,7 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-2011-10-28 - Version 0.2 UNSTABLE
+2011-11-18 - Version 0.2 UNSTABLE
 
 WORM is a Data Abstraction Layer for access to database servers and an
 Object Relational Mapping system.  It consists of libraries providing a
@@ -26,17 +26,17 @@ The output is configurable using the WORM template system which uses
 google's ctemplate for output templating.
 
 Additionally the libraries provide a general API for basic database access
-including query execution with structured result sets and runtime metadata 
+including query execution with structured result sets and runtime metadata
 including column information such as name, data type, defaults, extras, etc.
 
 NOTE: This API is not fully stable! I expect there to be some changes and
-do not yet recommend building off the API for anything serious.  wormgen 
-is functional (if simple) and changes there should not cause problems but 
-the libraries are under heavy development.  There may be modifications 
+do not yet recommend building off the API for anything serious.  wormgen
+is functional (if simple) and changes there should not cause problems but
+the libraries are under heavy development.  There may be modifications
 and these should be expected until this message is removed.
 You have been warned :).
 
-NOTE: THIS IS UNTESTED ON WINDOWS or MAC AND NOT LIKELY TO WORK CURRENTLY.. 
+NOTE: THIS IS UNTESTED ON WINDOWS or MAC AND NOT LIKELY TO WORK CURRENTLY..
 linux or Unices should be ok.
 
 Requirements:
@@ -74,7 +74,7 @@ You must be root to install.
  make install  (OR) sudo make install
  ldconfig
 
- * This will install the libraries to /usr/local/lib/libworm.* and the 
+ * This will install the libraries to /usr/local/lib/libworm.* and the
  * binary to /usr/local/bin/wormgen.  Code generation templates will
  * be installed to /usr/local/share/worm/
 
@@ -84,7 +84,7 @@ it was built with the shared libraries:
 
 export LD_LIBRARY_PATH=./build/src
 ./build/src/wormgen
- 
+
  Uninstall:
   rm /usr/local/bin/wormgen
   rm /usr/local/lib/libworm*
@@ -96,7 +96,7 @@ Alternately you can do:
 wormgen Usage:
 wormgen -h gives help on usage.
 
-The database argument is the only required argument - you must have 
+The database argument is the only required argument - you must have
 a database already set up and access to it.  By default it assumes the username
 is root with no password - for an SQlite3 database pass the filename as the
 argument for -d database; eg.:
@@ -115,7 +115,7 @@ Other commandline arguments include:
 
 Output:
 The output can be configured by editing or creating new template files
-in the template directory - any files in this directory are assumed to be 
+in the template directory - any files in this directory are assumed to be
 templates to use. These are the supported template types:
 
 base class header - generates FooBase.h:
@@ -153,9 +153,9 @@ ctemplate syntax is available at the ctemplate website. The supported tags are
 quite simple and self-explanatory - see the default template for more.
 
 Library Usage and Documentation:
+
 There are some small example programs under examples/ - I recommend
-starting with these.  Also, the code is heavily commented - if you have
-doxygen installed the Doxyfile will generate HTML documentation
-under doc/
+starting with these.  Also, the code is heavily commented - and there are copious
+amounts of HTML formatted documentation under doc/html..
 
 Enjoy!

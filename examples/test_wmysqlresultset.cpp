@@ -42,7 +42,7 @@ int main()
         }
         
         std::string sql = "select * from " + *it + " limit 2;";
-        if(!db.execute(sql))
+        if(!db.query(sql))
         {
             std::cout << "Query Failed: " << db.error().text() << std::endl;
             it++;

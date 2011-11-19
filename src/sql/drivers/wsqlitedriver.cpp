@@ -36,18 +36,18 @@ namespace WSql
  * \todo This driver is unfinished. Basic functionality is there but it is not, ah, elegant.
  * Metadata is incomplete, all results are cached locally and there may be strange behavior.
  * Basically I have done enough to get sufficient metadata for the ORM generator (except
- * foreign keys and indices still) and execute() will perform the query and return a result
+ *  indices still) and query() will perform the query and return a result
  * via result(). tableNames() works and tableMetaData() works as well (with the above
  * caveats). Transactions are not supported and I seriously doubt that this is thread safe.
  * It quite is crude at the moment - your milage may vary. It _might_ work for you but
  * at this point I don't recommend it for production (10/10/2011)
  * 
  * (at a minimum) :
- * \li finish initializing the foreign keys and indices and fully initialize a WSqlTable.
- * \li clean up some of the logic and make use of execute() rather than reproducing code
+ * \li finish initializing the indices and fully initialize a WSqlTable.
+ * \li clean up some of the logic and make use of query() rather than reproducing code
  * for queries.
- * \li break up execute() and handle errors properly
- * \li see the note by execute() about creating a result set so that fields exist and have
+ * \li break up query() and handle errors properly
+ * \li see the note by query() about creating a result set so that fields exist and have
  * names even if the value is empty (ie. NULL). This is a valid return in SQL and should
  * be there!
  * \li implement transactions
@@ -271,18 +271,25 @@ void WSqliteDriver::close()
 
 //WSqlResult WSqliteDriver::exec(const WSqlQuery &queryObject){}
 
-//!\todo refactor this using metadata to construct a proper result set ..
-// sqlite doesn't return things in orderly fashion - if a field is empty
-// (i.e. NULL) it just doesn't include it in the results (ARG!), i _think_
-// and other strange random behavior is observed ..- so, we need
-// to construct a skeleton result set from metadata and then fill it leaving
-// the appropriate gaps such that the field name will _always_ be there.
-// We can't simply refer to tableMetaData as it may be a join or such - which
-// would mean parsing the query, etc..ugly The problem is that we cannot
-//rely on sqlite to return metadata if, for instance, the query returns no results..
-//Consider using sqlite3_column_metadata. 
-// Also, some of this might be better moved to result()
-bool WSqliteDriver::execute(std::string sql)
+/*!
+ * @brief Send the query \a sql to the database
+ * 
+ * \todo refactor this using metadata to construct a proper result set ..
+ sqlite doesn't return things in orderly fashion - if a field is empty
+ (i.e. NULL) it just doesn't include it in the results (ARG!), i _think_
+ and other strange random behavior is observed ..- so, we need
+ to construct a skeleton result set from metadata and then fill it leaving
+ the appropriate gaps such that the field name will _always_ be there.
+ We can't simply refer to tableMetaData as it may be a join or such - which
+ would mean parsing the query, etc..ugly The problem is that we cannot
+ rely on sqlite to return metadata if, for instance, the query returns no results..
+ Consider using sqlite3_column_metadata.
+ Also, some of this might be better moved to result()
+ 
+ * @param std::string sql containing the query string
+ * @retval bool
+ **/
+bool WSqliteDriver::query(std::string sql)
 {
     if ( !isOpen() ) {
         setError( std::string( "WSqliteDriver - connection not open! Call open() first. " ),

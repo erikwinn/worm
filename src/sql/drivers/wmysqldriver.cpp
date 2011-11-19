@@ -154,12 +154,13 @@ bool WMysqlDriver::open()
     
     \returns bool on success
 */
-bool WMysqlDriver::execute(std::string sqlstring )
+bool WMysqlDriver::query(std::string sqlstring )
 {
     if(!isOpen())
         return false;
     
-// \todo RESOLVE - this also escapes LIKE quotes .. need a way to handle this.
+/// \todo RESOLVE - this also escapes LIKE quotes .. need a way to handle this, ie.
+///a general escape/sanitizer method somewhere ..
 // for now it is disabled
 // FIXME       std::string sql = local_escape_string(sqlstring);
         
@@ -187,19 +188,19 @@ bool WMysqlDriver::execute(std::string sqlstring )
  The parameter \a iscached may be set to true to indicate a non-cached result
  set that will be fetched row by row - the default is true and results are cached.
  
- \note Only use this \em after an execute() query! Do not use twice in a row as it will delete
+ \note Only use this \em after an query() query! Do not use twice in a row as it will delete
  the previous result and return a newly created object. Example:
 
 \code
  WSqlDatabase db;
 if (!db.open()) 
     dosomeerror();
-if (!db.execute(std::string("select foo from bar")))
+if (!db.query(std::string("select foo from bar")))
     dosomeerror();
 WSqlResult *result = db.result();
 //WSqlResult *result2 = db.result(); <- wrong 
 //...iterate over results ..._then repeat:
-if (!db.execute(std::string("select baz from bar")))
+if (!db.query(std::string("select baz from bar")))
     dosomeerror();
 WSqlResult *result = db.result();
 ..etc.
@@ -278,8 +279,8 @@ std::vector< std::string > WMysqlDriver::tableNames()
         setError("tableNames: You must set a database name first!");
         return vecToReturn;
     }
-    std::string query = "show tables";
-    execute(query);
+    std::string sql = "show tables";
+    query(sql);
     result();
     int numtables = _result->count();
     for(int i=0;i<numtables;++i)
@@ -320,7 +321,7 @@ std::vector< std::string > WMysqlDriver::tableNames()
     \warning If the table metadata has not been initialized yet this method will invalidate 
     any previous WSqlResult pointer returned - in this case nesting calls to this method inside 
     of a loop iterating over WSqlResults WILL NOT WORK. Obtain the WSqlTable \em first and 
-    \em then execute() a query and fetch the result set using result() or use WSqlDatabase::initMetaData()
+    \em then query() a query and fetch the result set using result() or use WSqlDatabase::initMetaData()
     to initialize the metadata for all tables at once.
     
     \param string the name of the table to use
@@ -341,18 +342,20 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
     std::vector<std::string> column_names;
     std::vector<std::string>::const_iterator column_names_it;
     std::string sql("show columns in ");sql.append(tableName);
-    execute(sql);
+    query(sql);
     result();
     WSqlColumn clm;
     WSqlRecord record = _result->fetchFirst();
     while(!record.empty())
     {
-/*        clm.setColumnName(record.field("Field").data<std::string>());
+        /*! \todo change to use strings, defined? and test
+        clm.setColumnName(record.field("Field").data<std::string>());
         initColumnType(clm, record.field("Type").data<std::string>());
         bool nullable = ! (record.field("Null").data<std::string>().compare("NO") == 0);
         bool primarykey = (record.field("Key").data<std::string>().compare("PRI") == 0);
         clm.setDefaultValue( record.field("Default").data<std::string>());
-        bool isauto = (record.field("Extra").data<std::string>().find("auto_increment") != std::string::npos);*/
+        bool isauto = (record.field("Extra").data<std::string>().find("auto_increment") != std::string::npos);
+        */
         clm.setColumnName(record.field(0).data<std::string>());
         column_names.push_back(clm.columnName());
         initColumnType(clm, record.field(1).data<std::string>());
@@ -375,7 +378,7 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
         " referenced_column_name from information_schema.key_column_usage "
         " where table_name like '" + tableName + "' and column_name like '" + *column_names_it + "'";
         
-        execute(sql);
+        query(sql);
         result();
         WSqlRecord record = _result->fetchFirst();
         while(!record.empty())

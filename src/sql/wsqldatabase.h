@@ -85,7 +85,8 @@ public:
     void initMetaData();
    
     //Query interaction - wrapper around driver ..
-    bool execute(const std::string& sql );
+    bool query(const std::string& sql );
+//    bool execute(const std::string& sql );
     WSqlResult* result(bool iscached=true);
     bool initDriver();
     

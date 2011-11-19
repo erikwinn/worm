@@ -53,7 +53,7 @@ if ( !db.open() ) {
     return 1;
 }
 std::string sql = "select * from " + sometable + " limit 2;";
-if(!db.execute(sql))
+if(!db.query(sql))
     std::cout << "Query Failed: " << db.error().text() << std::endl;
 }else{
     WSql::WSqlResult *result = db.result();
@@ -111,7 +111,7 @@ WSqlDatabase::WSqlDatabase()
     
     This constructs a new database object initialized with the values of  \a other
      *    WARNING: This also creates a new driver! If \a other
-     *    is destroyed result() is invalid until the next execute() is called!    
+     *    is destroyed result() is invalid until the next query() is called!
 
     \param WSqlDatabase other - database to copy
 */
@@ -145,7 +145,7 @@ WSqlDatabase::~WSqlDatabase()
 /*!\brief Copies the values of \a other to this object.
  * 
     WARNING: This also creates a new driver! If \a other
-    is destroyed result() is invalid until the next execute()!
+    is destroyed result() is invalid until the next query()!
 
     \param WSqlDatabase other - database to copy
 */
@@ -410,11 +410,11 @@ std::string WSqlDatabase::hostName() const
 
 This returns a pointer to the database driver used to access the database
     connection. \em Caution! This is not meant to be used directly - use open().
-    close(), execute() and result() for interaction with the driver instead.  
+    close(), query() and result() for interaction with the driver instead.
     
     !This may be removed in future.
 
-    \sa open() close() execute() result()
+    \sa open() close() query() result()
 */
 
 WSqlDriver* WSqlDatabase::driver() const
@@ -455,7 +455,7 @@ WSqlError WSqlDatabase::error() const
   \warning If the table metadata has not been initialized yet this method will invalidate 
   any previous WSqlResult pointer returned - in this case nesting calls to this method inside 
   of a loop iterating over WSqlResults WILL NOT WORK. Obtain the WSqlTable \em first and 
-  \em then execute() a query and fetch the result set using result() or use initMetaData()
+  \em then query() a query and fetch the result set using result() or use initMetaData()
   to initialize the metadata for all tables at once.
   
 \todo Use the table type - currently does nothing.
@@ -499,7 +499,7 @@ const std::vector<std::string>& WSqlDatabase::tableNames(WSql::TableType type)
  \warning If the table metadata has not been initialized yet this method will invalidate 
  any previous WSqlResult pointer returned - in this case nesting calls to this method inside 
  of a loop iterating over WSqlResults WILL NOT WORK. Obtain the WSqlTable \em first and 
- \em then execute() a query and fetch the result set using result() or use initMetaData()
+ \em then query() a query and fetch the result set using result() or use initMetaData()
  to initialize the metadata for all tables at once.
  
  \param string the name of the table to use
@@ -591,12 +591,17 @@ bool WSqlDatabase::isValid() const
 {
     return (_isValid && 0 != _driver && _driver->isValid());
 }
-/*!
- * Executes the SQL in string \a sql - returns true on success.
+/*! \brief Executes the query in \a sql returning true on sucess
+ * 
+ * This method sends the query SQL in string \a sql  to the database server,
+ * the results of which will be available by calling result(). Use this method
+ * when you expect a result set, for non-result execution use execute()
+ * \sa result() execute()
+ * \retval bool true on success.
  */
-bool WSqlDatabase::execute(const std::string& sql)
+bool WSqlDatabase::query(const std::string& sql)
 {
-    return _driver->execute(sql);
+    return _driver->query(sql);
 }
 /*! \brief Returns a pointer to the result set from the most recent query
  * 
@@ -607,6 +612,8 @@ bool WSqlDatabase::execute(const std::string& sql)
  * 
  * The parameter \a iscached may be set to true to indicate a non-cached result
  * set that will be fetched row by row - the default is true and results are cached.
+ * Note that uncached queries may or may not be implemented in a particular
+ * driver - see the documentation for the specific driver to find out.
  * 
  * \note Only use this \em after an execute() query! Do not use twice in a row as it will delete
  * the previous result and return a newly created object. Example:
@@ -615,12 +622,12 @@ bool WSqlDatabase::execute(const std::string& sql)
  * WSqlDatabase db;
  * if (!db.open()) 
  *    dosomeerror();
- * if (!db.execute(std::string("select foo from bar")))
+ * if (!db.query(std::string("select foo from bar")))
  *    dosomeerror();
  * WSqlResult *result = db.result();
  * //WSqlResult *result2 = db.result(); <- wrong 
  * //...iterate over results ..._then repeat:
- * if (!db.execute(std::string("select baz from bar")))
+ * if (!db.query(std::string("select baz from bar")))
  *    dosomeerror();
  * WSqlResult *result = db.result();
  * ..etc.

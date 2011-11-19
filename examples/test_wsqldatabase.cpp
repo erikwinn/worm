@@ -14,13 +14,13 @@ int main()
     WSql::WSqlTable stbl;
     int numflds = 0;
     int col = 0;
-    while (it != tables.end()) 
+    while (it != tables.end())
     {
         stbl = db.tableMetaData(*it++);
         numflds = stbl.count();
-        std::cout << "   ======== Table name: " << stbl.name() 
-        << " =========" << std::endl;
-        for (col=0; col < numflds; ++col) 
+        std::cout << "   ======== Table name: " << stbl.name()
+                  << " =========" << std::endl;
+        for (col=0; col < numflds; ++col)
         {
             WSql::WSqlColumn clm = stbl.column(col);
             std::cout << "Column " << col << " = " << clm.columnName() << std::endl;

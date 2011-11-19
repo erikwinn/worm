@@ -133,7 +133,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aedc78f4e6972c7df4388f8e960424d53">~WSqliteDriver</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a401f5a03ca5d1e288ade6598c5379a20">open</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#ac80543216d537dab91b382488042c416">close</a> ()</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a28493217522e636eaf144f41ed3fbdd1">execute</a> (std::string sql)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a4ba7ea260dd263e74d9c16c58e655434">query</a> (std::string sql)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Send the query <em>sql</em> to the database.  <a href="#a4ba7ea260dd263e74d9c16c58e655434"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_w_sql_1_1_w_sql_result.html">WSqlResult</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a1cf0f135668cdd8299995c1ffff72724">result</a> (bool iscached=true)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aa7796f2d18f519f24016a9fa1f9e2f0b">tableNames</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_w_sql_1_1_w_sql_table.html">WSqlTable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aa74cc6840682c0ae5fe9bb2e4aa76a4d">tableMetaData</a> (const std::string &amp;tableName)</td></tr>
@@ -141,13 +142,13 @@ Public Member Functions</h2></td></tr>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>driver for SQlite3 databases This class provides a driver for SQlite3 databases.</p>
 <p>DANGER: USE AT YOUR OWN RISK!! NOT RECOMMENDED.</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>This driver is unfinished. Basic functionality is there but it is not, ah, elegant. Metadata is incomplete, all results are cached locally and there may be strange behavior. Basically I have done enough to get sufficient metadata for the ORM generator (except foreign keys and indices still) and <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a28493217522e636eaf144f41ed3fbdd1">execute()</a> will perform the query and return a result via <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a1cf0f135668cdd8299995c1ffff72724">result()</a>. <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aa7796f2d18f519f24016a9fa1f9e2f0b">tableNames()</a> works and <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aa74cc6840682c0ae5fe9bb2e4aa76a4d">tableMetaData()</a> works as well (with the above caveats). Transactions are not supported and I seriously doubt that this is thread safe. It quite is crude at the moment - your milage may vary. It _might_ work for you but at this point I don't recommend it for production (10/10/2011)</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>This driver is unfinished. Basic functionality is there but it is not, ah, elegant. Metadata is incomplete, all results are cached locally and there may be strange behavior. Basically I have done enough to get sufficient metadata for the ORM generator (except indices still) and <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a4ba7ea260dd263e74d9c16c58e655434" title="Send the query sql to the database.">query()</a> will perform the query and return a result via <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a1cf0f135668cdd8299995c1ffff72724">result()</a>. <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aa7796f2d18f519f24016a9fa1f9e2f0b">tableNames()</a> works and <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aa74cc6840682c0ae5fe9bb2e4aa76a4d">tableMetaData()</a> works as well (with the above caveats). Transactions are not supported and I seriously doubt that this is thread safe. It quite is crude at the moment - your milage may vary. It _might_ work for you but at this point I don't recommend it for production (10/10/2011)</dd></dl>
 <p>(at a minimum) : </p>
 <ul>
-<li>finish initializing the foreign keys and indices and fully initialize a <a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a>. </li>
-<li>clean up some of the logic and make use of <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a28493217522e636eaf144f41ed3fbdd1">execute()</a> rather than reproducing code for queries. </li>
-<li>break up <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a28493217522e636eaf144f41ed3fbdd1">execute()</a> and handle errors properly </li>
-<li>see the note by <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a28493217522e636eaf144f41ed3fbdd1">execute()</a> about creating a result set so that fields exist and have names even if the value is empty (ie. NULL). This is a valid return in SQL and should be there! </li>
+<li>finish initializing the indices and fully initialize a <a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a>. </li>
+<li>clean up some of the logic and make use of <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a4ba7ea260dd263e74d9c16c58e655434" title="Send the query sql to the database.">query()</a> rather than reproducing code for queries. </li>
+<li>break up <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a4ba7ea260dd263e74d9c16c58e655434" title="Send the query sql to the database.">query()</a> and handle errors properly </li>
+<li>see the note by <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a4ba7ea260dd263e74d9c16c58e655434" title="Send the query sql to the database.">query()</a> about creating a result set so that fields exist and have names even if the value is empty (ie. NULL). This is a valid return in SQL and should be there! </li>
 <li>implement transactions </li>
 <li>if we _must_ parse the create statements .. this needs redone correctly - it is a bit buggy, awkward and very inefficient (a quick fix). Alternately, figure out some way to get sqlite to provide the metadata correctly and reliably at _any_ time (meaning, even if a table happens to be empty ..). </li>
 <li>redo the columns mapping mess .. std::map is overkill, a quick fix.. </li>
@@ -217,28 +218,6 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a28493217522e636eaf144f41ed3fbdd1"></a><!-- doxytag: member="WSql::WSqliteDriver::execute" ref="a28493217522e636eaf144f41ed3fbdd1" args="(std::string sql)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WSql::WSqliteDriver::execute </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>sql</em></td><td>)</td>
-          <td><code> [virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000014">Todo:</a></b></dt><dd>refactor this using metadata to construct a proper result set .. </dd></dl>
-
-<p>Implements <a class="el" href="class_w_sql_1_1_w_sql_driver.html#a49f611a105c8e32a9c6fb6540abc6b3f">WSql::WSqlDriver</a>.</p>
-
-<p>Definition at line <a class="el" href="wsqlitedriver_8cpp_source.html#l00285">285</a> of file <a class="el" href="wsqlitedriver_8cpp_source.html">wsqlitedriver.cpp</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="a401f5a03ca5d1e288ade6598c5379a20"></a><!-- doxytag: member="WSql::WSqliteDriver::open" ref="a401f5a03ca5d1e288ade6598c5379a20" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -262,6 +241,42 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a4ba7ea260dd263e74d9c16c58e655434"></a><!-- doxytag: member="WSql::WSqliteDriver::query" ref="a4ba7ea260dd263e74d9c16c58e655434" args="(std::string sql)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool WSql::WSqliteDriver::query </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>sql</em></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Send the query <em>sql</em> to the database. </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000016">Todo:</a></b></dt><dd>refactor this using metadata to construct a proper result set .. sqlite doesn't return things in orderly fashion - if a field is empty (i.e. NULL) it just doesn't include it in the results (ARG!), i _think_ and other strange random behavior is observed ..- so, we need to construct a skeleton result set from metadata and then fill it leaving the appropriate gaps such that the field name will _always_ be there. We can't simply refer to tableMetaData as it may be a join or such - which would mean parsing the query, etc..ugly The problem is that we cannot rely on sqlite to return metadata if, for instance, the query returns no results.. Consider using sqlite3_column_metadata. Also, some of this might be better moved to <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a1cf0f135668cdd8299995c1ffff72724">result()</a></dd></dl>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">std::string</td><td>sql containing the query string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">bool</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="class_w_sql_1_1_w_sql_driver.html#ad15803a5c5d4e8e1d80fec885ed13203">WSql::WSqlDriver</a>.</p>
+
+<p>Definition at line <a class="el" href="wsqlitedriver_8cpp_source.html#l00292">292</a> of file <a class="el" href="wsqlitedriver_8cpp_source.html">wsqlitedriver.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a1cf0f135668cdd8299995c1ffff72724"></a><!-- doxytag: member="WSql::WSqliteDriver::result" ref="a1cf0f135668cdd8299995c1ffff72724" args="(bool iscached=true)" -->
 <div class="memitem">
 <div class="memproto">
@@ -279,7 +294,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">WSql::WSqlDriver</a>.</p>
 
-<p>Definition at line <a class="el" href="wsqlitedriver_8cpp_source.html#l00345">345</a> of file <a class="el" href="wsqlitedriver_8cpp_source.html">wsqlitedriver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="wsqlitedriver_8cpp_source.html#l00352">352</a> of file <a class="el" href="wsqlitedriver_8cpp_source.html">wsqlitedriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -300,7 +315,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Implements <a class="el" href="class_w_sql_1_1_w_sql_driver.html#a2574f1f0d2083f1b0e05f4721f870a74">WSql::WSqlDriver</a>.</p>
 
-<p>Definition at line <a class="el" href="wsqlitedriver_8cpp_source.html#l00377">377</a> of file <a class="el" href="wsqlitedriver_8cpp_source.html">wsqlitedriver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="wsqlitedriver_8cpp_source.html#l00384">384</a> of file <a class="el" href="wsqlitedriver_8cpp_source.html">wsqlitedriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -317,11 +332,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div>
 <div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>support table type flag .. views, information schema </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000017">Todo:</a></b></dt><dd>support table type flag .. views, information schema </dd></dl>
 
 <p>Implements <a class="el" href="class_w_sql_1_1_w_sql_driver.html#adc7f0845587544ad92e3079542e844db">WSql::WSqlDriver</a>.</p>
 
-<p>Definition at line <a class="el" href="wsqlitedriver_8cpp_source.html#l00353">353</a> of file <a class="el" href="wsqlitedriver_8cpp_source.html">wsqlitedriver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="wsqlitedriver_8cpp_source.html#l00360">360</a> of file <a class="el" href="wsqlitedriver_8cpp_source.html">wsqlitedriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -344,7 +359,7 @@ Public Member Functions</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:35 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 21:01:46 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

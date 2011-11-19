@@ -141,58 +141,59 @@ function toggleVisibility(linkObj) {
 <a name="l00039"></a>00039 
 <a name="l00040"></a>00040         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a2a1f251900715cd1e45aa7a565a57253">open</a>() = 0;
 <a name="l00041"></a>00041         <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a17afc1e43627a2a952e76d04420dead0">close</a>() = 0;
-<a name="l00042"></a>00042         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a49f611a105c8e32a9c6fb6540abc6b3f">execute</a>(std::string sql) = 0;
-<a name="l00043"></a>00043         <span class="comment">// virtual WSqlResult exec(const WSqlQuery &amp;queryObject) = 0;</span>
-<a name="l00044"></a>00044         <span class="keyword">virtual</span> std::vector&lt;std::string&gt; <a class="code" href="class_w_sql_1_1_w_sql_driver.html#adc7f0845587544ad92e3079542e844db">tableNames</a>() = 0;
-<a name="l00045"></a>00045         <span class="keyword">virtual</span> <a class="code" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a2574f1f0d2083f1b0e05f4721f870a74">tableMetaData</a>( <span class="keyword">const</span> std::string &amp;tableName ) = 0;
-<a name="l00046"></a>00046                 
-<a name="l00047"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">00047</a>         <span class="keyword">virtual</span> <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a>* <a class="code" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">result</a>(<span class="keywordtype">bool</span> iscached=<span class="keyword">true</span>){<span class="keywordflow">return</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a0fcc770ae53104549e68703eab08cab9">_result</a>;}
-<a name="l00048"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#aabd54e13ac3769bfd283cc8e7e937e6f">00048</a>         <span class="keyword">virtual</span> <a class="code" href="class_w_sql_1_1_w_sql_error.html" title="The WSqlError class provides SQL database and driver error information.">WSqlError</a> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aabd54e13ac3769bfd283cc8e7e937e6f">error</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _error;}
-<a name="l00049"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa81bf0a003e897f38574a8ee23348b8d">00049</a>         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa81bf0a003e897f38574a8ee23348b8d">isValid</a>()<span class="keyword">const </span>{ <span class="keywordflow">return</span> _isValid;}
-<a name="l00050"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a6c4bf314bfa0d19e476377891a949253">00050</a>         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a6c4bf314bfa0d19e476377891a949253">isOpen</a>()<span class="keyword">const </span>{ <span class="keywordflow">return</span> _isOpen;}
-<a name="l00051"></a>00051         
-<a name="l00052"></a>00052         <a class="code" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a26154ae9b11b139482be58c0b2ed4917" title="Locate the metadata table for tablename in the cache.">findTable</a>( std::string tablename )<span class="keyword">const</span>;
-<a name="l00053"></a>00053         
-<a name="l00054"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#aee4657eb1bf5d7d5b8a68dc51da1572f">00054</a>         <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aee4657eb1bf5d7d5b8a68dc51da1572f">hasError</a>()<span class="keyword">const </span>{ <span class="keywordflow">return</span> _hasError;}
-<a name="l00055"></a>00055 
-<a name="l00056"></a>00056 <span class="comment">//note: maybe auto disconnect/reconnect here?  or, do we even need this?              </span>
-<a name="l00057"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#ae8e1c1685325f8c3fbab81992a0ff3de">00057</a>         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#ae8e1c1685325f8c3fbab81992a0ff3de">setDatabase</a>( <a class="code" href="class_w_sql_1_1_w_sql_database.html" title="The WSqlDatabase class represents a single database.">WSqlDatabase</a> *dp ) { <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a6aac5abed866e56bd56ed20b7eef06f0">_database</a> = dp;}
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059     <span class="keyword">protected</span>:
-<a name="l00060"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#aec208bf350d9750fc15c0c908d7b989a">00060</a>         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_w_sql_1_1_w_sql_database.html" title="The WSqlDatabase class represents a single database.">WSqlDatabase</a>;
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062         <a class="code" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a>* <a class="code" href="class_w_sql_1_1_w_sql_driver.html#ac8280245a9ab0d63d09c9b7b03c0b3b9" title="Return a reference to the metadata table for tablename in the cache.">getTable</a>( <span class="keyword">const</span> std::string&amp; tablename );
-<a name="l00063"></a>00063         
-<a name="l00064"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a18022bccc41d920564c83b02339aa4f8">00064</a>         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a18022bccc41d920564c83b02339aa4f8">setIsValid</a>( <span class="keywordtype">bool</span> b ) { _isValid = b;}
-<a name="l00065"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#adb8b4302e38822dbc2fbe71889ab7724">00065</a>         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#adb8b4302e38822dbc2fbe71889ab7724">setIsOpen</a>( <span class="keywordtype">bool</span> o ) { _isOpen = o;}
-<a name="l00066"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a76938d8fa49e562f015d7e6eb7b6ed42">00066</a>         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a76938d8fa49e562f015d7e6eb7b6ed42">setHasError</a>( <span class="keywordtype">bool</span> e ) { _hasError = e;}
-<a name="l00067"></a>00067         
-<a name="l00068"></a>00068         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa5e7841c760ffc5c7dbc7c2593f8ecb3" title="Sets the the current error to error.">setError</a>(<span class="keyword">const</span> <a class="code" href="class_w_sql_1_1_w_sql_error.html" title="The WSqlError class provides SQL database and driver error information.">WSqlError</a>&amp; e );
-<a name="l00069"></a>00069         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa5e7841c760ffc5c7dbc7c2593f8ecb3" title="Sets the the current error to error.">setError</a>(<span class="keyword">const</span> std::string&amp; text,
-<a name="l00070"></a>00070                       <a class="code" href="class_w_sql_1_1_w_sql_error.html#a8bcabd8bf1016ca27304a717ef3d78db">WSqlError::ErrorType</a> type,
-<a name="l00071"></a>00071                       <a class="code" href="class_w_sql_1_1_w_sql_error.html#a63b2672eb5c68164c4ff43443037f6d9">WSqlError::ErrorSeverity</a> severity,
-<a name="l00072"></a>00072                       <span class="keywordtype">bool</span> isvalid = <span class="keyword">true</span> );
-<a name="l00073"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#ab1e89214bd9e0d8c9c0caaae52036287">00073</a>         <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#ab1e89214bd9e0d8c9c0caaae52036287">setError</a>(<span class="keyword">const</span> std::string&amp; text){
-<a name="l00074"></a>00074             <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa5e7841c760ffc5c7dbc7c2593f8ecb3" title="Sets the the current error to error.">setError</a>(text,<a class="code" href="class_w_sql_1_1_w_sql_error.html#a8bcabd8bf1016ca27304a717ef3d78dbaf8fb16501b5e83770c4bd3b33b19292c">WSql::WSqlError::DRIVER</a>, <a class="code" href="class_w_sql_1_1_w_sql_error.html#a63b2672eb5c68164c4ff43443037f6d9ab01b30be7fcbe01c43222c1b88e7727d">WSql::WSqlError::WARNING</a>);
-<a name="l00075"></a>00075         }
-<a name="l00076"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a334d7b76b1bf64c4d779b0196510faac">00076</a>         <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a334d7b76b1bf64c4d779b0196510faac">setError</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * text){<a class="code" href="class_w_sql_1_1_w_sql_driver.html#a334d7b76b1bf64c4d779b0196510faac">setError</a>(std::string(text));}
-<a name="l00077"></a>00077         
-<a name="l00078"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a6aac5abed866e56bd56ed20b7eef06f0">00078</a>         <a class="code" href="class_w_sql_1_1_w_sql_database.html" title="The WSqlDatabase class represents a single database.">WSqlDatabase</a> *<a class="code" href="class_w_sql_1_1_w_sql_driver.html#a6aac5abed866e56bd56ed20b7eef06f0">_database</a>;
-<a name="l00079"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a0fcc770ae53104549e68703eab08cab9">00079</a>         <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> * <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a0fcc770ae53104549e68703eab08cab9">_result</a>;
-<a name="l00080"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a4eae8e8af5b50b1bc3a10bf528073724">00080</a>         std::vector&lt;WSqlTable&gt; <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a4eae8e8af5b50b1bc3a10bf528073724">_tables</a>;
-<a name="l00081"></a>00081         
-<a name="l00082"></a>00082     <span class="keyword">private</span>:
-<a name="l00083"></a>00083         <span class="keywordtype">bool</span> _isValid;
-<a name="l00084"></a>00084         <span class="keywordtype">bool</span> _isOpen;
-<a name="l00085"></a>00085         <span class="keywordtype">bool</span> _hasError;
-<a name="l00086"></a>00086         std::string _databaseName;
-<a name="l00087"></a>00087         <a class="code" href="class_w_sql_1_1_w_sql_error.html" title="The WSqlError class provides SQL database and driver error information.">WSqlError</a> _error;
-<a name="l00088"></a>00088         std::vector&lt;WSqlError&gt; _errors;
-<a name="l00089"></a>00089 };
-<a name="l00090"></a>00090 
-<a name="l00091"></a>00091 } <span class="comment">// namespace WSql</span>
-<a name="l00092"></a>00092 
-<a name="l00093"></a>00093 <span class="preprocessor">#endif // WSQLDRIVER_H</span>
+<a name="l00042"></a>00042         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#ad15803a5c5d4e8e1d80fec885ed13203">query</a>(std::string sql) = 0;
+<a name="l00043"></a>00043         <span class="comment">//virtual bool execute(std::string sql) = 0;</span>
+<a name="l00044"></a>00044         <span class="comment">// virtual WSqlResult exec(const WSqlQuery &amp;queryObject) = 0;</span>
+<a name="l00045"></a>00045         <span class="keyword">virtual</span> std::vector&lt;std::string&gt; <a class="code" href="class_w_sql_1_1_w_sql_driver.html#adc7f0845587544ad92e3079542e844db">tableNames</a>() = 0;
+<a name="l00046"></a>00046         <span class="keyword">virtual</span> <a class="code" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a2574f1f0d2083f1b0e05f4721f870a74">tableMetaData</a>( <span class="keyword">const</span> std::string &amp;tableName ) = 0;
+<a name="l00047"></a>00047                 
+<a name="l00048"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">00048</a>         <span class="keyword">virtual</span> <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a>* <a class="code" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">result</a>(<span class="keywordtype">bool</span> iscached=<span class="keyword">true</span>){<span class="keywordflow">return</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a0fcc770ae53104549e68703eab08cab9">_result</a>;}
+<a name="l00049"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#aabd54e13ac3769bfd283cc8e7e937e6f">00049</a>         <span class="keyword">virtual</span> <a class="code" href="class_w_sql_1_1_w_sql_error.html" title="The WSqlError class provides SQL database and driver error information.">WSqlError</a> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aabd54e13ac3769bfd283cc8e7e937e6f">error</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _error;}
+<a name="l00050"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa81bf0a003e897f38574a8ee23348b8d">00050</a>         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa81bf0a003e897f38574a8ee23348b8d">isValid</a>()<span class="keyword">const </span>{ <span class="keywordflow">return</span> _isValid;}
+<a name="l00051"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a6c4bf314bfa0d19e476377891a949253">00051</a>         <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a6c4bf314bfa0d19e476377891a949253">isOpen</a>()<span class="keyword">const </span>{ <span class="keywordflow">return</span> _isOpen;}
+<a name="l00052"></a>00052         
+<a name="l00053"></a>00053         <a class="code" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a26154ae9b11b139482be58c0b2ed4917" title="Locate the metadata table for tablename in the cache.">findTable</a>( std::string tablename )<span class="keyword">const</span>;
+<a name="l00054"></a>00054         
+<a name="l00055"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#aee4657eb1bf5d7d5b8a68dc51da1572f">00055</a>         <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aee4657eb1bf5d7d5b8a68dc51da1572f">hasError</a>()<span class="keyword">const </span>{ <span class="keywordflow">return</span> _hasError;}
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057 <span class="comment">//note: maybe auto disconnect/reconnect here?  or, do we even need this?              </span>
+<a name="l00058"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#ae8e1c1685325f8c3fbab81992a0ff3de">00058</a>         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#ae8e1c1685325f8c3fbab81992a0ff3de">setDatabase</a>( <a class="code" href="class_w_sql_1_1_w_sql_database.html" title="The WSqlDatabase class represents a single database.">WSqlDatabase</a> *dp ) { <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a6aac5abed866e56bd56ed20b7eef06f0">_database</a> = dp;}
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060     <span class="keyword">protected</span>:
+<a name="l00061"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#aec208bf350d9750fc15c0c908d7b989a">00061</a>         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_w_sql_1_1_w_sql_database.html" title="The WSqlDatabase class represents a single database.">WSqlDatabase</a>;
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063         <a class="code" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a>* <a class="code" href="class_w_sql_1_1_w_sql_driver.html#ac8280245a9ab0d63d09c9b7b03c0b3b9" title="Return a reference to the metadata table for tablename in the cache.">getTable</a>( <span class="keyword">const</span> std::string&amp; tablename );
+<a name="l00064"></a>00064         
+<a name="l00065"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a18022bccc41d920564c83b02339aa4f8">00065</a>         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a18022bccc41d920564c83b02339aa4f8">setIsValid</a>( <span class="keywordtype">bool</span> b ) { _isValid = b;}
+<a name="l00066"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#adb8b4302e38822dbc2fbe71889ab7724">00066</a>         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#adb8b4302e38822dbc2fbe71889ab7724">setIsOpen</a>( <span class="keywordtype">bool</span> o ) { _isOpen = o;}
+<a name="l00067"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a76938d8fa49e562f015d7e6eb7b6ed42">00067</a>         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a76938d8fa49e562f015d7e6eb7b6ed42">setHasError</a>( <span class="keywordtype">bool</span> e ) { _hasError = e;}
+<a name="l00068"></a>00068         
+<a name="l00069"></a>00069         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa5e7841c760ffc5c7dbc7c2593f8ecb3" title="Sets the the current error to error.">setError</a>(<span class="keyword">const</span> <a class="code" href="class_w_sql_1_1_w_sql_error.html" title="The WSqlError class provides SQL database and driver error information.">WSqlError</a>&amp; e );
+<a name="l00070"></a>00070         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa5e7841c760ffc5c7dbc7c2593f8ecb3" title="Sets the the current error to error.">setError</a>(<span class="keyword">const</span> std::string&amp; text,
+<a name="l00071"></a>00071                       <a class="code" href="class_w_sql_1_1_w_sql_error.html#a8bcabd8bf1016ca27304a717ef3d78db">WSqlError::ErrorType</a> type,
+<a name="l00072"></a>00072                       <a class="code" href="class_w_sql_1_1_w_sql_error.html#a63b2672eb5c68164c4ff43443037f6d9">WSqlError::ErrorSeverity</a> severity,
+<a name="l00073"></a>00073                       <span class="keywordtype">bool</span> isvalid = <span class="keyword">true</span> );
+<a name="l00074"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#ab1e89214bd9e0d8c9c0caaae52036287">00074</a>         <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#ab1e89214bd9e0d8c9c0caaae52036287">setError</a>(<span class="keyword">const</span> std::string&amp; text){
+<a name="l00075"></a>00075             <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa5e7841c760ffc5c7dbc7c2593f8ecb3" title="Sets the the current error to error.">setError</a>(text,<a class="code" href="class_w_sql_1_1_w_sql_error.html#a8bcabd8bf1016ca27304a717ef3d78dbaf8fb16501b5e83770c4bd3b33b19292c">WSql::WSqlError::DRIVER</a>, <a class="code" href="class_w_sql_1_1_w_sql_error.html#a63b2672eb5c68164c4ff43443037f6d9ab01b30be7fcbe01c43222c1b88e7727d">WSql::WSqlError::WARNING</a>);
+<a name="l00076"></a>00076         }
+<a name="l00077"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a334d7b76b1bf64c4d779b0196510faac">00077</a>         <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a334d7b76b1bf64c4d779b0196510faac">setError</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * text){<a class="code" href="class_w_sql_1_1_w_sql_driver.html#a334d7b76b1bf64c4d779b0196510faac">setError</a>(std::string(text));}
+<a name="l00078"></a>00078         
+<a name="l00079"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a6aac5abed866e56bd56ed20b7eef06f0">00079</a>         <a class="code" href="class_w_sql_1_1_w_sql_database.html" title="The WSqlDatabase class represents a single database.">WSqlDatabase</a> *<a class="code" href="class_w_sql_1_1_w_sql_driver.html#a6aac5abed866e56bd56ed20b7eef06f0">_database</a>;
+<a name="l00080"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a0fcc770ae53104549e68703eab08cab9">00080</a>         <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> * <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a0fcc770ae53104549e68703eab08cab9">_result</a>;
+<a name="l00081"></a><a class="code" href="class_w_sql_1_1_w_sql_driver.html#a4eae8e8af5b50b1bc3a10bf528073724">00081</a>         std::vector&lt;WSqlTable&gt; <a class="code" href="class_w_sql_1_1_w_sql_driver.html#a4eae8e8af5b50b1bc3a10bf528073724">_tables</a>;
+<a name="l00082"></a>00082         
+<a name="l00083"></a>00083     <span class="keyword">private</span>:
+<a name="l00084"></a>00084         <span class="keywordtype">bool</span> _isValid;
+<a name="l00085"></a>00085         <span class="keywordtype">bool</span> _isOpen;
+<a name="l00086"></a>00086         <span class="keywordtype">bool</span> _hasError;
+<a name="l00087"></a>00087         std::string _databaseName;
+<a name="l00088"></a>00088         <a class="code" href="class_w_sql_1_1_w_sql_error.html" title="The WSqlError class provides SQL database and driver error information.">WSqlError</a> _error;
+<a name="l00089"></a>00089         std::vector&lt;WSqlError&gt; _errors;
+<a name="l00090"></a>00090 };
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092 } <span class="comment">// namespace WSql</span>
+<a name="l00093"></a>00093 
+<a name="l00094"></a>00094 <span class="preprocessor">#endif // WSQLDRIVER_H</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -209,7 +210,7 @@ function toggleVisibility(linkObj) {
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:35 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 21:01:45 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

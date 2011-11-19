@@ -363,17 +363,17 @@ function toggleVisibility(linkObj) {
 <a name="l00591"></a>00591 <span class="keyword"></span>{
 <a name="l00592"></a>00592     <span class="keywordflow">return</span> (_isValid &amp;&amp; 0 != _driver &amp;&amp; _driver-&gt;<a class="code" href="class_w_sql_1_1_w_sql_driver.html#aa81bf0a003e897f38574a8ee23348b8d">isValid</a>());
 <a name="l00593"></a>00593 }
-<a name="l00597"></a><a class="code" href="class_w_sql_1_1_w_sql_database.html#a7e7270ae59e6bbe220a19f2e6bc06e22">00597</a> <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_database.html#a7e7270ae59e6bbe220a19f2e6bc06e22">WSqlDatabase::execute</a>(<span class="keyword">const</span> std::string&amp; sql)
-<a name="l00598"></a>00598 {
-<a name="l00599"></a>00599     <span class="keywordflow">return</span> _driver-&gt;<a class="code" href="class_w_sql_1_1_w_sql_driver.html#a49f611a105c8e32a9c6fb6540abc6b3f">execute</a>(sql);
-<a name="l00600"></a>00600 }
-<a name="l00633"></a><a class="code" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7">00633</a> <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> * <a class="code" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">WSqlDatabase::result</a>(<span class="keywordtype">bool</span> iscached)
-<a name="l00634"></a>00634 {
-<a name="l00635"></a>00635     <span class="keywordflow">return</span> _driver-&gt;<a class="code" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">result</a>(iscached);
-<a name="l00636"></a>00636 }
-<a name="l00637"></a>00637 
-<a name="l00638"></a>00638     
-<a name="l00639"></a>00639 } <span class="comment">//namespace WSql</span>
+<a name="l00602"></a><a class="code" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c">00602</a> <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">WSqlDatabase::query</a>(<span class="keyword">const</span> std::string&amp; sql)
+<a name="l00603"></a>00603 {
+<a name="l00604"></a>00604     <span class="keywordflow">return</span> _driver-&gt;<a class="code" href="class_w_sql_1_1_w_sql_driver.html#ad15803a5c5d4e8e1d80fec885ed13203">query</a>(sql);
+<a name="l00605"></a>00605 }
+<a name="l00640"></a><a class="code" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7">00640</a> <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> * <a class="code" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">WSqlDatabase::result</a>(<span class="keywordtype">bool</span> iscached)
+<a name="l00641"></a>00641 {
+<a name="l00642"></a>00642     <span class="keywordflow">return</span> _driver-&gt;<a class="code" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">result</a>(iscached);
+<a name="l00643"></a>00643 }
+<a name="l00644"></a>00644 
+<a name="l00645"></a>00645     
+<a name="l00646"></a>00646 } <span class="comment">//namespace WSql</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -390,7 +390,7 @@ function toggleVisibility(linkObj) {
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:35 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 21:01:45 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

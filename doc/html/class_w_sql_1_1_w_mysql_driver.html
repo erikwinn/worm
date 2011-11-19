@@ -139,8 +139,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens the connection to the database.  <a href="#ae53e50ad703fd76da1d34a52b5a844b8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a347c2c1642d3046292688980dfc5c96b">close</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the connection and deallocates MYSQL objects.  <a href="#a347c2c1642d3046292688980dfc5c96b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a4882c4ca53347df844e97fe360e1821a">execute</a> (std::string sql)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends the SQL in <em>sqlstring</em> to the server for execution.  <a href="#a4882c4ca53347df844e97fe360e1821a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a16cbd55969cbe2421bcc5ebe2dd0d677">query</a> (std::string sql)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends the SQL in <em>sqlstring</em> to the server for execution.  <a href="#a16cbd55969cbe2421bcc5ebe2dd0d677"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_w_sql_1_1_w_sql_result.html">WSqlResult</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b">result</a> (bool iscached=true)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the result from the most recent query.  <a href="#a064edf98eaa9453d358818d76627ef6b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_mysql_driver.html#aa55eb7fb3c030f4d47aae5fe18435cb6">tableNames</a> ()</td></tr>
@@ -225,31 +225,6 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4882c4ca53347df844e97fe360e1821a"></a><!-- doxytag: member="WSql::WMysqlDriver::execute" ref="a4882c4ca53347df844e97fe360e1821a" args="(std::string sql)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WSql::WMysqlDriver::execute </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>sqlstring</em></td><td>)</td>
-          <td><code> [virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Sends the SQL in <em>sqlstring</em> to the server for execution. </p>
-<p>This method sends the SQL given in <em>sqlstring</em> to the server to be executed. If the query was successful it returns true, if not it sets an error and returns false. If the query should return results (eg. a SELECT) they will be available from <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result()</a>.</p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>bool on success </dd></dl>
-
-<p>Implements <a class="el" href="class_w_sql_1_1_w_sql_driver.html#a49f611a105c8e32a9c6fb6540abc6b3f">WSql::WSqlDriver</a>.</p>
-
-<p>Definition at line <a class="el" href="wmysqldriver_8cpp_source.html#l00159">159</a> of file <a class="el" href="wmysqldriver_8cpp_source.html">wmysqldriver.cpp</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="af101556d203a540b00c53d58d6ed727e"></a><!-- doxytag: member="WSql::WMysqlDriver::isOpen" ref="af101556d203a540b00c53d58d6ed727e" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -264,7 +239,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="wmysqldriver_8cpp_source.html#l00405">405</a> of file <a class="el" href="wmysqldriver_8cpp_source.html">wmysqldriver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="wmysqldriver_8cpp_source.html#l00410">410</a> of file <a class="el" href="wmysqldriver_8cpp_source.html">wmysqldriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -296,6 +271,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a16cbd55969cbe2421bcc5ebe2dd0d677"></a><!-- doxytag: member="WSql::WMysqlDriver::query" ref="a16cbd55969cbe2421bcc5ebe2dd0d677" args="(std::string sql)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool WSql::WMysqlDriver::query </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>sqlstring</em></td><td>)</td>
+          <td><code> [virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Sends the SQL in <em>sqlstring</em> to the server for execution. </p>
+<p>This method sends the SQL given in <em>sqlstring</em> to the server to be executed. If the query was successful it returns true, if not it sets an error and returns false. If the query should return results (eg. a SELECT) they will be available from <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result()</a>.</p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>bool on success </dd></dl>
+
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>RESOLVE - this also escapes LIKE quotes .. need a way to handle this, ie. a general escape/sanitizer method somewhere .. </dd></dl>
+</p>
+
+<p>Implements <a class="el" href="class_w_sql_1_1_w_sql_driver.html#ad15803a5c5d4e8e1d80fec885ed13203">WSql::WSqlDriver</a>.</p>
+
+<p>Definition at line <a class="el" href="wmysqldriver_8cpp_source.html#l00159">159</a> of file <a class="el" href="wmysqldriver_8cpp_source.html">wmysqldriver.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a064edf98eaa9453d358818d76627ef6b"></a><!-- doxytag: member="WSql::WMysqlDriver::result" ref="a064edf98eaa9453d358818d76627ef6b" args="(bool iscached=true)" -->
 <div class="memitem">
 <div class="memproto">
@@ -313,17 +316,17 @@ Public Member Functions</h2></td></tr>
 
 <p>Return the result from the most recent query. </p>
 <p>This method returns a pointer to a <a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> object containing the most recent result set from a query - it may be empty if no results were returned. You must not delete this pointer yourself - it is owned by the driver.</p>
-<p>The parameter <em>iscached</em> may be set to true to indicate a non-cached result set that will be fetched row by row - the default is true and results are cached.</p>
-<dl class="note"><dt><b>Note:</b></dt><dd>Only use this <em>after</em> an <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a4882c4ca53347df844e97fe360e1821a" title="Sends the SQL in sqlstring to the server for execution.">execute()</a> query! Do not use twice in a row as it will delete the previous result and return a newly created object. Example:</dd></dl>
+<p>The parameter <em>iscached</em> may be set to true to indicate a non-cached result set that will be fetched row by row - the default is true and results are cached. (currently uncached results are not yet supported).</p>
+<dl class="note"><dt><b>Note:</b></dt><dd>Only use this <em>after</em> a call to <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a16cbd55969cbe2421bcc5ebe2dd0d677" title="Sends the SQL in sqlstring to the server for execution.">query()</a>! Do not use twice in a row as it will delete the previous result and return a newly created object. Example:</dd></dl>
 <div class="fragment"><pre class="fragment"> <a class="code" href="class_w_sql_1_1_w_sql_driver.html#aec208bf350d9750fc15c0c908d7b989a">WSqlDatabase</a> db;
 <span class="keywordflow">if</span> (!db.open()) 
     dosomeerror();
-<span class="keywordflow">if</span> (!db.execute(std::string(<span class="stringliteral">&quot;select foo from bar&quot;</span>)))
+<span class="keywordflow">if</span> (!db.query(std::string(<span class="stringliteral">&quot;select foo from bar&quot;</span>)))
     dosomeerror();
 WSqlResult *<a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result</a> = db.result();
 <span class="comment">//WSqlResult *result2 = db.result(); &lt;- wrong </span>
 <span class="comment">//...iterate over results ..._then repeat:</span>
-<span class="keywordflow">if</span> (!db.execute(std::string(<span class="stringliteral">&quot;select baz from bar&quot;</span>)))
+<span class="keywordflow">if</span> (!db.query(std::string(<span class="stringliteral">&quot;select baz from bar&quot;</span>)))
     dosomeerror();
 WSqlResult *result = db.result();
 ..etc.
@@ -335,12 +338,12 @@ WSqlResult *result = db.result();
 </dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>WSqlResult* contains the result set </dd></dl>
 
-<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd></dd></dl>
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd></dd></dl>
 </p>
 
 <p>Reimplemented from <a class="el" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">WSql::WSqlDriver</a>.</p>
 
-<p>Definition at line <a class="el" href="wmysqldriver_8cpp_source.html#l00213">213</a> of file <a class="el" href="wmysqldriver_8cpp_source.html">wmysqldriver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="wmysqldriver_8cpp_source.html#l00215">215</a> of file <a class="el" href="wmysqldriver_8cpp_source.html">wmysqldriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -378,7 +381,7 @@ WSqlResult *result = db.result();
         std::cout &lt;&lt; <span class="stringliteral">&quot;  * Autoincrement:  &quot;</span>  &lt;&lt; (column.<a class="code" href="class_w_sql_1_1_w_sql_column.html#aa1554dddff2918b50300794905f3edbc">isAutoIncremented</a>()?<span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>) &lt;&lt; std::endl;
         std::cout &lt;&lt; <span class="stringliteral">&quot;  * default value:  &quot;</span>  &lt;&lt; column.<a class="code" href="class_w_sql_1_1_w_sql_column.html#a55feefa5aa00a43a8c8e09a517414047">defaultValue</a>&lt;std::string&gt;() &lt;&lt; std::endl;
     }
-</pre></div><dl class="warning"><dt><b>Warning:</b></dt><dd>If the table metadata has not been initialized yet this method will invalidate any previous <a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> pointer returned - in this case nesting calls to this method inside of a loop iterating over WSqlResults WILL NOT WORK. Obtain the <a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <em>first</em> and <em>then</em> <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a4882c4ca53347df844e97fe360e1821a" title="Sends the SQL in sqlstring to the server for execution.">execute()</a> a query and fetch the result set using <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result()</a> or use <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9bd1765f14443afbb875981321d4c529" title="Initializes the metadata for all tables in the database.">WSqlDatabase::initMetaData()</a> to initialize the metadata for all tables at once.</dd></dl>
+</pre></div><dl class="warning"><dt><b>Warning:</b></dt><dd>If the table metadata has not been initialized yet this method will invalidate any previous <a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> pointer returned - in this case nesting calls to this method inside of a loop iterating over WSqlResults WILL NOT WORK. Obtain the <a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <em>first</em> and <em>then</em> <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a16cbd55969cbe2421bcc5ebe2dd0d677" title="Sends the SQL in sqlstring to the server for execution.">query()</a> a query and fetch the result set using <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result()</a> or use <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9bd1765f14443afbb875981321d4c529" title="Initializes the metadata for all tables in the database.">WSqlDatabase::initMetaData()</a> to initialize the metadata for all tables at once.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">string</td><td>the name of the table to use </td></tr>
@@ -388,9 +391,12 @@ WSqlResult *result = db.result();
 <dl class="return"><dt><b>Returns:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> an object containing metadata </dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <a class="el" href="class_w_sql_1_1_w_sql_column.html" title="The WSqlColumn class represents a column in SQL database tables.">WSqlColumn</a> </dd></dl>
 
+<p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>change to use strings, defined? and test clm.setColumnName(record.field("Field").data&lt;std::string&gt;()); initColumnType(clm, record.field("Type").data&lt;std::string&gt;()); bool nullable = ! (record.field("Null").data&lt;std::string&gt;().compare("NO") == 0); bool primarykey = (record.field("Key").data&lt;std::string&gt;().compare("PRI") == 0); clm.setDefaultValue( record.field("Default").data&lt;std::string&gt;()); bool isauto = (record.field("Extra").data&lt;std::string&gt;().find("auto_increment") != std::string::npos); </dd></dl>
+</p>
+
 <p>Implements <a class="el" href="class_w_sql_1_1_w_sql_driver.html#a2574f1f0d2083f1b0e05f4721f870a74">WSql::WSqlDriver</a>.</p>
 
-<p>Definition at line <a class="el" href="wmysqldriver_8cpp_source.html#l00332">332</a> of file <a class="el" href="wmysqldriver_8cpp_source.html">wmysqldriver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="wmysqldriver_8cpp_source.html#l00335">335</a> of file <a class="el" href="wmysqldriver_8cpp_source.html">wmysqldriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -420,7 +426,7 @@ WSqlResult *result = db.result();
 
 <p>Implements <a class="el" href="class_w_sql_1_1_w_sql_driver.html#adc7f0845587544ad92e3079542e844db">WSql::WSqlDriver</a>.</p>
 
-<p>Definition at line <a class="el" href="wmysqldriver_8cpp_source.html#l00272">272</a> of file <a class="el" href="wmysqldriver_8cpp_source.html">wmysqldriver.cpp</a>.</p>
+<p>Definition at line <a class="el" href="wmysqldriver_8cpp_source.html#l00275">275</a> of file <a class="el" href="wmysqldriver_8cpp_source.html">wmysqldriver.cpp</a>.</p>
 
 </div>
 </div>
@@ -443,7 +449,7 @@ WSqlResult *result = db.result();
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:35 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 21:01:46 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

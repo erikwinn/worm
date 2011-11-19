@@ -187,30 +187,31 @@ function toggleVisibility(linkObj) {
 <a name="l00085"></a>00085     <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_sql_database.html#a9bd1765f14443afbb875981321d4c529" title="Initializes the metadata for all tables in the database.">initMetaData</a>();
 <a name="l00086"></a>00086    
 <a name="l00087"></a>00087     <span class="comment">//Query interaction - wrapper around driver ..</span>
-<a name="l00088"></a>00088     <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_database.html#a7e7270ae59e6bbe220a19f2e6bc06e22">execute</a>(<span class="keyword">const</span> std::string&amp; sql );
-<a name="l00089"></a>00089     <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a>* <a class="code" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">result</a>(<span class="keywordtype">bool</span> iscached=<span class="keyword">true</span>);
-<a name="l00090"></a>00090     <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_database.html#a1f865041c95b0962b614c219a918808e">initDriver</a>();
-<a name="l00091"></a>00091     
-<a name="l00092"></a>00092 <span class="keyword">private</span>:
-<a name="l00093"></a>00093     <span class="keywordtype">void</span> init();
-<a name="l00094"></a>00094     
-<a name="l00095"></a>00095     <span class="keywordtype">bool</span> _isValid;
-<a name="l00096"></a>00096     <a class="code" href="namespace_w_sql.html#ad184e6e363bbd3ea2b768ac8a013bf3c">WSql::DriverType</a> _driverType;
-<a name="l00097"></a>00097     <a class="code" href="class_w_sql_1_1_w_sql_driver.html" title="The WSqlDriver class is an abstract base class for database drivers.">WSqlDriver</a>* _driver;
-<a name="l00098"></a>00098     std::string _databaseName;
-<a name="l00099"></a>00099     std::string _userName;
-<a name="l00100"></a>00100     std::string _password;
-<a name="l00101"></a>00101     std::string _hostname;
-<a name="l00102"></a>00102     std::string _connectionOptions;
-<a name="l00103"></a>00103     <span class="keywordtype">int</span> _port;
-<a name="l00104"></a>00104 
-<a name="l00105"></a>00105     std::vector&lt;std::string&gt; _tableNames;
-<a name="l00106"></a>00106     std::vector&lt;WSqlError&gt; _errorStack; 
-<a name="l00107"></a>00107 };
-<a name="l00108"></a>00108 
-<a name="l00109"></a>00109 } <span class="comment">//namespace WSql</span>
-<a name="l00110"></a>00110 
-<a name="l00111"></a>00111 <span class="preprocessor">#endif // WSQLDATABASE_H</span>
+<a name="l00088"></a>00088     <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query</a>(<span class="keyword">const</span> std::string&amp; sql );
+<a name="l00089"></a>00089 <span class="comment">//    bool execute(const std::string&amp; sql );</span>
+<a name="l00090"></a>00090     <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a>* <a class="code" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">result</a>(<span class="keywordtype">bool</span> iscached=<span class="keyword">true</span>);
+<a name="l00091"></a>00091     <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_sql_database.html#a1f865041c95b0962b614c219a918808e">initDriver</a>();
+<a name="l00092"></a>00092     
+<a name="l00093"></a>00093 <span class="keyword">private</span>:
+<a name="l00094"></a>00094     <span class="keywordtype">void</span> init();
+<a name="l00095"></a>00095     
+<a name="l00096"></a>00096     <span class="keywordtype">bool</span> _isValid;
+<a name="l00097"></a>00097     <a class="code" href="namespace_w_sql.html#ad184e6e363bbd3ea2b768ac8a013bf3c">WSql::DriverType</a> _driverType;
+<a name="l00098"></a>00098     <a class="code" href="class_w_sql_1_1_w_sql_driver.html" title="The WSqlDriver class is an abstract base class for database drivers.">WSqlDriver</a>* _driver;
+<a name="l00099"></a>00099     std::string _databaseName;
+<a name="l00100"></a>00100     std::string _userName;
+<a name="l00101"></a>00101     std::string _password;
+<a name="l00102"></a>00102     std::string _hostname;
+<a name="l00103"></a>00103     std::string _connectionOptions;
+<a name="l00104"></a>00104     <span class="keywordtype">int</span> _port;
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106     std::vector&lt;std::string&gt; _tableNames;
+<a name="l00107"></a>00107     std::vector&lt;WSqlError&gt; _errorStack; 
+<a name="l00108"></a>00108 };
+<a name="l00109"></a>00109 
+<a name="l00110"></a>00110 } <span class="comment">//namespace WSql</span>
+<a name="l00111"></a>00111 
+<a name="l00112"></a>00112 <span class="preprocessor">#endif // WSQLDATABASE_H</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -227,7 +228,7 @@ function toggleVisibility(linkObj) {
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:35 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 21:01:45 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

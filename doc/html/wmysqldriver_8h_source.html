@@ -138,26 +138,27 @@ function toggleVisibility(linkObj) {
 <a name="l00036"></a>00036         <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a06098f6bc312f5afd28ef1b274aeb35e">~WMysqlDriver</a>();
 <a name="l00037"></a>00037         <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#ae53e50ad703fd76da1d34a52b5a844b8" title="Opens the connection to the database.">open</a>();
 <a name="l00038"></a>00038         <span class="keywordtype">void</span> <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a347c2c1642d3046292688980dfc5c96b" title="Closes the connection and deallocates MYSQL objects.">close</a>();
-<a name="l00039"></a>00039         <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a4882c4ca53347df844e97fe360e1821a" title="Sends the SQL in sqlstring to the server for execution.">execute</a>(std::string sql );
-<a name="l00040"></a>00040         <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a>* <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result</a>(<span class="keywordtype">bool</span> iscached=<span class="keyword">true</span>);
-<a name="l00041"></a>00041         <span class="comment">// WSqlResult exec(const WSqlQuery &amp;queryObject);</span>
-<a name="l00042"></a>00042         std::vector&lt;std::string&gt; <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#aa55eb7fb3c030f4d47aae5fe18435cb6" title="Returns a list of the table names in the current database.">tableNames</a>();
-<a name="l00043"></a>00043         <a class="code" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#aa770c3b864ee481dc6d83a1d4d49a164" title="Fetch metadata for table tableName.">tableMetaData</a>( <span class="keyword">const</span> std::string &amp;tableName );
-<a name="l00044"></a>00044         <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#af101556d203a540b00c53d58d6ed727e">isOpen</a>();
-<a name="l00045"></a>00045         
-<a name="l00046"></a>00046     <span class="keyword">private</span>:
-<a name="l00047"></a>00047         <span class="keywordtype">bool</span> init();
-<a name="l00048"></a>00048         std::string local_escape_string( std::string&amp; escapeme);
-<a name="l00049"></a>00049         <span class="keywordtype">void</span> initColumnType(<a class="code" href="class_w_sql_1_1_w_sql_column.html" title="The WSqlColumn class represents a column in SQL database tables.">WSqlColumn</a> &amp;clm, std::string description);
-<a name="l00050"></a>00050         
-<a name="l00051"></a>00051         MYSQL * _mysql;
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053 };
-<a name="l00054"></a>00054 
+<a name="l00039"></a>00039         <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a16cbd55969cbe2421bcc5ebe2dd0d677" title="Sends the SQL in sqlstring to the server for execution.">query</a>(std::string sql );
+<a name="l00040"></a>00040 <span class="comment">//        bool execute(std::string sql );</span>
+<a name="l00041"></a>00041         <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a>* <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result</a>(<span class="keywordtype">bool</span> iscached=<span class="keyword">true</span>);
+<a name="l00042"></a>00042         <span class="comment">// WSqlResult exec(const WSqlQuery &amp;queryObject);</span>
+<a name="l00043"></a>00043         std::vector&lt;std::string&gt; <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#aa55eb7fb3c030f4d47aae5fe18435cb6" title="Returns a list of the table names in the current database.">tableNames</a>();
+<a name="l00044"></a>00044         <a class="code" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#aa770c3b864ee481dc6d83a1d4d49a164" title="Fetch metadata for table tableName.">tableMetaData</a>( <span class="keyword">const</span> std::string &amp;tableName );
+<a name="l00045"></a>00045         <span class="keywordtype">bool</span> <a class="code" href="class_w_sql_1_1_w_mysql_driver.html#af101556d203a540b00c53d58d6ed727e">isOpen</a>();
+<a name="l00046"></a>00046         
+<a name="l00047"></a>00047     <span class="keyword">private</span>:
+<a name="l00048"></a>00048         <span class="keywordtype">bool</span> init();
+<a name="l00049"></a>00049         std::string local_escape_string( std::string&amp; escapeme);
+<a name="l00050"></a>00050         <span class="keywordtype">void</span> initColumnType(<a class="code" href="class_w_sql_1_1_w_sql_column.html" title="The WSqlColumn class represents a column in SQL database tables.">WSqlColumn</a> &amp;clm, std::string description);
+<a name="l00051"></a>00051         
+<a name="l00052"></a>00052         MYSQL * _mysql;
+<a name="l00053"></a>00053 
+<a name="l00054"></a>00054 };
 <a name="l00055"></a>00055 
-<a name="l00056"></a>00056 } <span class="comment">// namespace WSql</span>
-<a name="l00057"></a>00057 
-<a name="l00058"></a>00058 <span class="preprocessor">#endif // WMYSQLDRIVER_H</span>
+<a name="l00056"></a>00056 
+<a name="l00057"></a>00057 } <span class="comment">// namespace WSql</span>
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059 <span class="preprocessor">#endif // WMYSQLDRIVER_H</span>
 </pre></div></div>
 </div>
 <!--- window showing the filter options -->
@@ -174,7 +175,7 @@ function toggleVisibility(linkObj) {
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:34 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 21:01:45 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

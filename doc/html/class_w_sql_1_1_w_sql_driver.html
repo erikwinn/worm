@@ -142,7 +142,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys the driver and created resources.  <a href="#ad8c75e82dbe10f41eb7bd4e6a777e4d7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sql_driver.html#a2a1f251900715cd1e45aa7a565a57253">open</a> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sql_driver.html#a17afc1e43627a2a952e76d04420dead0">close</a> ()=0</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sql_driver.html#a49f611a105c8e32a9c6fb6540abc6b3f">execute</a> (std::string sql)=0</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sql_driver.html#ad15803a5c5d4e8e1d80fec885ed13203">query</a> (std::string sql)=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sql_driver.html#adc7f0845587544ad92e3079542e844db">tableNames</a> ()=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_w_sql_1_1_w_sql_table.html">WSqlTable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sql_driver.html#a2574f1f0d2083f1b0e05f4721f870a74">tableMetaData</a> (const std::string &amp;tableName)=0</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_w_sql_1_1_w_sql_result.html">WSqlResult</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">result</a> (bool iscached=true)</td></tr>
@@ -267,28 +267,7 @@ Friends</h2></td></tr>
 <div class="memdoc">
 <p>Returns a <a class="el" href="class_w_sql_1_1_w_sql_error.html" title="The WSqlError class provides SQL database and driver error information.">WSqlError</a> object which contains information about the last error that occurred on the database. </p>
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00048">48</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a49f611a105c8e32a9c6fb6540abc6b3f"></a><!-- doxytag: member="WSql::WSqlDriver::execute" ref="a49f611a105c8e32a9c6fb6540abc6b3f" args="(std::string sql)=0" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool WSql::WSqlDriver::execute </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>sql</em></td><td>)</td>
-          <td><code> [pure virtual]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<p>Executes the SQL statement in <em>sql</em> and returns true if there were no errors. Note that if the query was a SELECT expecting results the <a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> is initiated before return and can be accesses using <a class="el" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">result()</a>. If there were no records returned <a class="el" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">result()</a> will return an empty result. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> <a class="el" href="class_w_sql_1_1_w_sql_driver.html#ae5670416af2dc36911bc29478e5ad0e3">result()</a> </dd></dl>
-
-<p>Implemented in <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a4882c4ca53347df844e97fe360e1821a">WSql::WMysqlDriver</a>, and <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a28493217522e636eaf144f41ed3fbdd1">WSql::WSqliteDriver</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00049">49</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -375,7 +354,7 @@ Friends</h2></td></tr>
 <div class="memdoc">
 <p>Returns true if the there was an error during the last action, otherwise returns false. </p>
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00054">54</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00055">55</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -394,7 +373,7 @@ Friends</h2></td></tr>
 <div class="memdoc">
 <p>Returns true if the database connection is open; otherwise returns false. </p>
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00050">50</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00051">51</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -412,7 +391,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00049">49</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00050">50</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -437,6 +416,25 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ad15803a5c5d4e8e1d80fec885ed13203"></a><!-- doxytag: member="WSql::WSqlDriver::query" ref="ad15803a5c5d4e8e1d80fec885ed13203" args="(std::string sql)=0" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool WSql::WSqlDriver::query </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>sql</em></td><td>)</td>
+          <td><code> [pure virtual]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Implemented in <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a16cbd55969cbe2421bcc5ebe2dd0d677">WSql::WMysqlDriver</a>, and <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a4ba7ea260dd263e74d9c16c58e655434">WSql::WSqliteDriver</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ae5670416af2dc36911bc29478e5ad0e3"></a><!-- doxytag: member="WSql::WSqlDriver::result" ref="ae5670416af2dc36911bc29478e5ad0e3" args="(bool iscached=true)" -->
 <div class="memitem">
 <div class="memproto">
@@ -454,7 +452,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b">WSql::WMysqlDriver</a>, and <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a1cf0f135668cdd8299995c1ffff72724">WSql::WSqliteDriver</a>.</p>
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00047">47</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00048">48</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -473,26 +471,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00057">57</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab1e89214bd9e0d8c9c0caaae52036287"></a><!-- doxytag: member="WSql::WSqlDriver::setError" ref="ab1e89214bd9e0d8c9c0caaae52036287" args="(const std::string &amp;text)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WSql::WSqlDriver::setError </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>text</em></td><td>)</td>
-          <td><code> [inline, protected]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00073">73</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00058">58</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -539,7 +518,26 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00076">76</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00077">77</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab1e89214bd9e0d8c9c0caaae52036287"></a><!-- doxytag: member="WSql::WSqlDriver::setError" ref="ab1e89214bd9e0d8c9c0caaae52036287" args="(const std::string &amp;text)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WSql::WSqlDriver::setError </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td><code> [inline, protected]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00074">74</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -611,7 +609,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00066">66</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00067">67</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -630,7 +628,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00065">65</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00066">66</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -649,7 +647,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00064">64</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00065">65</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -705,7 +703,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00060">60</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00061">61</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -721,7 +719,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00078">78</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00079">79</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -736,7 +734,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00079">79</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00080">80</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -751,7 +749,7 @@ Friends</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00080">80</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
+<p>Definition at line <a class="el" href="wsqldriver_8h_source.html#l00081">81</a> of file <a class="el" href="wsqldriver_8h_source.html">wsqldriver.h</a>.</p>
 
 </div>
 </div>
@@ -774,7 +772,7 @@ Friends</h2></td></tr>
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:36 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 21:01:46 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

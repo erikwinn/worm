@@ -95,7 +95,7 @@ function toggleVisibility(linkObj) {
 <h1>Todo List </h1>  </div>
 </div>
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="_todo000017"></a> </p>
+<div class="textblock"><p><a class="anchor" id="_todo000019"></a> </p>
 <dl>
 <dt>Namespace <a class="el" href="namespace_w_sql.html">WSql</a>  </dt>
 <dd><p class="startdd">FINISH ME .. comments </p>
@@ -114,10 +114,20 @@ function toggleVisibility(linkObj) {
 </dl>
 <p><a class="anchor" id="_todo000009"></a> </p>
 <dl>
+<dt>Member <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a16cbd55969cbe2421bcc5ebe2dd0d677">WSql::WMysqlDriver::query</a> (std::string sql) </dt>
+<dd>RESOLVE - this also escapes LIKE quotes .. need a way to handle this, ie. a general escape/sanitizer method somewhere .. </dd>
+</dl>
+<p><a class="anchor" id="_todo000010"></a> </p>
+<dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b">WSql::WMysqlDriver::result</a> (bool iscached=true) </dt>
 <dd></dd>
 </dl>
 <p><a class="anchor" id="_todo000011"></a> </p>
+<dl>
+<dt>Member <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#aa770c3b864ee481dc6d83a1d4d49a164">WSql::WMysqlDriver::tableMetaData</a> (const std::string &amp;tableName) </dt>
+<dd>change to use strings, defined? and test clm.setColumnName(record.field("Field").data&lt;std::string&gt;()); initColumnType(clm, record.field("Type").data&lt;std::string&gt;()); bool nullable = ! (record.field("Null").data&lt;std::string&gt;().compare("NO") == 0); bool primarykey = (record.field("Key").data&lt;std::string&gt;().compare("PRI") == 0); clm.setDefaultValue( record.field("Default").data&lt;std::string&gt;()); bool isauto = (record.field("Extra").data&lt;std::string&gt;().find("auto_increment") != std::string::npos); </dd>
+</dl>
+<p><a class="anchor" id="_todo000013"></a> </p>
 <dl>
 <dt>Class <a class="el" href="class_w_sql_1_1_w_mysql_result.html">WSql::WMysqlResult</a>  </dt>
 <dd>uncached results if possible.</dd>
@@ -137,114 +147,114 @@ function toggleVisibility(linkObj) {
 <dt>Member <a class="el" href="class_w_sql_1_1_worm_code_template.html#a777365c4f3a57595c2a7e350a2ed3061">WSql::WormCodeTemplate::setUri</a> (const std::string &amp;uri) </dt>
 <dd>NOT PORTABLE, FIXME </dd>
 </dl>
-<p><a class="anchor" id="_todo000020"></a> </p>
+<p><a class="anchor" id="_todo000022"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_column.html#a1c346bc7c3fff1c4733deb8b1a400aa5">WSql::WSqlColumn::setPrecision</a> (int precision) </dt>
 <dd>the note above ..</dd>
 </dl>
-<p><a class="anchor" id="_todo000019"></a> </p>
+<p><a class="anchor" id="_todo000021"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_column.html#ad90fa7cdd5fb169e29080c8a653a07d5">WSql::WSqlColumn::WSqlColumn</a> (const WSqlColumn &amp;other) </dt>
 <dd>test this!! </dd>
 </dl>
-<p><a class="anchor" id="_todo000021"></a> </p>
+<p><a class="anchor" id="_todo000023"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_dabatase_manager.html#aa04c72c0d0183b6df50207b2bc204d16">WSql::WSqlDabataseManager::operator==</a> (const WSqlDabataseManager &amp;other) const  </dt>
 <dd>return ...; </dd>
 </dl>
-<p><a class="anchor" id="_todo000022"></a> </p>
+<p><a class="anchor" id="_todo000024"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_database.html#a1c943c000ea384846c7d4d77c3513afb">WSql::WSqlDatabase::hasError</a> () const  </dt>
 <dd>resolve this - there is also the local errorStack .. </dd>
 </dl>
-<p><a class="anchor" id="_todo000023"></a> </p>
+<p><a class="anchor" id="_todo000025"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_database.html#a86df7db5900c3a2d1483375195c7b025">WSql::WSqlDatabase::tableNames</a> (<a class="el" href="namespace_w_sql.html#a2860958b4a0664bf26cd4959a7aaace8">WSql::TableType</a> type=WSql::Tables) </dt>
 <dd><p class="startdd">.. decide if we use this .. </p>
 <p class="enddd">Use the table type - currently does nothing.</p>
 </dd>
 </dl>
-<p><a class="anchor" id="_todo000027"></a> </p>
+<p><a class="anchor" id="_todo000029"></a> </p>
 <dl>
 <dt>Member <a class="el" href="namespace_w_sql_1_1_w_sql_data_type.html#a39c84fd2f9796e1f4756cd39b1f5c8b3">WSql::WSqlDataType::toPlural</a> (const std::string &amp;name) </dt>
 <dd>make me a little smarter .. people, fish, sheep etc. </dd>
 </dl>
-<p><a class="anchor" id="_todo000026"></a> </p>
+<p><a class="anchor" id="_todo000028"></a> </p>
 <dl>
 <dt>Member <a class="el" href="namespace_w_sql_1_1_w_sql_data_type.html#aaf165908fa41cfac90c81102ebfca691">WSql::WSqlDataType::toSingular</a> (const std::string &amp;name) </dt>
 <dd>add intelligence: std::string cmp = boost::to_lower_copy(strToReturn); if(cmp.compare("people") .. or some such .. </dd>
 </dl>
-<p><a class="anchor" id="_todo000025"></a> </p>
+<p><a class="anchor" id="_todo000027"></a> </p>
 <dl>
 <dt>Member <a class="el" href="namespace_w_sql_1_1_w_sql_data_type.html#acbadabc5065b07d87fac5fda92805847">WSql::WSqlDataType::toType</a> (std::string name) </dt>
 <dd>intelligence - support more type names, translate to ours .. </dd>
 </dl>
-<p><a class="anchor" id="_todo000029"></a> </p>
+<p><a class="anchor" id="_todo000031"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_datum.html#a11b3692a26f55c315157593158956093">WSql::WSqlDatum::data</a> () const  </dt>
 <dd>handle exception </dd>
 </dl>
-<p><a class="anchor" id="_todo000028"></a> </p>
+<p><a class="anchor" id="_todo000030"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_datum.html#a0ce4bb3b7cfde0bd437a4943a36701f8">WSql::WSqlDatum::setData</a> (const T t) </dt>
 <dd>handle exception </dd>
 </dl>
-<p><a class="anchor" id="_todo000030"></a> </p>
+<p><a class="anchor" id="_todo000032"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_driver_factory.html#a54b7c1a41ff9f01c051070fae6f1155e">WSql::WSqlDriverFactory::operator==</a> (const WSqlDriverFactory &amp;other) const  </dt>
 <dd>return ...; </dd>
 </dl>
-<p><a class="anchor" id="_todo000032"></a> </p>
+<p><a class="anchor" id="_todo000034"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_field.html#a3f48248a0281a2beb96cecde18185bd1">WSql::WSqlField::data</a> () </dt>
 <dd>decide if WSqlField needs/supports this (and other metadata) - also readOnly and so on .. </dd>
 </dl>
-<p><a class="anchor" id="_todo000031"></a> </p>
+<p><a class="anchor" id="_todo000033"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_field.html#a811c3e5bc9c0dad605d1bbfc1856e495">WSql::WSqlField::setData</a> (std::string s) </dt>
 <dd>implement that last sentence . set precision is tbd. To set the value to NULL, use clear().</dd>
 </dl>
-<p><a class="anchor" id="_todo000012"></a> </p>
-<dl>
-<dt>Class <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html">WSql::WSqliteDriver</a>  </dt>
-<dd>This driver is unfinished. Basic functionality is there but it is not, ah, elegant. Metadata is incomplete, all results are cached locally and there may be strange behavior. Basically I have done enough to get sufficient metadata for the ORM generator (except foreign keys and indices still) and execute() will perform the query and return a result via result(). tableNames() works and tableMetaData() works as well (with the above caveats). Transactions are not supported and I seriously doubt that this is thread safe. It quite is crude at the moment - your milage may vary. It _might_ work for you but at this point I don't recommend it for production (10/10/2011)</dd>
-</dl>
 <p><a class="anchor" id="_todo000014"></a> </p>
 <dl>
-<dt>Member <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a28493217522e636eaf144f41ed3fbdd1">WSql::WSqliteDriver::execute</a> (std::string sql) </dt>
-<dd>refactor this using metadata to construct a proper result set .. </dd>
+<dt>Class <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html">WSql::WSqliteDriver</a>  </dt>
+<dd>This driver is unfinished. Basic functionality is there but it is not, ah, elegant. Metadata is incomplete, all results are cached locally and there may be strange behavior. Basically I have done enough to get sufficient metadata for the ORM generator (except indices still) and query() will perform the query and return a result via result(). tableNames() works and tableMetaData() works as well (with the above caveats). Transactions are not supported and I seriously doubt that this is thread safe. It quite is crude at the moment - your milage may vary. It _might_ work for you but at this point I don't recommend it for production (10/10/2011)</dd>
 </dl>
-<p><a class="anchor" id="_todo000015"></a> </p>
+<p><a class="anchor" id="_todo000016"></a> </p>
+<dl>
+<dt>Member <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#a4ba7ea260dd263e74d9c16c58e655434">WSql::WSqliteDriver::query</a> (std::string sql) </dt>
+<dd>refactor this using metadata to construct a proper result set .. sqlite doesn't return things in orderly fashion - if a field is empty (i.e. NULL) it just doesn't include it in the results (ARG!), i _think_ and other strange random behavior is observed ..- so, we need to construct a skeleton result set from metadata and then fill it leaving the appropriate gaps such that the field name will _always_ be there. We can't simply refer to tableMetaData as it may be a join or such - which would mean parsing the query, etc..ugly The problem is that we cannot rely on sqlite to return metadata if, for instance, the query returns no results.. Consider using sqlite3_column_metadata. Also, some of this might be better moved to result()</dd>
+</dl>
+<p><a class="anchor" id="_todo000017"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html#aa7796f2d18f519f24016a9fa1f9e2f0b">WSql::WSqliteDriver::tableNames</a> () </dt>
 <dd>support table type flag .. views, information schema </dd>
 </dl>
-<p><a class="anchor" id="_todo000036"></a> </p>
+<p><a class="anchor" id="_todo000038"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_record.html#a6359bd78351e9ddb536114117c26890b">WSql::WSqlRecord::fields</a> () const  </dt>
 <dd>THIS maybe should be const std::vector&lt;WSqlField *&gt;&amp; fields() const {return _fields;}; </dd>
 </dl>
-<p><a class="anchor" id="_todo000035"></a> </p>
+<p><a class="anchor" id="_todo000037"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_record.html#afed2c8e2bf71e773610fa57cc574b9a5">WSql::WSqlRecord::operator==</a> (const WSqlRecord &amp;other) const  </dt>
 <dd></dd>
 </dl>
-<p><a class="anchor" id="_todo000037"></a> </p>
+<p><a class="anchor" id="_todo000039"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_record.html#ad55c83e8c1652f6acbe8ec077330b690">WSql::WSqlRecord::setNull</a> (int i) </dt>
 <dd>template &lt;typename t&gt;=""&gt; void setData( T t, int pos ) { </dd>
 </dl>
-<p><a class="anchor" id="_todo000034"></a> </p>
+<p><a class="anchor" id="_todo000036"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_record.html#a4d225654e0fb640a88ba0062838d4447">WSql::WSqlRecord::~WSqlRecord</a> () </dt>
 <dd></dd>
 </dl>
-<p><a class="anchor" id="_todo000040"></a> </p>
+<p><a class="anchor" id="_todo000042"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_result.html#ac2dd0ab98c7d237618cdd799050133c3">WSql::WSqlResult::addRecord</a> (WSqlRecord &amp;r) </dt>
 <dd>virtual bool operator==(const WSqlResult&amp; other) const; </dd>
 </dl>
-<p><a class="anchor" id="_todo000039"></a> </p>
+<p><a class="anchor" id="_todo000041"></a> </p>
 <dl>
 <dt>Member <a class="el" href="class_w_sql_1_1_w_sql_result.html#a072ee774635213477bbf28e7f8e1b8ae">WSql::WSqlResult::seek</a> (int i, bool relative=false) </dt>
 <dd>test this </dd>
@@ -264,7 +274,7 @@ function toggleVisibility(linkObj) {
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 15:17:35 for WORM by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Fri Nov 18 2011 21:01:45 for WORM by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.3 </small></address>
 </body>

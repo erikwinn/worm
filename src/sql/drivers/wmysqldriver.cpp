@@ -187,8 +187,9 @@ bool WMysqlDriver::query(std::string sqlstring )
  
  The parameter \a iscached may be set to true to indicate a non-cached result
  set that will be fetched row by row - the default is true and results are cached.
+ (currently uncached results are not yet supported).
  
- \note Only use this \em after an query() query! Do not use twice in a row as it will delete
+ \note Only use this \em after a call to query()! Do not use twice in a row as it will delete
  the previous result and return a newly created object. Example:
 
 \code
@@ -250,6 +251,7 @@ WSqlResult* WMysqlDriver::result( bool iscached )
             }
             _result->addRecord(record);
         }
+        //note that the MYSQL_RES is stored in our result, not freed here..
        static_cast<WMysqlResult *>(_result)->setResult(res);
        _result->setIsValid(true);
     }
@@ -341,7 +343,7 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
     
     std::vector<std::string> column_names;
     std::vector<std::string>::const_iterator column_names_it;
-    std::string sql("show columns in ");sql.append(tableName);
+    std::string sql("show columns in "); sql.append(tableName);
     query(sql);
     result();
     WSqlColumn clm;

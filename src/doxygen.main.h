@@ -181,17 +181,18 @@ it was built with the shared libraries:
  *
  * Note that the library API is still unstable and may change.
  *
- * wormgen.cpp itself is quite simple and provides the best example of using the
+ * wormgen.cpp itself is quite simple and provides a quick example of using the
  * library - additionally, WormClassGenerator shows usage of the metadata
- * aspects of the library. libworm can be used for basic database access, queries
+ * aspects of the library. libworm can also be used for basic database access, queries
  * and generic result sets - but it is currently intended primarily for the ORM
  * generator. The library does not support transactions, and all results are cached
  * locally in one call.
  *
- * There are some small example programs under examples/ - I recommend
- * starting with these.  Also, the library code is heavily commented - if you have
- * doxygen installed the Doxyfile will generate HTML documentation
- * under doc/.  Until the API is stablelized and "real" documentation written
- * the best course is experimentation and "read the source, Luke!"
+ * There are also some small example programs under examples/ - I recommend
+ * starting with these.  Also, the library code is heavily commented -and there is
+ * HTML documentation under doc/html.  Until the API is stablized and "real"
+ * documentation written the best course is experimentation and "reading the
+ * source, Luke!" - the DAL functions available are documented in comments but
+ * not yet stable so your mileage may vary.
  *
  */

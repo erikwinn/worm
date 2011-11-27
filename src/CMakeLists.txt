@@ -19,11 +19,15 @@ orm/wormcodetemplate.cpp
 orm/wormclassgenerator.cpp
 )
 
-add_library(worm ${LIBSRC})
+#switch these next two lines to build a shared library instead ..
 #add_library(worm SHARED ${LIBSRC})
-target_link_libraries(worm sqlite3 mysqlclient ctemplate_nothreads)
+add_library(worm ${LIBSRC})
+
+target_link_libraries(worm ${CTEMPLATE_LIBRARIES} ${SQLITE3_LIBRARIES} ${MYSQL_LIBRARIES} )
+
 add_executable(wormgen wormgen.cpp)
 target_link_libraries(wormgen worm)
+
 install(TARGETS wormgen worm 
             RUNTIME DESTINATION bin
             LIBRARY DESTINATION lib

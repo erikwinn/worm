@@ -1,0 +1,70 @@
+# This module defines:
+# - CTEMPLATE_INCLUDE_DIR - Where to find Ctemplate header files (directory)
+# - CTEMPLATE_LIBRARIES - CTemplate libraries
+# - CTEMPLATE_LIBRARY_RELEASE - Where the release library is
+# - CTEMPLATE_LIBRARY_DEBUG - Where the debug library is
+# - CTEMPLATE_FOUND - Set to TRUE if we found everything
+#   (library, includes and executable)
+# Taking into account:
+# - CTEMPLATE_PREFIX
+#
+# Note: this only looks for the nothreads version for linking - alter to suit below..
+
+IF( CTEMPLATE_INCLUDE_DIR AND CTEMPLATE_LIBRARY_RELEASE AND CTEMPLATE_LIBRARY_DEBUG )
+    SET(CTEMPLATE_FIND_QUIETLY TRUE)
+ENDIF( CTEMPLATE_INCLUDE_DIR AND CTEMPLATE_LIBRARY_RELEASE AND CTEMPLATE_LIBRARY_DEBUG )
+
+FIND_PATH(CTEMPLATE_INCLUDE_DIR
+    template.h
+  PATHS
+    ${CTEMPLATE_PREFIX}/include
+    /usr/include/ctemplate
+    /usr/local/include/ctemplate
+)
+
+FIND_LIBRARY(CTEMPLATE_LIBRARY_RELEASE
+  NAMES
+    ctemplate_nothreads
+  PATHS
+    ${CTEMPLATE_PREFIX}/lib
+    /usr/lib
+    /usr/local/lib
+)
+
+FIND_LIBRARY(CTEMPLATE_LIBRARY_DEBUG
+  NAMES
+    ctemplate_nothreads
+)
+
+IF( CTEMPLATE_LIBRARY_RELEASE OR CTEMPLATE_LIBRARY_DEBUG AND CTEMPLATE_INCLUDE_DIR )
+    SET( CTEMPLATE_FOUND TRUE )
+ENDIF( CTEMPLATE_LIBRARY_RELEASE OR CTEMPLATE_LIBRARY_DEBUG AND CTEMPLATE_INCLUDE_DIR )
+
+IF( CTEMPLATE_LIBRARY_DEBUG AND CTEMPLATE_LIBRARY_RELEASE )
+    # if the generator supports configuration types then set
+    # optimized and debug libraries, or if the CMAKE_BUILD_TYPE has a value
+    IF( CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE )
+        SET( CTEMPLATE_LIBRARIES optimized ${CTEMPLATE_LIBRARY_RELEASE} debug ${CTEMPLATE_LIBRARY_DEBUG} )
+    ELSE( CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE )
+    # if there are no configuration types and CMAKE_BUILD_TYPE has no value
+    # then just use the release libraries
+        SET( CTEMPLATE_LIBRARIES ${CTEMPLATE_LIBRARY_RELEASE} )
+    ENDIF( CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE )
+ELSEIF( CTEMPLATE_LIBRARY_RELEASE )
+    SET( CTEMPLATE_LIBRARIES ${CTEMPLATE_LIBRARY_RELEASE} )
+ELSE( CTEMPLATE_LIBRARY_DEBUG AND CTEMPLATE_LIBRARY_RELEASE )
+    SET( CTEMPLATE_LIBRARIES ${CTEMPLATE_LIBRARY_DEBUG} )
+ENDIF( CTEMPLATE_LIBRARY_DEBUG AND CTEMPLATE_LIBRARY_RELEASE )
+
+IF( CTEMPLATE_FOUND )
+    IF( NOT CTEMPLATE_FIND_QUIETLY )
+        MESSAGE( STATUS "Found ctemplate header file in ${CTEMPLATE_INCLUDE_DIR}")
+        MESSAGE( STATUS "Found ctemplate libraries: ${CTEMPLATE_LIBRARIES}")
+    ENDIF( NOT CTEMPLATE_FIND_QUIETLY )
+ELSE(CTEMPLATE_FOUND)
+    IF( CTEMPLATE_FIND_REQUIRED)
+        MESSAGE( FATAL_ERROR "Could not find ctemplate" )
+    ELSE( CTEMPLATE_FIND_REQUIRED)
+        MESSAGE( STATUS "Optional package ctemplate was not found" )
+    ENDIF( CTEMPLATE_FIND_REQUIRED)
+ENDIF(CTEMPLATE_FOUND)

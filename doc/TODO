@@ -3,13 +3,14 @@ In addition to misc punchlist items flagged in the code:
 
 * always, documentation can be improved ..
 * unit tests
-* some optimization 
+* some optimization
+* pimpls
+* clean up copy and assignment operators 
 * Possibly: revert to a varient style WSqlDatum. In any case, handle bad casts
 * Possibly: move from WSqlError to WSqlException .. including a backtrace stack, this would
 provide much more meaningful errors which might be displayed on a web page for 
 developers.
 * Implement many to many support (class ManyToManyRelationship)
-* Implement 
 * Implement type table support
 * wormgen:
     - manytomany

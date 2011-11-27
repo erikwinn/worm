@@ -24,7 +24,7 @@ add_library(worm ${LIBSRC})
 target_link_libraries(worm sqlite3 mysqlclient ctemplate_nothreads)
 add_executable(wormgen wormgen.cpp)
 target_link_libraries(wormgen worm)
-install(TARGETS wormgen worm
+install(TARGETS wormgen worm 
             RUNTIME DESTINATION bin
             LIBRARY DESTINATION lib
             ARCHIVE DESTINATION lib)

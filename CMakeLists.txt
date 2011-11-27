@@ -9,14 +9,17 @@ ${CMAKE_SOURCE_DIR}/src/sql
 ${CMAKE_SOURCE_DIR}/src/sql/drivers
 )
 
-INCLUDE(build/FindMySQL.cmake)
+#SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+INCLUDE(cmake/FindMySQL.cmake)
+include(cmake/FindSqlite3.cmake)
 
 find_package(Boost)
 
 #ADD_DEFINITIONS(-Wall -O2)
 ADD_DEFINITIONS(-Wall -g)
 
-include_directories( ${Boost_INCLUDE_DIRS} ${WORM_INCLUDE_DIRS})
+
+include_directories( ${Boost_INCLUDE_DIRS} ${WORM_INCLUDE_DIRS} ${SQLITE3_INCLUDE_DIR})
 
 add_subdirectory(src)
 install(FILES src/orm/templates/class_declaration.tpl DESTINATION share/worm)

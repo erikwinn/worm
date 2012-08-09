@@ -59,13 +59,13 @@ namespace WSql {
 /*!
     \brief Constructs an empty WSqlError instance 
     \note The type and severity are set to UNKNOWN and NONE  and 
-    errno is -1 by default. 
+    error_number is -1 by default. 
     Use setType(), setSeverity() and setErrorNumber() to change this or a 
     constructor with the full set of arguments.
 */
 WSqlError::WSqlError()
 {
-	_errno = -1;
+	_error_number = -1;
 	_text = std::string();
 	_type = UNKNOWN;
 	_severity = NONE;
@@ -73,7 +73,7 @@ WSqlError::WSqlError()
 
 /*!
     \brief Constructs an error containing the text \a text of ErrorType \a type
-    \note The severity is set to MESSAGE  and  errno to -1 by default. 
+    \note The severity is set to MESSAGE  and  error_number to -1 by default. 
     Use setSeverity() and setErrorNumber() to change this or a 
     constructor with the full set of arguments.
     
@@ -86,23 +86,23 @@ WSqlError::WSqlError(const std::string& text, WSqlError::ErrorType type)
 	_text = text;
 	_type = type;
 	_severity = MESSAGE;
-	_errno = -1;
+	_error_number = -1;
 }
 /*!
     \brief Constructs a fully populated error object 
     
     Constructs an error containing the text \a text of ErrorType \a type and ErrorSeverity
-    \a severity with the error number errno (usually from the database server ..).
+    \a severity with the error number error_number (usually from the database server ..).
     
     \param string the message
-    \param int errno - the error number
+    \param int error_number - the error number
     \param ErrorType type - the type flag
     \param ErrorSeverity severity - the severity flag
 */
-WSqlError::WSqlError(const std::string& text, int errno, WSqlError::ErrorType type, WSqlError::ErrorSeverity severity)
+WSqlError::WSqlError(const std::string& text, int error_number, WSqlError::ErrorType type, WSqlError::ErrorSeverity severity)
 {
 	_text=text;
-	_errno=errno;
+	_error_number=error_number;
 	_type=type;
 	_severity=severity;
 }
@@ -111,7 +111,7 @@ WSqlError::WSqlError(const std::string& text, int errno, WSqlError::ErrorType ty
 */
 WSqlError::WSqlError(const WSqlError& other)
 {
-	_errno = other._errno;
+	_error_number = other._error_number;
 	_text = other._text;
 	_severity = other._severity;
 	_type = other._type;
@@ -120,7 +120,7 @@ WSqlError::WSqlError(const WSqlError& other)
 */
 WSqlError& WSqlError::operator=(const WSqlError& other)
 {
-	_errno = other._errno;
+	_error_number = other._error_number;
 	_text = other._text;
 	_severity = other._severity;
 	_type = other._type;
@@ -131,7 +131,7 @@ WSqlError& WSqlError::operator=(const WSqlError& other)
 bool WSqlError::operator==(const WSqlError& other)const
 {
 	return _text.compare(other._text) == 0
-				&& _errno == other._errno
+				&& _error_number == other._error_number
 				&& _type == other._type
 				&& _severity == other._severity;
 }
@@ -175,8 +175,8 @@ WSqlError::~WSqlError(){}
  * \retval ErrorType the type of this error
  */
 /*!
- *    \fn WSqlError::setErrorNumber(const int errno)
- *    \brief Sets the errorNumber to be \a errno
+ *    \fn WSqlError::setErrorNumber(const int error_number)
+ *    \brief Sets the errorNumber to be \a error_number
  */
 /*!
  *    \fn WSqlError::setText(const std::string& message )

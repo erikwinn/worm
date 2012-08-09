@@ -229,7 +229,9 @@ bool WSqlDatabase::initDriver()
 
 bool WSqlDatabase::open()
 {
-    return _driver->open();
+    if(_driver && _isValid)
+      return _driver->open();
+    return false;
 }
 
 /*!\brief Open a connection using \a username and \a password
@@ -246,7 +248,9 @@ bool WSqlDatabase::open(const std::string& username, const std::string& password
 {
     setUserName(username);
 	setPassword(password);
-    return _driver->open();
+    if(_driver && _isValid)
+      return _driver->open();
+    return false;
 }
 
 /*!
@@ -255,7 +259,8 @@ bool WSqlDatabase::open(const std::string& username, const std::string& password
 
 void WSqlDatabase::close()
 {
-    _driver->close();
+    if(_driver && _isValid)
+      _driver->close();
 }
 
 /*!
@@ -264,7 +269,9 @@ void WSqlDatabase::close()
 
 bool WSqlDatabase::isOpen() const
 {
-    return _driver->isOpen();
+    if(_driver && _isValid)
+      return _driver->isOpen();
+    return false;
 }
 
 /*!
@@ -275,7 +282,9 @@ bool WSqlDatabase::isOpen() const
 bool WSqlDatabase::hasError() const
 {
     //!\todo resolve this - there is also the local errorStack ..
-    return _driver->hasError();
+    if(_driver && _isValid)
+      return _driver->hasError();
+    return false;
 }
 
 
@@ -423,13 +432,19 @@ WSqlDriver* WSqlDatabase::driver() const
 }
 
 /*!
- *    Returns the last error that occurred on the database or in the driver. 
+ *    Returns the last error that occurred on the database or in the driver.
+ * \todo resolve this - decide what to do about the local error stack ..
  *    \sa WSqlError
+ * 
  */
 
 WSqlError WSqlDatabase::error() const
 {
+  if(_driver && _isValid)
     return _driver->error();
+  else if(! _errorStack.empty() )
+    return _errorStack.pop_back();
+  return WSqlError();
 }
 
 /*!

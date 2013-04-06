@@ -42,8 +42,8 @@ class WMysqlResult : public WSqlResult
         bool isCached() {return _isCached; }
         int size()const {return _records.size(); }
         int count()const {return size(); }
-        bool empty()const { return _records.empty();}
-        bool hasOutValues() const { return !empty();}
+        bool isEmpty()const { return _records.empty();}
+        bool hasOutValues() const { return !isEmpty();}
 
         void clear() { _records.clear(); }
 

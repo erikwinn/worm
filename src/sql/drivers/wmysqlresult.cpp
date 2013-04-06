@@ -23,36 +23,36 @@ namespace WSql
 
 /*!\class WMysqlResult - a result set object for MySQL
     * \brief WMysqlResult is the type of result set used by the MySQL driver
-    * 
+    *
     * \note Results from mysql are _always_ cached at the moment so this class is mostly
     * a stub - no methods have been implemented.
-    * 
+    *
     * \todo uncached results if possible.
-    * 
+    *
     *    \ingroup WSql
     *    \sa WSqlResult
-    */    
-WMysqlResult::WMysqlResult( const WSql::WSqlDriver* driver ): WSqlResult( driver )
+    */
+WMysqlResult::WMysqlResult ( const WSql::WSqlDriver *driver ) : WSqlResult ( driver )
 {
-    _mysqlResult=0;
+	_mysqlResult = 0;
 }
-    
+
 // WMysqlResult::WMysqlResult( const WMysqlResult& other )
 // {
-// 
+//
 // }
 
 WMysqlResult::~WMysqlResult()
 {
-    freeResult();
+	freeResult();
 }
 
 // WMysqlResult& WMysqlResult::operator=( const WMysqlResult & other )
 // {
-//     ///!\todo 
+//     ///!\todo
 //     return *this;
 // }
-// 
+//
 // bool WMysqlResult::operator==( const WMysqlResult& other ) const
 // {
 // ///!\todo return ...;
@@ -60,73 +60,73 @@ WMysqlResult::~WMysqlResult()
 
 void WMysqlResult::freeResult()
 {
-    mysql_free_result(_mysqlResult);
+	mysql_free_result ( _mysqlResult );
 }
 
 WSqlRecord WMysqlResult::current()
 {
-    if(_isCached)
-        return WSql::WSqlResult::current();
+	if ( _isCached )
+		return WSql::WSqlResult::current();
 }
 
-WSqlRecord WMysqlResult::fetch( int i )
+WSqlRecord WMysqlResult::fetch ( int i )
 {
-    if(_isCached)
-        return WSql::WSqlResult::fetch( i );
+	if ( _isCached )
+		return WSql::WSqlResult::fetch ( i );
 }
 
 WSqlRecord WMysqlResult::fetchFirst()
 {
-    if(_isCached)
-        return WSql::WSqlResult::fetchFirst();
+	if ( _isCached )
+		return WSql::WSqlResult::fetchFirst();
 }
 
 WSqlRecord WMysqlResult::fetchLast()
 {
-    if(_isCached)
-        return WSql::WSqlResult::fetchLast();
+	if ( _isCached )
+		return WSql::WSqlResult::fetchLast();
 }
 
 WSqlRecord WMysqlResult::fetchNext()
 {
-    if(_isCached)
-        return WSql::WSqlResult::fetchNext();
+	if ( _isCached )
+		return WSql::WSqlResult::fetchNext();
 }
 
 WSqlRecord WMysqlResult::fetchPrevious()
 {
-    if(_isCached)
-        return WSql::WSqlResult::fetchPrevious();
+	if ( _isCached )
+		return WSql::WSqlResult::fetchPrevious();
 }
 
 bool WMysqlResult::first()
 {
-    if(_isCached)
-        return WSql::WSqlResult::first();
+	if ( _isCached )
+		return WSql::WSqlResult::first();
 }
 
 bool WMysqlResult::last()
 {
-    if(_isCached)
-        return WSql::WSqlResult::last();
+	if ( _isCached )
+		return WSql::WSqlResult::last();
 }
 
 bool WMysqlResult::next()
 {
-    if(_isCached)
-        return WSql::WSqlResult::next();
+	if ( _isCached )
+		return WSql::WSqlResult::next();
 }
 
 bool WMysqlResult::previous()
 {
-    if(_isCached)
-        return WSql::WSqlResult::previous();
+	if ( _isCached )
+		return WSql::WSqlResult::previous();
 }
 
-bool WMysqlResult::seek( int i, bool relative )
+bool WMysqlResult::seek ( int i, bool relative )
 {
-    if(_isCached)
-        return WSql::WSqlResult::seek( i, relative );
+	if ( _isCached )
+		return WSql::WSqlResult::seek ( i, relative );
 }
 
 } //namespace WSql

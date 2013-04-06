@@ -51,7 +51,7 @@ class WSqlRecord
         bool isNull( const std::string& name ) const;
         int indexOf(const std::string& name)const;
         inline bool isValid()const{return _isValid;}
-        inline bool empty(){return _fields.empty();}
+        inline bool isEmpty(){return _fields.empty();}
         inline int size()const{return _fields.size();}
         inline int count()const{return _fields.size();}
         

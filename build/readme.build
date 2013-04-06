@@ -1,2 +1,0 @@
-This directory is for building to keep the many cmake things out of the way - if you are using kdevelop or netbeans
-or such configure them to use this as the build directory.

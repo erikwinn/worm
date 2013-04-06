@@ -47,8 +47,8 @@ public:
 	
 	virtual int size()const {return _records.size(); }
     virtual int count()const {return size(); }
-    virtual bool empty()const{ return _records.empty();}
-    virtual bool hasOutValues() const { return !empty();}
+    virtual bool isEmpty()const{ return _records.empty();}
+    virtual bool hasOutValues() const { return !isEmpty();}
     
     virtual void clear(){ _records.clear(); }
     

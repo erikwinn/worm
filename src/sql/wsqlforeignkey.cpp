@@ -19,81 +19,82 @@
 
 #include "wsqlforeignkey.h"
 #include "wsqldatatype.h"
-namespace WSql{
-    
-    /*! \class WSqlForeignKey
-     * \brief WSqlForeignKey provides an abstraction of a foreign key in a database
-     * 
-     * This class provides a generic interface to foreign key relationships in databases
-     * including information about tables and columns to which the foreign key refers.
-     * 
-     * \ingroup WSql
-     * \sa WSqlReferencedKey
-     */
-    
+namespace WSql
+{
+
+/*! \class WSqlForeignKey
+ * \brief WSqlForeignKey provides an abstraction of a foreign key in a database
+ *
+ * This class provides a generic interface to foreign key relationships in databases
+ * including information about tables and columns to which the foreign key refers.
+ *
+ * \ingroup WSql
+ * \sa WSqlReferencedKey
+ */
+
 WSqlForeignKey::WSqlForeignKey()
 {
 }
 
-WSqlForeignKey::WSqlForeignKey( const WSqlForeignKey& other )
+WSqlForeignKey::WSqlForeignKey ( const WSqlForeignKey &other )
 {
-    _keyName=other._keyName;
-    _tableName=other._tableName;
-    _schemaName=other._schemaName;
-    _columnName=other._columnName;
-    _referencedColumnName=other._referencedColumnName;
-    _referencedTableName=other._referencedTableName;
-    _referencedSchemaName=other._referencedSchemaName;
+	_keyName = other._keyName;
+	_tableName = other._tableName;
+	_schemaName = other._schemaName;
+	_columnName = other._columnName;
+	_referencedColumnName = other._referencedColumnName;
+	_referencedTableName = other._referencedTableName;
+	_referencedSchemaName = other._referencedSchemaName;
 }
 
 WSqlForeignKey::~WSqlForeignKey()
 {
 }
 
-WSqlForeignKey& WSqlForeignKey::operator=( const WSqlForeignKey & other )
+WSqlForeignKey &WSqlForeignKey::operator= ( const WSqlForeignKey &other )
 {
-    _keyName=other._keyName;
-    _tableName=other._tableName;
-    _schemaName=other._schemaName;
-    _columnName=other._columnName;
-    _referencedColumnName=other._referencedColumnName;
-    _referencedTableName=other._referencedTableName;
-    _referencedSchemaName=other._referencedSchemaName;
-    return *this;
+	_keyName = other._keyName;
+	_tableName = other._tableName;
+	_schemaName = other._schemaName;
+	_columnName = other._columnName;
+	_referencedColumnName = other._referencedColumnName;
+	_referencedTableName = other._referencedTableName;
+	_referencedSchemaName = other._referencedSchemaName;
+	return *this;
 }
 
-bool WSqlForeignKey::operator==( const WSqlForeignKey& other ) const
+bool WSqlForeignKey::operator== ( const WSqlForeignKey &other ) const
 {
-   return( _keyName.compare(other._keyName) == 0 
-   && _tableName.compare(other._tableName)== 0
-   && _schemaName.compare(other._schemaName)== 0
-   && _columnName.compare(other._columnName)== 0
-   && _referencedColumnName.compare(other._referencedColumnName)== 0
-   && _referencedSchemaName.compare(other._referencedSchemaName)== 0
-   && _referencedTableName.compare(other._referencedTableName)== 0);
+	return ( _keyName.compare ( other._keyName ) == 0
+			 && _tableName.compare ( other._tableName ) == 0
+			 && _schemaName.compare ( other._schemaName ) == 0
+			 && _columnName.compare ( other._columnName ) == 0
+			 && _referencedColumnName.compare ( other._referencedColumnName ) == 0
+			 && _referencedSchemaName.compare ( other._referencedSchemaName ) == 0
+			 && _referencedTableName.compare ( other._referencedTableName ) == 0 );
 }
 
 std::string WSqlForeignKey::referencedClassName() const
 {
-    return WSqlDataType::tableNameToClass(_referencedTableName);
+	return WSqlDataType::tableNameToClass ( _referencedTableName );
 }
 std::string WSqlForeignKey::referencedClassNamePlural() const
 {
-    return WSqlDataType::toPlural(referencedClassName());
+	return WSqlDataType::toPlural ( referencedClassName() );
 }
 void WSqlForeignKey::dump() const
 {
-    std::cerr << "*****************  Foreign Key: *****************" << std::endl;
-    std::cerr << "keyName()" << keyName() << std::endl;
-    std::cerr << "tableName() " << tableName() << std::endl;
-    std::cerr << "schemaName() " << schemaName() << std::endl;
-    std::cerr << "columnName() " << columnName() << std::endl;
-    std::cerr << "referencedColumnName() " << referencedColumnName() << std::endl;
-    std::cerr << "referencedTableName() " << referencedTableName() << std::endl;
-    std::cerr << "referencedSchemaName() " << referencedSchemaName() << std::endl;
-    std::cerr << "referencedclassName() " << referencedClassName() << std::endl;
-    std::cerr << "referencedclassNamePlural() " << referencedClassNamePlural() << std::endl;
-    std::cerr << "*****************************************" << std::endl;
+	std::cerr << "*****************  Foreign Key: *****************" << std::endl;
+	std::cerr << "keyName()" << keyName() << std::endl;
+	std::cerr << "tableName() " << tableName() << std::endl;
+	std::cerr << "schemaName() " << schemaName() << std::endl;
+	std::cerr << "columnName() " << columnName() << std::endl;
+	std::cerr << "referencedColumnName() " << referencedColumnName() << std::endl;
+	std::cerr << "referencedTableName() " << referencedTableName() << std::endl;
+	std::cerr << "referencedSchemaName() " << referencedSchemaName() << std::endl;
+	std::cerr << "referencedclassName() " << referencedClassName() << std::endl;
+	std::cerr << "referencedclassNamePlural() " << referencedClassNamePlural() << std::endl;
+	std::cerr << "*****************************************" << std::endl;
 }
 
 }//namespace WSql

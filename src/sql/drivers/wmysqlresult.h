@@ -65,9 +65,9 @@ class WMysqlResult : public WSqlResult
 
     private:
         friend class WMysqlDriver;
-        void freeresult();
+        void freeResult();
         void setResult(MYSQL_RES *res){_mysqlResult = res;}
-        MYSQL_RES * result(){return _mysqlResult;};
+        MYSQL_RES * getResult(){return _mysqlResult;};
         MYSQL_RES *_mysqlResult;
 };
 

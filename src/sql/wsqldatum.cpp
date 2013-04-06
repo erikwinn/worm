@@ -26,6 +26,11 @@ namespace WSql{
      *    This class provides a flexible type container for a single value found in a database column. It can
      *    be instatiated to hold the types supported by WSqlDataType. It includes methods for conversion
      *   to various types on demand.
+     * 
+     * \todo - resolve: whether to use boost::any instead of string for internal storage .. or, revert to the 
+     * previous void pointer version?  why? unsure of data integrity, eg. blob to string, longlong, etc .. contrary
+     * to initial assumptions, some dbms may return types in the api (sqlite?) rather than string reps thereof.
+     * regardless, blob is another issue, may be huge .. or streamable .. think on this. 
      *    
      *    \ingroup WSql
      *    \sa WSqlDataType WSqlField WSqlColumn

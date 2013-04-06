@@ -179,7 +179,7 @@ Protected Attributes</h2></td></tr>
 <div class="fragment"><pre class="fragment">std::string sql = <span class="stringliteral">&quot;select * from &quot;</span> + tablename + <span class="stringliteral">&quot; limit 2&quot;</span>;
 <span class="keywordflow">if</span>(!db.execute(sql)) exit();
 
-<a class="code" href="class_w_sql_1_1_w_sql_result.html#aad78a7cb767d84420c9db5e44e2de1c8">WSqlResult</a> *result = db.result();
+<a class="code" href="class_w_sql_1_1_w_sql_result.html#aad78a7cb767d84420c9db5e44e2de1c8">WSqlResult</a> *result = db.getResult();
 WSqlRecord record = result-&gt;fetchFirst();
 <span class="keywordflow">while</span>(!record.empty())
 {

@@ -135,7 +135,7 @@ function toggleVisibility(linkObj) {
 <a name="l00044"></a>00044 
 <a name="l00045"></a><a class="code" href="class_w_sql_1_1_w_mysql_result.html#af0e35fb6c3832c1b213b8729243728b7">00045</a> <a class="code" href="class_w_sql_1_1_w_mysql_result.html#af0e35fb6c3832c1b213b8729243728b7">WMysqlResult::~WMysqlResult</a>()
 <a name="l00046"></a>00046 {
-<a name="l00047"></a>00047     freeresult();
+<a name="l00047"></a>00047     freegetResult();
 <a name="l00048"></a>00048 }
 <a name="l00049"></a>00049 
 <a name="l00050"></a>00050 <span class="comment">// WMysqlResult&amp; WMysqlResult::operator=( const WMysqlResult &amp; other )</span>
@@ -149,7 +149,7 @@ function toggleVisibility(linkObj) {
 <a name="l00058"></a>00058 <span class="comment">// ///!\todo return ...;</span>
 <a name="l00059"></a>00059 <span class="comment">// }</span>
 <a name="l00060"></a>00060 
-<a name="l00061"></a>00061 <span class="keywordtype">void</span> WMysqlResult::freeresult()
+<a name="l00061"></a>00061 <span class="keywordtype">void</span> WMysqlResult::freegetResult()
 <a name="l00062"></a>00062 {
 <a name="l00063"></a>00063     mysql_free_result(_mysqlResult);
 <a name="l00064"></a>00064 }

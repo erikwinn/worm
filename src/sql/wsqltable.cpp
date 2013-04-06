@@ -29,6 +29,7 @@ namespace WSql {
     information about indices, foriegn keys, primary keys, etc.  It is used primarily by the
     ORM generator.
 
+    \todo - correct this, actually we _have a naming convention like rails ..
     Tables to be generated may have any naming schema - but it is recommended that this
     is at least consistant. Worm will not alter the names but rather takes them exactly as they
     are from the the names in the database - so "my_table" will produce a class object 

@@ -66,6 +66,10 @@ namespace WSql
  *    all setting the data with the supported types. Note that the types are coverted to string
  *    and stored in the WSqlDatum.
  *    
+ *  \todo maybe should implement deep copy of _data ..? also, missing copy ctor .. this only
+ * applies if WSqlDatum changes the internal storage from string to boost::any ..
+ * 
+ * 
  *   \ingroup WSql
  *   \sa data() name() columnName() setData()
  *   \sa WSqlRecord WSqlDatum WSqlDataType

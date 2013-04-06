@@ -197,7 +197,7 @@ std::string sql = <span class="stringliteral">&quot;select * from &quot;</span> 
 <span class="keywordflow">if</span>(!db.query(sql))
     std::cout &lt;&lt; <span class="stringliteral">&quot;Query Failed: &quot;</span> &lt;&lt; db.error().text() &lt;&lt; std::endl;
 }<span class="keywordflow">else</span>{
-    <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSql::WSqlResult</a> *result = db.result();
+    <a class="code" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSql::WSqlResult</a> *result = db.getResult();
     std::cout &lt;&lt; <span class="stringliteral">&quot;Number of rows: &quot;</span> &lt;&lt; result-&gt;<a class="code" href="class_w_sql_1_1_w_sql_result.html#a2f34ccad684262a1860022a2d07cc024">size</a>() &lt;&lt; std::endl;
     <a class="code" href="class_w_sql_1_1_w_sql_record.html" title="The WSqlRecord class represents a database record.">WSql::WSqlRecord</a> record = result-&gt;<a class="code" href="class_w_sql_1_1_w_sql_result.html#a85cc6e2cb40f959c2ff2f725356ef5c6">fetchFirst</a>();
     <span class="keywordflow">while</span>(!record.<a class="code" href="class_w_sql_1_1_w_sql_record.html#a2953bb26d9c259a284353aba9cbd33da">empty</a>())
@@ -284,7 +284,7 @@ std::string sql = <span class="stringliteral">&quot;select * from &quot;</span> 
 <div class="memdoc">
 
 <p>Creates a copy of <em>other</em>. </p>
-<p>This constructs a new database object initialized with the values of <em>other</em> WARNING: This also creates a new driver! If <em>other</em> is destroyed <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">result()</a> is invalid until the next <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a> is called!</p>
+<p>This constructs a new database object initialized with the values of <em>other</em> WARNING: This also creates a new driver! If <em>other</em> is destroyed <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">getResult()</a> is invalid until the next <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a> is called!</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname"><a class="el" href="class_w_sql_1_1_w_sql_database.html" title="The WSqlDatabase class represents a single database.">WSqlDatabase</a></td><td>other - database to copy </td></tr>
@@ -311,7 +311,7 @@ std::string sql = <span class="stringliteral">&quot;select * from &quot;</span> 
 <div class="memdoc">
 
 <p>Destroys the object and frees any allocated resources. </p>
-<p>Note that the driver is also destroyed at this time - any WSqlResults obtained from <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">result()</a> will be invalid after this. </p>
+<p>Note that the driver is also destroyed at this time - any WSqlResults obtained from <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">getResult()</a> will be invalid after this. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_database.html#a7d1ff5ea5063fd2a0642584972f9dada">close()</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="wsqldatabase_8cpp_source.html#l00137">137</a> of file <a class="el" href="wsqldatabase_8cpp_source.html">wsqldatabase.cpp</a>.</p>
@@ -412,9 +412,9 @@ std::string sql = <span class="stringliteral">&quot;select * from &quot;</span> 
 <div class="memdoc">
 
 <p>Return a pointer to the database driver - expert only. </p>
-<p>This returns a pointer to the database driver used to access the database connection. <em>Caution!</em> This is not meant to be used directly - use <a class="el" href="class_w_sql_1_1_w_sql_database.html#ac40fb73f4b8c5fd26f7cfb959679f1ba" title="Open a connection.">open()</a>. <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7d1ff5ea5063fd2a0642584972f9dada">close()</a>, <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a> and <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">result()</a> for interaction with the driver instead.</p>
+<p>This returns a pointer to the database driver used to access the database connection. <em>Caution!</em> This is not meant to be used directly - use <a class="el" href="class_w_sql_1_1_w_sql_database.html#ac40fb73f4b8c5fd26f7cfb959679f1ba" title="Open a connection.">open()</a>. <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7d1ff5ea5063fd2a0642584972f9dada">close()</a>, <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a> and <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">getResult()</a> for interaction with the driver instead.</p>
 <p>!This may be removed in future.</p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_database.html#ac40fb73f4b8c5fd26f7cfb959679f1ba" title="Open a connection.">open()</a> <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7d1ff5ea5063fd2a0642584972f9dada">close()</a> <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a> <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">result()</a> </dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_database.html#ac40fb73f4b8c5fd26f7cfb959679f1ba" title="Open a connection.">open()</a> <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7d1ff5ea5063fd2a0642584972f9dada">close()</a> <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a> <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">getResult()</a> </dd></dl>
 
 <p>Definition at line <a class="el" href="wsqldatabase_8cpp_source.html#l00420">420</a> of file <a class="el" href="wsqldatabase_8cpp_source.html">wsqldatabase.cpp</a>.</p>
 
@@ -687,7 +687,7 @@ std::string sql = <span class="stringliteral">&quot;select * from &quot;</span> 
 <div class="memdoc">
 
 <p>Copies the values of <em>other</em> to this object. </p>
-<p>WARNING: This also creates a new driver! If <em>other</em> is destroyed <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">result()</a> is invalid until the next <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a>!</p>
+<p>WARNING: This also creates a new driver! If <em>other</em> is destroyed <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">getResult()</a> is invalid until the next <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a>!</p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname"><a class="el" href="class_w_sql_1_1_w_sql_database.html" title="The WSqlDatabase class represents a single database.">WSqlDatabase</a></td><td>other - database to copy </td></tr>
@@ -756,8 +756,8 @@ std::string sql = <span class="stringliteral">&quot;select * from &quot;</span> 
 <div class="memdoc">
 
 <p>Executes the query in <em>sql</em> returning true on sucess. </p>
-<p>This method sends the query SQL in string <em>sql</em> to the database server, the results of which will be available by calling <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">result()</a>. Use this method when you expect a result set, for non-result execution use execute() </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">result()</a> execute() </dd></dl>
+<p>This method sends the query SQL in string <em>sql</em> to the database server, the results of which will be available by calling <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">getResult()</a>. Use this method when you expect a result set, for non-result execution use execute() </p>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">getResult()</a> execute() </dd></dl>
 <dl><dt><b>Return values:</b></dt><dd>
   <table class="retval">
     <tr><td class="paramname">bool</td><td>true on success. </td></tr>
@@ -793,12 +793,12 @@ std::string sql = <span class="stringliteral">&quot;select * from &quot;</span> 
     dosomeerror();
  <span class="keywordflow">if</span> (!db.query(std::string(<span class="stringliteral">&quot;select foo from bar&quot;</span>)))
     dosomeerror();
- WSqlResult *result = db.result();
- <span class="comment">//WSqlResult *result2 = db.result(); &lt;- wrong </span>
+ WSqlResult *result = db.getResult();
+ <span class="comment">//WSqlResult *result2 = db.getResult(); &lt;- wrong </span>
  <span class="comment">//...iterate over results ..._then repeat:</span>
  <span class="keywordflow">if</span> (!db.query(std::string(<span class="stringliteral">&quot;select baz from bar&quot;</span>)))
     dosomeerror();
- WSqlResult *result = db.result();
+ WSqlResult *result = db.getResult();
  ..etc.
 </pre></div> <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> <a class="el" href="class_w_sql_1_1_w_sql_record.html" title="The WSqlRecord class represents a database record.">WSqlRecord</a> <a class="el" href="class_w_sql_1_1_w_mysql_driver.html" title="A driver for MySQL databases.">WMysqlDriver</a> <a class="el" href="class_w_sql_1_1_w_sqlite_driver.html">WSqliteDriver</a></dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
@@ -1065,7 +1065,7 @@ std::string sql = <span class="stringliteral">&quot;select * from &quot;</span> 
         std::cout &lt;&lt; <span class="stringliteral">&quot;  * Autoincrement:  &quot;</span>  &lt;&lt; (column.<a class="code" href="class_w_sql_1_1_w_sql_column.html#aa1554dddff2918b50300794905f3edbc">isAutoIncremented</a>()?<span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>) &lt;&lt; std::endl;
         std::cout &lt;&lt; <span class="stringliteral">&quot;  * default value:  &quot;</span>  &lt;&lt; column.<a class="code" href="class_w_sql_1_1_w_sql_column.html#a55feefa5aa00a43a8c8e09a517414047">defaultValue</a>&lt;std::string&gt;() &lt;&lt; std::endl;
  }
-</pre></div><dl class="warning"><dt><b>Warning:</b></dt><dd>If the table metadata has not been initialized yet this method will invalidate any previous <a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> pointer returned - in this case nesting calls to this method inside of a loop iterating over WSqlResults WILL NOT WORK. Obtain the <a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <em>first</em> and <em>then</em> <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a> a query and fetch the result set using <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">result()</a> or use <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9bd1765f14443afbb875981321d4c529" title="Initializes the metadata for all tables in the database.">initMetaData()</a> to initialize the metadata for all tables at once.</dd></dl>
+</pre></div><dl class="warning"><dt><b>Warning:</b></dt><dd>If the table metadata has not been initialized yet this method will invalidate any previous <a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> pointer returned - in this case nesting calls to this method inside of a loop iterating over WSqlResults WILL NOT WORK. Obtain the <a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <em>first</em> and <em>then</em> <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a> a query and fetch the result set using <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">getResult()</a> or use <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9bd1765f14443afbb875981321d4c529" title="Initializes the metadata for all tables in the database.">initMetaData()</a> to initialize the metadata for all tables at once.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">string</td><td>the name of the table to use </td></tr>
@@ -1104,7 +1104,7 @@ std::string sql = <span class="stringliteral">&quot;select * from &quot;</span> 
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000025">Todo:</a></b></dt><dd>.. decide if we use this .. </dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_w_sql_1_1_w_sql_error.html" title="The WSqlError class provides SQL database and driver error information.">WSqlError</a></dd></dl>
 <p>This function returns a vector of strings containing the names tables and views as specified by the parameter <em>type</em>. The vector is cached for quick reference - if empty it is initialized by a request to the driver for the names. If the names are not available an empty vector is returned.</p>
-<dl class="warning"><dt><b>Warning:</b></dt><dd>If the table metadata has not been initialized yet this method will invalidate any previous <a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> pointer returned - in this case nesting calls to this method inside of a loop iterating over WSqlResults WILL NOT WORK. Obtain the <a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <em>first</em> and <em>then</em> <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a> a query and fetch the result set using <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">result()</a> or use <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9bd1765f14443afbb875981321d4c529" title="Initializes the metadata for all tables in the database.">initMetaData()</a> to initialize the metadata for all tables at once.</dd></dl>
+<dl class="warning"><dt><b>Warning:</b></dt><dd>If the table metadata has not been initialized yet this method will invalidate any previous <a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> pointer returned - in this case nesting calls to this method inside of a loop iterating over WSqlResults WILL NOT WORK. Obtain the <a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <em>first</em> and <em>then</em> <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9a368d8a1e0ab21a2ab4b5082acc6a1c" title="Executes the query in sql returning true on sucess.">query()</a> a query and fetch the result set using <a class="el" href="class_w_sql_1_1_w_sql_database.html#a7f485f7a20f577f5f398c7b5fec07ab7" title="Returns a pointer to the result set from the most recent query.">getResult()</a> or use <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9bd1765f14443afbb875981321d4c529" title="Initializes the metadata for all tables in the database.">initMetaData()</a> to initialize the metadata for all tables at once.</dd></dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000026">Todo:</a></b></dt><dd>Use the table type - currently does nothing.</dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="namespace_w_sql.html#a2860958b4a0664bf26cd4959a7aaace8">WSql::TableType</a> </dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>

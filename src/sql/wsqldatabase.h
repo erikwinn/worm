@@ -1,17 +1,17 @@
 /*
  *    WORM - a DAL/ORM code generation framework
  *    Copyright (C) 2011  Erik Winn <sidewalksoftware@gmail.com>
- * 
+ *
  *    This program is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
- * 
+ *
  *    This program is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU General Public License for more details.
- * 
+ *
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -33,14 +33,14 @@ class WSqlDriver;
 
 class WSqlDatabase
 {
-	
-public:
-	
-	WSqlDatabase();
-    WSqlDatabase(const WSql::DriverType &type);
-	WSqlDatabase(const WSqlDatabase &other);
 
-~WSqlDatabase();
+public:
+
+    WSqlDatabase();
+    WSqlDatabase(const WSql::DriverType &type);
+    WSqlDatabase(const WSqlDatabase &other);
+
+    ~WSqlDatabase();
 
     WSqlDatabase &operator=(const WSqlDatabase &other);
 
@@ -53,48 +53,58 @@ public:
     WSqlError error() const;
     std::vector<std::string> errors();
     bool isValid() const;
-    
+
     //General connection configurations ..
     std::string databaseName() const;
     std::string userName() const;
     std::string password() const;
     std::string hostName() const;
-    int port() const {return _port;}
+    int port() const {
+        return _port;
+    }
     std::string connectionOptions() const;
-    WSql::DriverType driverType(){return _driverType;}
-    	
+    WSql::DriverType driverType() {
+        return _driverType;
+    }
+
     void setDatabaseName(const std::string& name);
     void setUserName(const std::string& name);
     void setPassword(const std::string& password);
     void setHostName(const std::string& host);
     void setPort(int p);
     void setConnectOptions(const std::string& options = std::string());
-	void setDriverType(WSql::DriverType t);
-	
-    void addError(const WSqlError& e){_errorStack.push_back(e);}
+    void setDriverType(WSql::DriverType t);
+
+    void addError(const WSqlError& e) {
+        _errorStack.push_back(e);
+    }
     //REMOVE:?
-	void setDriver(WSqlDriver *d){_driver=d;}
-    
+    void setDriver(WSqlDriver *d) {
+        _driver=d;
+    }
+
     //Raw driver access ..
     WSqlDriver* driver() const;
-    WSqlDriver* handle() const {return driver();}
-    
+    WSqlDriver* handle() const {
+        return driver();
+    }
+
     //Metadata
     const std::vector<std::string>& tableNames(WSql::TableType type = WSql::Tables);
     WSqlTable tableMetaData( const std::string &tableName ) const;
     void initMetaData();
-   
+
     //Query interaction - wrapper around driver ..
-    bool query(const std::string& sql );
+    bool doQuery(const std::string& sql );
 //    bool execute(const std::string& sql );
-    WSqlResult* result(bool iscached=true);
+    WSqlResult* getResult(bool iscached=true);
     bool initDriver();
-    
+
 private:
     void init();
-	
-	bool _isValid;
-	WSql::DriverType _driverType;
+
+    bool _isValid;
+    WSql::DriverType _driverType;
     WSqlDriver* _driver;
     std::string _databaseName;
     std::string _userName;
@@ -103,8 +113,8 @@ private:
     std::string _connectionOptions;
     int _port;
 
-	std::vector<std::string> _tableNames;
-	std::vector<WSqlError> _errorStack;	
+    std::vector<std::string> _tableNames;
+    std::vector<WSqlError> _errorStack;
 };
 
 } //namespace WSql

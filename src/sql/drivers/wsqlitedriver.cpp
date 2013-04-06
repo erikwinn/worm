@@ -37,7 +37,7 @@ namespace WSql
  * Metadata is incomplete, all results are cached locally and there may be strange behavior.
  * Basically I have done enough to get sufficient metadata for the ORM generator (except
  *  indices still) and query() will perform the query and return a result
- * via result(). tableNames() works and tableMetaData() works as well (with the above
+ * via getResult(). tableNames() works and tableMetaData() works as well (with the above
  * caveats). Transactions are not supported and I seriously doubt that this is thread safe.
  * It quite is crude at the moment - your milage may vary. It _might_ work for you but
  * at this point I don't recommend it for production (10/10/2011)
@@ -284,7 +284,7 @@ void WSqliteDriver::close()
  would mean parsing the query, etc..ugly The problem is that we cannot
  rely on sqlite to return metadata if, for instance, the query returns no results..
  Consider using sqlite3_column_metadata.
- Also, some of this might be better moved to result()
+ Also, some of this might be better moved to getResult()
  
  * @param std::string sql containing the query string
  * @retval bool

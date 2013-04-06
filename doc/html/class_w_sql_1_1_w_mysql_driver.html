@@ -287,7 +287,7 @@ Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Sends the SQL in <em>sqlstring</em> to the server for execution. </p>
-<p>This method sends the SQL given in <em>sqlstring</em> to the server to be executed. If the query was successful it returns true, if not it sets an error and returns false. If the query should return results (eg. a SELECT) they will be available from <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result()</a>.</p>
+<p>This method sends the SQL given in <em>sqlstring</em> to the server to be executed. If the query was successful it returns true, if not it sets an error and returns false. If the query should return results (eg. a SELECT) they will be available from <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">getResult()</a>.</p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>bool on success </dd></dl>
 
 <p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>RESOLVE - this also escapes LIKE quotes .. need a way to handle this, ie. a general escape/sanitizer method somewhere .. </dd></dl>
@@ -323,12 +323,12 @@ Public Member Functions</h2></td></tr>
     dosomeerror();
 <span class="keywordflow">if</span> (!db.query(std::string(<span class="stringliteral">&quot;select foo from bar&quot;</span>)))
     dosomeerror();
-WSqlResult *<a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result</a> = db.result();
-<span class="comment">//WSqlResult *result2 = db.result(); &lt;- wrong </span>
+WSqlResult *<a class="code" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result</a> = db.getResult();
+<span class="comment">//WSqlResult *result2 = db.getResult(); &lt;- wrong </span>
 <span class="comment">//...iterate over results ..._then repeat:</span>
 <span class="keywordflow">if</span> (!db.query(std::string(<span class="stringliteral">&quot;select baz from bar&quot;</span>)))
     dosomeerror();
-WSqlResult *result = db.result();
+WSqlResult *result = db.getResult();
 ..etc.
 </pre></div><dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
@@ -381,7 +381,7 @@ WSqlResult *result = db.result();
         std::cout &lt;&lt; <span class="stringliteral">&quot;  * Autoincrement:  &quot;</span>  &lt;&lt; (column.<a class="code" href="class_w_sql_1_1_w_sql_column.html#aa1554dddff2918b50300794905f3edbc">isAutoIncremented</a>()?<span class="stringliteral">&quot;true&quot;</span> : <span class="stringliteral">&quot;false&quot;</span>) &lt;&lt; std::endl;
         std::cout &lt;&lt; <span class="stringliteral">&quot;  * default value:  &quot;</span>  &lt;&lt; column.<a class="code" href="class_w_sql_1_1_w_sql_column.html#a55feefa5aa00a43a8c8e09a517414047">defaultValue</a>&lt;std::string&gt;() &lt;&lt; std::endl;
     }
-</pre></div><dl class="warning"><dt><b>Warning:</b></dt><dd>If the table metadata has not been initialized yet this method will invalidate any previous <a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> pointer returned - in this case nesting calls to this method inside of a loop iterating over WSqlResults WILL NOT WORK. Obtain the <a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <em>first</em> and <em>then</em> <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a16cbd55969cbe2421bcc5ebe2dd0d677" title="Sends the SQL in sqlstring to the server for execution.">query()</a> a query and fetch the result set using <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result()</a> or use <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9bd1765f14443afbb875981321d4c529" title="Initializes the metadata for all tables in the database.">WSqlDatabase::initMetaData()</a> to initialize the metadata for all tables at once.</dd></dl>
+</pre></div><dl class="warning"><dt><b>Warning:</b></dt><dd>If the table metadata has not been initialized yet this method will invalidate any previous <a class="el" href="class_w_sql_1_1_w_sql_result.html" title="The WSqlResult class provides a representation of the result set from a query.">WSqlResult</a> pointer returned - in this case nesting calls to this method inside of a loop iterating over WSqlResults WILL NOT WORK. Obtain the <a class="el" href="class_w_sql_1_1_w_sql_table.html" title="WSqlTable is an abstraction for a single table, collection or view in a database.">WSqlTable</a> <em>first</em> and <em>then</em> <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a16cbd55969cbe2421bcc5ebe2dd0d677" title="Sends the SQL in sqlstring to the server for execution.">query()</a> a query and fetch the result set using <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">getResult()</a> or use <a class="el" href="class_w_sql_1_1_w_sql_database.html#a9bd1765f14443afbb875981321d4c529" title="Initializes the metadata for all tables in the database.">WSqlDatabase::initMetaData()</a> to initialize the metadata for all tables at once.</dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">string</td><td>the name of the table to use </td></tr>
@@ -416,7 +416,7 @@ WSqlResult *result = db.result();
 
 <p>Returns a list of the table names in the current database. </p>
 <p>This method will return a vector&lt;string&gt; containing the names of the tables in the current database - the database name must be set first.</p>
-<dl class="note"><dt><b>Note:</b></dt><dd>WARNING: This method will invalidate previous WSqlResults returned - nesting calls to this method inside of a loop iterating over WSqlResults will not work. Obtain the list <em>first</em> and <em>aftwards</em> execute a query and fetch the result set using <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">result()</a>. </dd></dl>
+<dl class="note"><dt><b>Note:</b></dt><dd>WARNING: This method will invalidate previous WSqlResults returned - nesting calls to this method inside of a loop iterating over WSqlResults will not work. Obtain the list <em>first</em> and <em>aftwards</em> execute a query and fetch the result set using <a class="el" href="class_w_sql_1_1_w_mysql_driver.html#a064edf98eaa9453d358818d76627ef6b" title="Return the result from the most recent query.">getResult()</a>. </dd></dl>
 <dl><dt><b>Return values:</b></dt><dd>
   <table class="retval">
     <tr><td class="paramname">vector&lt;string&gt;</td><td>a list of table names </td></tr>

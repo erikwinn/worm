@@ -17,7 +17,7 @@ int main()
     while (it != tables.end()) 
     {
         std::string sql = "select * from " + *it + " ;";
-        if(!db.query(sql))
+        if(!db.doQuery(sql))
         {
             std::cerr << "Query Failed: " << db.error().text() << std::endl;
             it++;
@@ -41,7 +41,7 @@ int main()
                 std::cout << "  * Autoincrement:  "  << (clm.isAutoIncremented()?"true" : "false") << std::endl;
                 std::cout << "  * default value:  "  << clm.defaultValue<std::string>() << std::endl;
             }
-            WSql::WSqlResult *result = db.result();
+            WSql::WSqlResult *result = db.getResult();
             WSql::WSqlRecord record = result->fetchFirst();
             while(!record.empty())
             {

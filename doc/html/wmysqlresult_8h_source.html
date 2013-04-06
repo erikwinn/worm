@@ -167,9 +167,9 @@ function toggleVisibility(linkObj) {
 <a name="l00065"></a>00065 
 <a name="l00066"></a>00066     <span class="keyword">private</span>:
 <a name="l00067"></a><a class="code" href="class_w_sql_1_1_w_mysql_result.html#a1cc3d6f1837c9d43abb38b07c26467d8">00067</a>         <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_w_sql_1_1_w_mysql_driver.html" title="A driver for MySQL databases.">WMysqlDriver</a>;
-<a name="l00068"></a>00068         <span class="keywordtype">void</span> freeresult();
+<a name="l00068"></a>00068         <span class="keywordtype">void</span> freegetResult();
 <a name="l00069"></a>00069         <span class="keywordtype">void</span> setResult(MYSQL_RES *res){_mysqlResult = res;}
-<a name="l00070"></a>00070         MYSQL_RES * result(){<span class="keywordflow">return</span> _mysqlResult;};
+<a name="l00070"></a>00070         MYSQL_RES * getResult(){<span class="keywordflow">return</span> _mysqlResult;};
 <a name="l00071"></a>00071         MYSQL_RES *_mysqlResult;
 <a name="l00072"></a>00072 };
 <a name="l00073"></a>00073 

@@ -44,7 +44,7 @@ WMysqlResult::WMysqlResult( const WSql::WSqlDriver* driver ): WSqlResult( driver
 
 WMysqlResult::~WMysqlResult()
 {
-    freeresult();
+    freeResult();
 }
 
 // WMysqlResult& WMysqlResult::operator=( const WMysqlResult & other )
@@ -58,7 +58,7 @@ WMysqlResult::~WMysqlResult()
 // ///!\todo return ...;
 // }
 
-void WMysqlResult::freeresult()
+void WMysqlResult::freeResult()
 {
     mysql_free_result(_mysqlResult);
 }

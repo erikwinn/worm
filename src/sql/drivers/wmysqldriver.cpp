@@ -150,11 +150,11 @@ bool WMysqlDriver::open()
     This method sends the SQL given in \a sqlstring to the server to be
     executed. If the query was successful it returns true, if not it sets an
     error and returns false. If the query should return results (eg. a SELECT)
-    they will be available from result().
+    they will be available from getResult().
     
     \returns bool on success
 */
-bool WMysqlDriver::query(std::string sqlstring )
+bool WMysqlDriver::doQuery(std::string sqlstring )
 {
     if(!isOpen())
         return false;
@@ -198,12 +198,12 @@ if (!db.open())
     dosomeerror();
 if (!db.query(std::string("select foo from bar")))
     dosomeerror();
-WSqlResult *result = db.result();
-//WSqlResult *result2 = db.result(); <- wrong 
+WSqlResult *result = db.getResult();
+//WSqlResult *result2 = db.getResult(); <- wrong 
 //...iterate over results ..._then repeat:
 if (!db.query(std::string("select baz from bar")))
     dosomeerror();
-WSqlResult *result = db.result();
+WSqlResult *result = db.getResult();
 ..etc.
 \endcode
 
@@ -267,7 +267,7 @@ set first.
 \note WARNING: This method will invalidate previous WSqlResults returned - nesting
 calls to this method inside of a loop iterating over WSqlResults will not work. Obtain
 the list \em first and \em aftwards execute a query and fetch the result set using
-result().
+getResult().
 \retval vector<string> a list of table names
  */
 std::vector< std::string > WMysqlDriver::tableNames()
@@ -283,7 +283,7 @@ std::vector< std::string > WMysqlDriver::tableNames()
     }
     std::string sql = "show tables";
     query(sql);
-    result();
+    getResult();
     int numtables = _result->count();
     for(int i=0;i<numtables;++i)
         vecToReturn.push_back(_result->fetch(i).field(0).data<std::string>());
@@ -323,7 +323,7 @@ std::vector< std::string > WMysqlDriver::tableNames()
     \warning If the table metadata has not been initialized yet this method will invalidate 
     any previous WSqlResult pointer returned - in this case nesting calls to this method inside 
     of a loop iterating over WSqlResults WILL NOT WORK. Obtain the WSqlTable \em first and 
-    \em then query() a query and fetch the result set using result() or use WSqlDatabase::initMetaData()
+    \em then query() a query and fetch the result set using getResult() or use WSqlDatabase::initMetaData()
     to initialize the metadata for all tables at once.
     
     \param string the name of the table to use
@@ -345,7 +345,7 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
     std::vector<std::string>::const_iterator column_names_it;
     std::string sql("show columns in "); sql.append(tableName);
     query(sql);
-    result();
+    getResult();
     WSqlColumn clm;
     WSqlRecord record = _result->fetchFirst();
     while(!record.empty())
@@ -381,7 +381,7 @@ WSqlTable WMysqlDriver::tableMetaData( const std::string& tableName )
         " where table_name like '" + tableName + "' and column_name like '" + *column_names_it + "'";
         
         query(sql);
-        result();
+        getResult();
         WSqlRecord record = _result->fetchFirst();
         while(!record.empty())
         {

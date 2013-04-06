@@ -41,7 +41,7 @@ namespace WSql {
 std::string sql = "select * from " + tablename + " limit 2";
 if(!db.execute(sql)) exit();
 
-WSqlResult *result = db.result();
+WSqlResult *result = db.getResult();
 WSqlRecord record = result->fetchFirst();
 while(!record.empty())
 {

@@ -53,7 +53,7 @@ WSqlDriver::WSqlDriver(WSqlDatabase* db)
 
 /*!\brief Destroys the driver and created resources
  * 
- * Note that the result pointer obtained from result() is \em invalid after the 
+ * Note that the result pointer obtained from getResult() is \em invalid after the 
  * object is destroyed! This means you do not need to (and should not) delete 
  * a result from the driver and that you also must be careful not to use it after 
  * a WSqlDriver object has been destroyed.
@@ -168,9 +168,9 @@ WSqlTable* WSqlDriver::getTable( const std::string& tablename )
 
     Executes the SQL statement in \a sql and returns true if there were no
     errors.  Note that if the query was a SELECT expecting results the 
-    WSqlResult is initiated before return and can be accesses using result().
-    If there were no records returned result() will return an empty result.
-    \sa WSqlResult result()
+    WSqlResult is initiated before return and can be accesses using getResult().
+    If there were no records returned getResult() will return an empty result.
+    \sa WSqlResult getResult()
 */
 
 /*!

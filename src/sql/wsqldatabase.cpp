@@ -56,7 +56,7 @@ std::string sql = "select * from " + sometable + " limit 2;";
 if(!db.query(sql))
     std::cout << "Query Failed: " << db.error().text() << std::endl;
 }else{
-    WSql::WSqlResult *result = db.result();
+    WSql::WSqlResult *result = db.getResult();
     std::cout << "Number of rows: " << result->size() << std::endl;
     WSql::WSqlRecord record = result->fetchFirst();
     while(!record.empty())
@@ -111,7 +111,7 @@ WSqlDatabase::WSqlDatabase()
     
     This constructs a new database object initialized with the values of  \a other
      *    WARNING: This also creates a new driver! If \a other
-     *    is destroyed result() is invalid until the next query() is called!
+     *    is destroyed getResult() is invalid until the next query() is called!
 
     \param WSqlDatabase other - database to copy
 */
@@ -130,7 +130,7 @@ WSqlDatabase::WSqlDatabase(const WSqlDatabase &other)
 /*!\brief Destroys the object and frees any allocated resources.
  * 
 Note that the driver is also destroyed at this time - any WSqlResults
-obtained from result() will be invalid after this.
+obtained from getResult() will be invalid after this.
     \sa close()
 */
 
@@ -145,7 +145,7 @@ WSqlDatabase::~WSqlDatabase()
 /*!\brief Copies the values of \a other to this object.
  * 
     WARNING: This also creates a new driver! If \a other
-    is destroyed result() is invalid until the next query()!
+    is destroyed getResult() is invalid until the next query()!
 
     \param WSqlDatabase other - database to copy
 */
@@ -419,11 +419,11 @@ std::string WSqlDatabase::hostName() const
 
 This returns a pointer to the database driver used to access the database
     connection. \em Caution! This is not meant to be used directly - use open().
-    close(), query() and result() for interaction with the driver instead.
+    close(), query() and getResult() for interaction with the driver instead.
     
     !This may be removed in future.
 
-    \sa open() close() query() result()
+    \sa open() close() query() getResult()
 */
 
 WSqlDriver* WSqlDatabase::driver() const
@@ -470,7 +470,7 @@ WSqlError WSqlDatabase::error() const
   \warning If the table metadata has not been initialized yet this method will invalidate 
   any previous WSqlResult pointer returned - in this case nesting calls to this method inside 
   of a loop iterating over WSqlResults WILL NOT WORK. Obtain the WSqlTable \em first and 
-  \em then query() a query and fetch the result set using result() or use initMetaData()
+  \em then query() a query and fetch the result set using getResult() or use initMetaData()
   to initialize the metadata for all tables at once.
   
 \todo Use the table type - currently does nothing.
@@ -481,7 +481,7 @@ WSqlError WSqlDatabase::error() const
 */
 const std::vector<std::string>& WSqlDatabase::tableNames(WSql::TableType type)
 {
-	if(_tableNames.empty())
+	if(_tableNames.empty() && _driver->isValid() )
         _tableNames = _driver->tableNames();
     return _tableNames;
 }
@@ -514,7 +514,7 @@ const std::vector<std::string>& WSqlDatabase::tableNames(WSql::TableType type)
  \warning If the table metadata has not been initialized yet this method will invalidate 
  any previous WSqlResult pointer returned - in this case nesting calls to this method inside 
  of a loop iterating over WSqlResults WILL NOT WORK. Obtain the WSqlTable \em first and 
- \em then query() a query and fetch the result set using result() or use initMetaData()
+ \em then query() a query and fetch the result set using getResult() or use initMetaData()
  to initialize the metadata for all tables at once.
  
  \param string the name of the table to use
@@ -609,12 +609,12 @@ bool WSqlDatabase::isValid() const
 /*! \brief Executes the query in \a sql returning true on sucess
  * 
  * This method sends the query SQL in string \a sql  to the database server,
- * the results of which will be available by calling result(). Use this method
+ * the results of which will be available by calling getResult(). Use this method
  * when you expect a result set, for non-result execution use execute()
- * \sa result() execute()
+ * \sa getResult() execute()
  * \retval bool true on success.
  */
-bool WSqlDatabase::query(const std::string& sql)
+bool WSqlDatabase::doQuery(const std::string& sql)
 {
     return _driver->query(sql);
 }
@@ -639,12 +639,12 @@ bool WSqlDatabase::query(const std::string& sql)
  *    dosomeerror();
  * if (!db.query(std::string("select foo from bar")))
  *    dosomeerror();
- * WSqlResult *result = db.result();
- * //WSqlResult *result2 = db.result(); <- wrong 
+ * WSqlResult *result = db.getResult();
+ * //WSqlResult *result2 = db.getResult(); <- wrong 
  * //...iterate over results ..._then repeat:
  * if (!db.query(std::string("select baz from bar")))
  *    dosomeerror();
- * WSqlResult *result = db.result();
+ * WSqlResult *result = db.getResult();
  * ..etc.
  * \endcode
  * \sa WSqlResult WSqlRecord WMysqlDriver WSqliteDriver
@@ -652,7 +652,7 @@ bool WSqlDatabase::query(const std::string& sql)
  * \param bool iscached - if true (the default) fetches entire result set at once.
  * \retval WSqlResult* - the result set 
  */
-WSqlResult * WSqlDatabase::result(bool iscached)
+WSqlResult * WSqlDatabase::getResult(bool iscached)
 {
     return _driver->result(iscached);
 }

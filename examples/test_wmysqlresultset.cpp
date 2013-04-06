@@ -42,14 +42,14 @@ int main()
         }
         
         std::string sql = "select * from " + *it + " limit 2;";
-        if(!db.query(sql))
+        if(!db.doQuery(sql))
         {
             std::cout << "Query Failed: " << db.error().text() << std::endl;
             it++;
             continue;
         }else{
             
-            WSql::WSqlResult *result = db.result();
+            WSql::WSqlResult *result = db.getResult();
             WSql::WSqlRecord record = result->fetchFirst();
             while(!record.empty())
             {

@@ -36,9 +36,9 @@ class WMysqlDriver : public WSqlDriver
         ~WMysqlDriver();
         bool open();
         void close();
-        bool query(std::string sql );
+        bool doQuery(std::string sql );
 //        bool execute(std::string sql );
-        WSqlResult* result(bool iscached=true);
+        WSqlResult* getResult(bool iscached=true);
         // WSqlResult exec(const WSqlQuery &queryObject);
         std::vector<std::string> tableNames();
         WSqlTable tableMetaData( const std::string &tableName );

@@ -50,7 +50,7 @@ public:
     void close();
     bool isOpen() const;
     bool hasError() const;
-    WSqlError error() const;
+    WSqlError error();
     std::vector<std::string> errors();
     bool isValid() const;
 

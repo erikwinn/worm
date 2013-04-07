@@ -38,8 +38,8 @@ class WSqliteDriver : public WSqlDriver
         ~WSqliteDriver();
         bool open();
         void close();
-        bool query( std::string sql );
-        WSqlResult* result(bool iscached=true);
+        bool doQuery( std::string sql );
+        WSqlResult* getResult(bool iscached=true);
 
         std::vector<std::string> tableNames();
         WSqlTable tableMetaData( const std::string &tableName );

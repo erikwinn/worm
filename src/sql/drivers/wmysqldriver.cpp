@@ -224,7 +224,7 @@ WSqlResult *result = db.getResult();
 \param bool iscached - if true (the default) fetches entire result set at once.
  \return WSqlResult* contains the result set
  */
-WSqlResult *WMysqlDriver::result ( bool iscached )
+WSqlResult *WMysqlDriver::getResult ( bool iscached )
 {
 	delete _result;
 	_result = new WMysqlResult ( this );
@@ -316,7 +316,7 @@ std::vector< std::string > WMysqlDriver::tableNames()
 	}
 
 	std::string sql = "show tables";
-	query ( sql );
+	doQuery ( sql );
 	getResult();
 	int numtables = _result->count();
 
@@ -384,7 +384,7 @@ WSqlTable WMysqlDriver::tableMetaData ( const std::string &tableName )
 	std::vector<std::string>::const_iterator column_names_it;
 	std::string sql ( "show columns in " );
 	sql.append ( tableName );
-	query ( sql );
+	doQuery ( sql );
 	getResult();
 	WSqlColumn column;
 	WSqlRecord record = _result->fetchFirst();
@@ -423,7 +423,7 @@ WSqlTable WMysqlDriver::tableMetaData ( const std::string &tableName )
 			  " referenced_column_name from information_schema.key_column_usage "
 			  " where table_name like '" + tableName + "' and column_name like '" + *column_names_it + "'";
 
-		query ( sql );
+		doQuery ( sql );
 		getResult();
 		WSqlRecord record = _result->fetchFirst();
 

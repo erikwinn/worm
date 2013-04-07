@@ -453,13 +453,17 @@ WSqlDriver *WSqlDatabase::driver() const
  *
  */
 
-WSqlError WSqlDatabase::error() const
+WSqlError WSqlDatabase::error()
 {
 	if ( _driver && _isValid )
 		return _driver->error();
 	else
 		if ( ! _errorStack.empty() )
-			return _errorStack.pop_back();
+		{
+			WSqlError e = _errorStack.back();
+			_errorStack.pop_back();
+			return e;
+		}
 
 	return WSqlError();
 }
@@ -640,7 +644,7 @@ bool WSqlDatabase::isValid() const
  */
 bool WSqlDatabase::doQuery ( const std::string &sql )
 {
-	return _driver->query ( sql );
+	return _driver->doQuery ( sql );
 }
 /*! \brief Returns a pointer to the result set from the most recent query
  *
@@ -678,7 +682,7 @@ bool WSqlDatabase::doQuery ( const std::string &sql )
  */
 WSqlResult *WSqlDatabase::getResult ( bool iscached )
 {
-	return _driver->result ( iscached );
+	return _driver->getResult ( iscached );
 }
 
 

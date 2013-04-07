@@ -323,7 +323,7 @@ void WSqliteDriver::close()
  * @param std::string sql containing the query string
  * @retval bool
  **/
-bool WSqliteDriver::query ( std::string sql )
+bool WSqliteDriver::doQuery ( std::string sql )
 {
 	if ( !isOpen() )
 	{
@@ -405,7 +405,7 @@ bool WSqliteDriver::query ( std::string sql )
 	}
 }
 
-WSqlResult *WSqliteDriver::result ( bool iscached )
+WSqlResult *WSqliteDriver::getResult ( bool iscached )
 {
 	if ( 0 == _result )
 		_result = new WSqliteResult ( this );

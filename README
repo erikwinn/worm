@@ -1,6 +1,8 @@
 WORM - DAL / ORM code generation framework
 
-Copyright (C) 2011  Erik Winn (erikwinnmail at yahoo dot com)
+WARNING 2013-04-06: EXPECT BREAKAGE - API CHANGES UNDER WAY.
+
+Copyright (C) 2011  Erik Winn (sidewalksoftware at gmail dot com)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

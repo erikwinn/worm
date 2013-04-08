@@ -46,7 +46,6 @@ class WSqlDriver
         virtual WSqlTable tableMetaData( const std::string &tableName ) = 0;
                 
         virtual WSqlResult* getResult(bool iscached=true){return _result;}
-        virtual WSqlError error() const { return _error;}
         virtual bool isValid()const { return _isValid;}
         virtual bool isOpen()const { return _isOpen;}
         
@@ -54,7 +53,6 @@ class WSqlDriver
         
         bool hasError()const { return _hasError;}
 
-//note: maybe auto disconnect/reconnect here?  or, do we even need this?              
         void setDatabase( WSqlDatabase *dp ) { _database = dp;}
 
     protected:
@@ -66,15 +64,15 @@ class WSqlDriver
         void setIsOpen( bool o ) { _isOpen = o;}
         void setHasError( bool e ) { _hasError = e;}
         
-        void setError(const WSqlError& e );
+        void setError( const WSql::WSqlError &error );
         void setError(const std::string& text,
                       WSqlError::ErrorType type,
                       WSqlError::ErrorSeverity severity,
                       bool isvalid = true );
+        inline void setError(const char * text){setError(std::string(text));}
         inline void setError(const std::string& text){
             setError(text,WSql::WSqlError::DRIVER, WSql::WSqlError::WARNING);
         }
-        inline void setError(const char * text){setError(std::string(text));}
         
         WSqlDatabase *_database;
         WSqlResult * _result;
@@ -85,8 +83,6 @@ class WSqlDriver
         bool _isOpen;
         bool _hasError;
         std::string _databaseName;
-        WSqlError _error;
-        std::vector<WSqlError> _errors;
 };
 
 } // namespace WSql

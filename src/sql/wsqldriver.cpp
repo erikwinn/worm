@@ -64,7 +64,7 @@ WSqlDriver::~WSqlDriver()
 	delete _result;
 	_result = 0;
 	_tables.clear();
-	_errors.clear();
+	//_errors.clear();
 }
 
 /*!\brief Set an error with \a text and types and also set isValid
@@ -83,7 +83,6 @@ void WSqlDriver::setError ( const std::string &text, WSqlError::ErrorType type,
 {
 	setError ( WSqlError ( text, -1, type, severity ) );
 	setIsValid ( isvalid );
-	setHasError ( true );
 }
 /*! \brief Sets the the current error to \a error
  *
@@ -93,10 +92,7 @@ void WSqlDriver::setError ( const std::string &text, WSqlError::ErrorType type,
  */
 void WSqlDriver::setError ( const WSqlError &error )
 {
-	if ( _hasError )
-		_errors.push_back ( _error );
-
-	_error = error;
+	_database->addError( error );
 	_hasError = true;
 }
 

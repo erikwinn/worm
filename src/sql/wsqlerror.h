@@ -53,36 +53,17 @@ public:
     WSqlError(const WSqlError& other);
     WSqlError& operator=(const WSqlError& other);
     bool operator==(const WSqlError& other)const;
-    bool operator!=(const WSqlError& other)const {
-        return ! operator==(other);
-    }
+    bool operator!=(const WSqlError& other)const {return ! operator==(other);}
     ~WSqlError();
 
-    std::string text() const {
-        return _text;
-    }
-    int errorNumber() const {
-        return _error_number;
-    }
-    ErrorType type() const {
-        return _type;
-    }
-    ErrorSeverity severity() const {
-        return _severity;
-    }
-
-    void setErrorNumber(int error_number) {
-        _error_number=error_number;
-    }
-    void setText(const std::string& text) {
-        _text=text;
-    }
-    void setType(ErrorType type) {
-        _type=type;
-    }
-    void setSeverity(ErrorSeverity severity) {
-        _severity=severity;
-    }
+    std::string text() const {return _text;}
+    int errorNumber() const {return _error_number;}
+    ErrorType type() const {return _type;}
+    ErrorSeverity severity() const {return _severity;}
+    void setErrorNumber(int error_number) {_error_number=error_number;}
+    void setText(const std::string& text) {_text=text;}
+    void setType(ErrorType type) {_type=type;}
+    void setSeverity(ErrorSeverity severity) {_severity=severity;}
 
 private:
     int _error_number;

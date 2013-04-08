@@ -59,13 +59,9 @@ public:
     std::string userName() const;
     std::string password() const;
     std::string hostName() const;
-    int port() const {
-        return _port;
-    }
+    int port() const {return _port;}
     std::string connectionOptions() const;
-    WSql::DriverType driverType() {
-        return _driverType;
-    }
+    WSql::DriverType driverType() {return _driverType;}
 
     void setDatabaseName(const std::string& name);
     void setUserName(const std::string& name);
@@ -75,19 +71,13 @@ public:
     void setConnectOptions(const std::string& options = std::string());
     void setDriverType(WSql::DriverType t);
 
-    void addError(const WSqlError& e) {
-        _errorStack.push_back(e);
-    }
+    void addError(const WSqlError& e) {_errorStack.push_back(e);}
     //REMOVE:?
-    void setDriver(WSqlDriver *d) {
-        _driver=d;
-    }
+    void setDriver(WSqlDriver *d) {_driver=d;}
 
     //Raw driver access ..
     WSqlDriver* driver() const;
-    WSqlDriver* handle() const {
-        return driver();
-    }
+    WSqlDriver* handle() const {return driver();}
 
     //Metadata
     const std::vector<std::string>& tableNames(WSql::TableType type = WSql::Tables);

@@ -227,7 +227,7 @@ bool WSqlDatabase::initDriver()
 	return blnToReturn;
 }
 
-/*! \brief Open a connection
+/*! \brief Open a connection to current database
  *
     Opens the database connection using the current connection
     values. Returns true on success; otherwise returns false. Error
@@ -295,11 +295,7 @@ bool WSqlDatabase::isOpen() const
 
 bool WSqlDatabase::hasError() const
 {
-	//!\todo resolve this - there is also the local errorStack ..
-	if ( _driver && _isValid )
-		return _driver->hasError();
-
-	return false;
+	return ! _errorStack.empty();
 }
 
 
@@ -446,32 +442,41 @@ WSqlDriver *WSqlDatabase::driver() const
 	return _driver;
 }
 
-/*!
- *    Returns the last error that occurred on the database or in the driver.
- * \todo resolve this - decide what to do about the local error stack ..
+/*!\brief Returns the last error that occurred on the database or in the driver.
+ *    
+ * All errors for database interactions are available here - they are popped off the 
+ * error stack. This function may be called repeatedly to retrieve all errors on the
+ * stack.  When there are no errors an empty WSqlError is returned.
+ * 
+ \code
+ if(database->hasError()){
+	WSqlError e = database->error();
+	while(e.isValid){
+		//do something with error ..
+		e = database->error();
+	}
+}
+	 
+\endcode	 
+
  *    \sa WSqlError
  *
  */
 
 WSqlError WSqlDatabase::error()
-{
-	if ( _driver && _isValid )
-		return _driver->error();
-	else
-		if ( ! _errorStack.empty() )
-		{
-			WSqlError e = _errorStack.back();
-			_errorStack.pop_back();
-			return e;
-		}
-
+{	
+	if ( ! _errorStack.empty() )
+	{
+		WSqlError e = _errorStack.back();
+		_errorStack.pop_back();
+		return e;
+	}
 	return WSqlError();
 }
 
 /*!
  *    Returns all the errors that have occurred on the database or in the
  * driver as a vector of strings.
- * \todo .. decide if we use this ..
  *    \sa WSqlError
  */
 

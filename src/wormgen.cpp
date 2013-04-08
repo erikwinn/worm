@@ -125,7 +125,7 @@ int main( int argc, char ** argv )
     }
     closedir(dir);
     if ( dbname.empty() ) {
-        std::cerr << PACKAGE << ": Error - no database specified! \n" << std::endl;
+        std::cerr << PACKAGE << "FATAL: Error - no database specified! \n" << std::endl;
         print_help(3);
     }
 
@@ -137,7 +137,7 @@ int main( int argc, char ** argv )
     db.setPassword( password );
 
     if ( !db.open() ) {
-        std::cerr << "Failed to open: " << db.error().text() << std::endl;
+        std::cerr << "FATAL: Failed to open database - error: " << db.error().text() << std::endl;
         return 4;
     }
 

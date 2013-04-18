@@ -44,7 +44,6 @@ linux or Unices should be ok.
 Requirements:
 
 * cmake, make, gcc, libstdc++, stl
-* Boost - basic, header only (algorithm/string, lexical_cast)
 * SQlite3 libraries - you may comment out the sqlite driver in src/CMakeLists.txt
 if you don't want SQlite3 support
 * libmysqlclient - same applies, you may comment this out

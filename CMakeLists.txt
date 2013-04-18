@@ -15,12 +15,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(MySQL)
 find_package(Sqlite3)
 find_package(Ctemplate REQUIRED)
-find_package(Boost REQUIRED)
 
 #ADD_DEFINITIONS(-Wall -O2)
 ADD_DEFINITIONS(-Wall -g)
 
-include_directories( ${Boost_INCLUDE_DIRS} ${WORM_INCLUDE_DIRS} ${SQLITE3_INCLUDE_DIR})
+include_directories( ${WORM_INCLUDE_DIRS} ${SQLITE3_INCLUDE_DIR} )
 
 add_subdirectory(src)
 install(FILES src/orm/templates/class_declaration.tpl DESTINATION share/worm)

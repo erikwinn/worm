@@ -20,7 +20,7 @@
 #define WSQLDATUM_H
 
 #include <string>
-#include <boost/lexical_cast.hpp>
+#include <sstream>
 
 namespace WSql
 {
@@ -28,53 +28,47 @@ namespace WSql
 class WSqlDatum
 {
 
-    public:
-        WSqlDatum();
-        WSqlDatum( const WSqlDatum& other );
-        virtual ~WSqlDatum();
-        virtual WSqlDatum& operator=( const WSqlDatum& other );
-        virtual bool operator==( const WSqlDatum& other ) const;
-        inline bool operator!=( const WSqlDatum &other ) const {
-            return !operator==( other );
-        }
-        template <typename T> void setData( const T t ) {
-            try {
-                _data = boost::lexical_cast<std::string>( t );
-            }
-            catch ( boost::bad_lexical_cast &e ) {
-                //!\todo handle exception
-            }
-        };
+	public:
+		WSqlDatum();
+		WSqlDatum( const WSqlDatum& other );
+		virtual ~WSqlDatum();
+		virtual WSqlDatum& operator=( const WSqlDatum& other );
+		virtual bool operator==( const WSqlDatum& other ) const;
+		inline bool operator!=( const WSqlDatum &other ) const {
+			return !operator==( other );
+		}
+		template <typename T> void setData( const T t ) {
+			_converter << t;
+			_data = _converter.str();
+		};
 
-        template <typename T> T data()const {
-            try {
-                return boost::lexical_cast<T>( _data );
-            }
-            catch ( boost::bad_lexical_cast &e ) {
-                //!\todo handle exception
-                //well, gotta do _something ..
-                return T();
-            }
-        };
+		template <typename T> T data(){
+			T result;
+			_converter << _data;
+			_converter >> result;
+			return result;
+		};
 
-        short toShort()const {return data<short>(); }
-        int toInt()const {return data<int>(); }
-        long toLong()const {return data<long>(); }
-        float toFloat()const {return data<float>(); }
-        double toDouble()const {return data<double>(); }
+		short toShort() {return data<short>(); }
+		int toInt() {return data<int>(); }
+		long toLong() {return data<long>(); }
+		float toFloat() {return data<float>(); }
+		double toDouble() {return data<double>(); }
 
-        unsigned short toUShort()const {return data<unsigned short>(); }
-        unsigned int toUInt()const {return data<unsigned int>(); }
-        unsigned long toULong()const {return data<unsigned long>(); }
+		unsigned short toUShort() {return data<unsigned short>(); }
+		unsigned int toUInt() {return data<unsigned int>(); }
+		unsigned long toULong() {return data<unsigned long>(); }
 
-        std::string toString()const {return data<std::string>(); }
+		std::string toString() {return data<std::string>(); }
 
-        void clear();
-    private:
-        std::string _data;
+		void clear();
+	private:
+		std::string _data;
+		std::stringstream _converter;
 
 };
 
 }//namespace WSql
 #endif // WSQLDATUM_H
+
 

@@ -52,11 +52,13 @@ class WSqliteDriver : public WSqlDriver
 
         WSqlDataType::Type sqlite3TypeToWSqlType( std::string tname) const;
         WSqlDataType::Type sqlite3TypeToWSqlType(int dtype)const;
-        std::string fetchTableCreateStatement(const std::string& tablename)const;
+//        std::string fetchTableCreateStatement(const std::string& tablename)const;
+        std::vector<std::string> fetchTableCreateStatement(const std::string& tablename)const;
         std::string extractStatement(const std::string& sql, const char start='(', const char end=')') const;        
-        void parseSchema( std::string& sql);
+        void parseSchema( std::vector< std::string > sql );
         bool columnIsAutoIncrement(const std::string& columnname)const;
         void mapColumns(std::vector<std::string> &column_definitions);
+		void sql ( const char *arg1 );
         //temporary buffers; cleared after each metatable init ..
         std::map<std::string, std::string> _columns_map;
         std::vector<WSqlForeignKey> _foreign_keys;

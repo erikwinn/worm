@@ -21,9 +21,8 @@
 #include "wsqlforeignkey.h"
 
 #include <iostream>
-#include <boost/algorithm/string.hpp>
 
-#define ROWENDTAG "-*-"
+#define LOCALDEBUG 0
 
 namespace WSql
 {
@@ -65,22 +64,20 @@ namespace WSql
 /*! \internal - dont use this.*/
 bool isForeignKeyDefinition ( std::string sql )
 {
-	boost::to_upper ( sql );
-	return ( sql.find ( "FOREIGN KEY" ) != std::string::npos );
+	return ( WSqlDataType::iFind (sql, "FOREIGN KEY" ) != std::string::npos );
 }
 /*! \internal - dont use this.*/
 bool isIndexDefinition ( std::string sql )
 {
-	boost::to_upper ( sql );
-	return ( boost::istarts_with ( sql, "UNIQUE" )
-			 || boost::istarts_with ( sql, "PRIMARY KEY" )
-			 || boost::istarts_with ( sql, "INDEX" )
-			 || boost::istarts_with ( sql, "CREATE INDEX" )
-			 || boost::istarts_with ( sql, "CREATE PRIMARY KEY" )
-			 || boost::istarts_with ( sql, "CREATE UNIQUE" )
-			 || boost::istarts_with ( sql, "CONSTRAINT INDEX" )
-			 || boost::istarts_with ( sql, "CONSTRAINT UNIQUE" )
-			 || boost::istarts_with ( sql, "CONSTRAINT PRIMARY KEY" )
+	return ( WSqlDataType::iFind(sql, "UNIQUE" ) == 0
+			 || WSqlDataType::iFind(sql, "PRIMARY KEY" ) == 0
+			 || WSqlDataType::iFind(sql, "INDEX" ) == 0
+			 || WSqlDataType::iFind(sql, "CREATE INDEX" ) == 0
+			 || WSqlDataType::iFind(sql, "CREATE PRIMARY KEY" ) == 0
+			 || WSqlDataType::iFind(sql, "CREATE UNIQUE" ) == 0
+			 || WSqlDataType::iFind(sql, "CONSTRAINT INDEX" ) == 0
+			 || WSqlDataType::iFind(sql, "CONSTRAINT UNIQUE" ) == 0
+			 || WSqlDataType::iFind(sql, "CONSTRAINT PRIMARY KEY" ) == 0
 		   );
 }
 
@@ -94,9 +91,9 @@ WSqlForeignKey createForeignKey ( std::string sqldef )
 	while ( pos < sz ) //sqlite is case insensitive ..
 		sqldef[pos] = tolower ( sqldef[pos++] );
 
-//    std::cerr << "FK def: *" << sqldef << "*" << std::endl;
+    if(LOCALDEBUG) std::cout << "FK def: *" << sqldef << "*" << std::endl;
 	//constraint "fk_comment_post" foreign key ("post_id") references "post" ("id")
-	boost::trim_if ( sqldef, boost::is_any_of ( "\n\t " ) );
+	WSqlDataType::trim ( sqldef );
 
 	size_t start = sqldef.find_first_of ( "(" );
 	size_t end = sqldef.find_first_of ( ")", start );
@@ -104,8 +101,8 @@ WSqlForeignKey createForeignKey ( std::string sqldef )
 	if ( std::string::npos != start && std::string::npos != end )
 	{
 		std::string tmp = sqldef.substr ( start + 1, ( end - start ) - 1 );
-		boost::trim_if ( tmp, boost::is_any_of ( " '\"[]" ) );
-//        std::cerr << " column: trimmed *" << tmp << "*" <<  std::endl;
+		WSqlDataType::trim( tmp, std::string(" '\"[]") );
+		if(LOCALDEBUG) std::cerr << " column: trimmed *" << tmp << "*" <<  std::endl;
 		start = sqldef.find_first_of ( "(", end );
 		end = sqldef.find_first_of ( ")", start );
 		fkToReturn.setColumnName ( tmp );
@@ -113,8 +110,8 @@ WSqlForeignKey createForeignKey ( std::string sqldef )
 		if ( std::string::npos != start && std::string::npos != end )
 		{
 			std::string tmp2 = sqldef.substr ( start + 1, ( end - start ) - 1 );
-			boost::trim_if ( tmp2, boost::is_any_of ( " '\"[]" ) );
-//            std::cerr << "target column: trimmed *" << tmp2 << "*" <<  std::endl;
+			WSqlDataType::trim( tmp2, std::string(" '\"[]") );
+			if(LOCALDEBUG) std::cerr << "target column: trimmed *" << tmp2 << "*" <<  std::endl;
 			fkToReturn.setReferencedColumnName ( tmp2 );
 		}
 	}
@@ -128,8 +125,8 @@ WSqlForeignKey createForeignKey ( std::string sqldef )
 		start += 10;
 		end = sqldef.find ( "(", start );
 		std::string tmp3 = sqldef.substr ( start, ( end - start ) - 1 );
-		boost::trim_if ( tmp3, boost::is_any_of ( " '\"[]" ) );
-//        std::cerr << "== references table: trimmed *" << tmp3 << "*" <<  std::endl;
+		WSqlDataType::trim(tmp3, std::string(" '\"[]"));
+		if(LOCALDEBUG) std::cerr << "== references table: trimmed *" << tmp3 << "*" <<  std::endl;
 		fkToReturn.setReferencedTableName ( tmp3 );
 	}
 	else
@@ -142,8 +139,8 @@ WSqlForeignKey createForeignKey ( std::string sqldef )
 		start = sqldef.find_first_of ( "'\"" );
 		end = sqldef.find_first_of ( "'\"", start + 1 );
 		std::string tmp4 = sqldef.substr ( start, ( end - start ) - 1 );
-		boost::trim_if ( tmp4, boost::is_any_of ( " '\"[]" ) );
-//        std::cerr << "constraint name: trimmed *" << tmp4 << "*" <<  std::endl;
+		WSqlDataType::trim(tmp4, std::string(" '\"[]"));
+		if(LOCALDEBUG) std::cerr << "constraint name: trimmed *" << tmp4 << "*" <<  std::endl;
 		fkToReturn.setKeyName ( tmp4 );
 	}
 
@@ -166,10 +163,10 @@ void splitIntoDefinitions ( std::vector<std::string> &vecToFill, std::string sql
 		if ( sql[pos] == ',' )
 		{
 			std::string part = sql.substr ( 0, pos );
-			boost::trim ( part );
+			WSqlDataType::trim(part);
 			vecToFill.push_back ( part );
 			sql.erase ( 0, pos + 1 );
-			boost::trim ( sql );
+			WSqlDataType::trim(sql);
 			max = sql.size();
 			pos = 0;
 		}
@@ -185,8 +182,7 @@ void splitIntoDefinitions ( std::vector<std::string> &vecToFill, std::string sql
  */
 WSqlDataType::Type WSqliteDriver::sqlite3TypeToWSqlType ( std::string tname ) const
 {
-	boost::to_lower ( tname );
-
+	WSqlDataType::toLower(tname);
 	//note - this includes "bigint"; that would be stored as an "integer" in sqlite
 	if ( tname.find ( "int" ) != std::string::npos )
 		return WSqlDataType::INT;
@@ -464,8 +460,7 @@ WSqlTable WSqliteDriver::tableMetaData ( const std::string &tableName )
 		return tblToReturn;
 
 	//parse and store info from the create statement ..
-	std::string sqlToParse = fetchTableCreateStatement ( tableName );
-	parseSchema ( sqlToParse );
+	parseSchema ( fetchTableCreateStatement ( tableName ) );
 
 	sqlite3_stmt *statement;
 	std::string col_descript;
@@ -545,21 +540,20 @@ bool WSqliteDriver::columnIsAutoIncrement ( const std::string &columnname ) cons
 		return false;
 
 	std::string col_definition = it->second;
-	boost::to_lower ( col_definition );
+	WSqlDataType::toLower ( col_definition );
 
 	if ( col_definition.find ( "autoincrement" ) != std::string::npos
-			|| col_definition.find ( "auto_increment" ) != std::string::npos
-	   )
+			|| col_definition.find ( "auto_increment" ) != std::string::npos )
 		return true;
 
 	return false;
 }
 
 /*! \internal - dont use this.*/
-std::string WSqliteDriver::fetchTableCreateStatement ( const std::string &tablename ) const
+std::vector< std::string > WSqliteDriver::fetchTableCreateStatement ( const std::string &tablename ) const
 {
 	sqlite3_stmt *statement;
-	std::string sqlToReturn;
+	std::vector< std::string > vecToReturn;
 	std::string sql ( "SELECT sql from sqlite_master WHERE tbl_name = '" );
 	sql.append ( tablename );
 	sql.append ( "';" );
@@ -571,24 +565,17 @@ std::string WSqliteDriver::fetchTableCreateStatement ( const std::string &tablen
 			const unsigned char *safety = sqlite3_column_text ( statement, 0 );
 
 			if ( safety && SQLITE_ERROR != *safety )
-			{
-				sqlToReturn.append ( ( char * ) safety );
-				sqlToReturn.append ( ROWENDTAG );
-			}
+				vecToReturn.push_back(std::string( (char*) safety ) );
 			else
-			{
 				//this is quite weird - empty rows ..
 				std::cerr << "fetchTableCreateStatement - sqlite weirdness: " << tablename << std::endl;
 				//std::cerr <<  sqlite3_errmsg( _objSqlite ) << std::endl;
-			}
-
-			//??usleep();
 		}
 
 		sqlite3_finalize ( statement );
 	}
 
-	return sqlToReturn;
+	return vecToReturn;
 }
 
 /*! \internal - dont use this.*/
@@ -604,34 +591,40 @@ std::string WSqliteDriver::extractStatement ( const std::string &sqlToParse, con
 		return sqlToReturn;
 
 	sqlToReturn = sqlToParse.substr ( pos_start + 1, pos_end - ( pos_start + 1 ) );
-//    std::cerr << "extract Statement sqlToReturn: " << sqlToReturn << std::endl;
+	if(LOCALDEBUG) std::cout << "extract Statement sqlToReturn: " << sqlToReturn << std::endl;
 	return sqlToReturn;
 }
 
 //eh, not graceful but mostly works
 /*! \internal - dont use this. This parses the create statement for a table ..*/
-void WSqliteDriver::parseSchema ( std::string &sql )
-{
+void WSqliteDriver::parseSchema ( std::vector<std::string>  statements )
+{					
 	typedef std::vector<std::string>::iterator Iter;
-	std::vector<std::string> statements;  //complete statements in parens
 	std::vector<std::string> definitions;  //comma separated column defs
 
 	std::vector<std::string> columns;      //stored split off columns, constraints, indices
 	std::vector<std::string> indices;
 
-	boost::trim_if ( sql, boost::is_any_of ( "-*" ) );
-	boost::split ( statements, sql,  boost::is_any_of ( "-*" ), boost::token_compress_on );
 	Iter stmt_it = statements.begin();
 
 	for ( ; stmt_it != statements.end(); ++stmt_it )
 	{
 		std::string cur_statement =  *stmt_it;
-		boost::trim ( cur_statement );
+		if(LOCALDEBUG) std::cout << "************** STATEMENT (FULL) ***************" << std::endl 
+						<< "cur_statement: *" << cur_statement << "*" << std::endl;
+		
+		WSqlDataType::trim(cur_statement);
 
+		if(LOCALDEBUG) std::cout << "************** STATEMENT (TRIMMED) ***************" << std::endl 
+						<< "cur_statement: " << cur_statement << std::endl;
+		
 		//get statement between parens - but only for the first "CREATE";
 		//thus avoid extracting primary key definitions like (x_id,y_id)
-		if ( boost::istarts_with ( cur_statement, "CREATE TABLE" ) )
+		if ( WSqlDataType::iFind ( cur_statement, "CREATE TABLE" ) == 0 )
 			cur_statement = extractStatement ( cur_statement );
+
+		if (LOCALDEBUG) std::cout << "************** STATEMENT (extracted) ***************" << std::endl 
+						<< "cur_statement: " << cur_statement << std::endl;
 
 		//cut up by line -comma separated column definitions
 		splitIntoDefinitions ( definitions, cur_statement );
@@ -640,20 +633,23 @@ void WSqliteDriver::parseSchema ( std::string &sql )
 		for ( ; defs_it != definitions.end(); ++defs_it )
 		{
 			std::string cur_definition = *defs_it;
-			boost::trim ( cur_definition );
+			WSqlDataType::trim(cur_definition);
+
+			if (LOCALDEBUG) std::cout << "************** CURRENT DEFINITION ***************"  << std::endl
+							<< "cur_definition: " << cur_definition << std::endl;
 
 			if ( isForeignKeyDefinition ( cur_definition ) )
 			{
-				/*                std::cout << "cur_definition: " << cur_definition << std::endl
-				                    << "************** FOREIGN KEY ***************" << std::endl;*/
+				if (LOCALDEBUG) std::cout << "************** FOREIGN KEY ***************"  << std::endl
+								<< "cur_definition: " << cur_definition << std::endl;
 				WSqlForeignKey fk = createForeignKey ( cur_definition );
 				_foreign_keys.push_back ( fk );
 			}
 			else
 				if ( isIndexDefinition ( cur_definition ) )
 				{
-					/*                std::cout << "cur_definition: " << cur_definition << std::endl
-					                << "************** INDEX ***************" << std::endl;*/
+					if (LOCALDEBUG) std::cout << "************** INDEX ***************" << std::endl
+									<< "cur_definition: " << cur_definition << std::endl;
 					indices.push_back ( cur_definition );
 				}
 				else
@@ -680,9 +676,10 @@ void WSqliteDriver::mapColumns ( std::vector<std::string> &vecColumnDefinitions 
 		if ( pos != std::string::npos )
 		{
 			std::string cur_colname = cur_definition.substr ( 0, pos );
-			boost::trim_if ( cur_colname, boost::is_any_of ( "\n\t []`'\"" ) );
+			WSqlDataType::trim( cur_colname, std::string( "\n\t []`'\"" ) );
 			_columns_map[cur_colname] = cur_definition.erase ( 0, pos + 1 );
 		}
 	}
 }
+
 }//namespace WSql

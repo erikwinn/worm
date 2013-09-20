@@ -188,7 +188,7 @@ void WormClassGenerator::run()
 		for ( tpl_it = _templates.begin(); tpl_it != _templates.end(); ++ tpl_it )
 		{
 			const std::string tplfilename = _templateDirectory + tpl_it->uri();
-			outbuffer = expand ( tplfilename, table );
+			outbuffer = expand ( tplfilename, table, tpl_it->type() );
 			outfilename = createOutFileName ( tpl_it->type(), table );
 
 			if ( !writeFile ( outbuffer, outfilename ) )
@@ -208,7 +208,7 @@ void WormClassGenerator::run()
  * \param WSqlTable table - the table being generated
  * \retval std::string an expanded template
  */
-std::string WormClassGenerator::expand ( const std::string &filename, const WSqlTable &table )
+std::string WormClassGenerator::expand ( const std::string &filename, const WSqlTable &table, WormCodeTemplate::Type template_type )
 {
 //    std::cerr << "=============   Processing table " << table.name() << std::endl;
 	std::string strToReturn;
@@ -223,10 +223,18 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 	TemplateDictionary *forwarddecls_dict;
 	TemplateDictionary *belongsto_dict;
 	TemplateDictionary *hasmany_dict;
+	TemplateDictionary *includes_dict;
 	TemplateDictionary *coldict;
 	topdict->SetValue ( kcd_CLASS_NAME, table.className() );
 	topdict->SetValue ( kcd_TABLE_NAME, table.name() );
 
+	if( WormCodeTemplate::ClassDefinition == template_type )
+	{
+		std::string inc = "#include <" + table.className() + ".h>";
+		WSqlDataType::toLower(inc);
+		includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+		includes_dict->SetValue(kcd_INCLUDE, inc);		
+	}
 	const std::vector<WSqlColumn>& columns = table.columns();
 	std::vector<WSqlColumn>::const_iterator col_it = columns.begin();
 
@@ -240,11 +248,19 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 			//fks_it->dump();
 			std::vector<std::string>::const_iterator it = std::find ( forward_declarations.begin(), forward_declarations.end(), fks_it->referencedClassName() );
 
-			if ( it == forward_declarations.end() )
+			if ( it == forward_declarations.end() ) //avoid repetition ..
 			{
 				forwarddecls_dict = topdict->AddSectionDictionary ( kcd_FORWARD_DECLARATIONS );
 				forwarddecls_dict->SetValue ( kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName() );
 				forward_declarations.push_back ( fks_it->referencedClassName() );
+				if(WormCodeTemplate::ClassDefinition == template_type)
+				{
+					std::string inc = "#include <" + fks_it->referencedClassName() + ".h>";
+					WSqlDataType::toLower(inc);
+	//    std::cerr << "=============   adding include " << inc << std::endl;
+					includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+					includes_dict->SetValue(kcd_INCLUDE, inc);
+				}
 			}
 
 			belongsto_dict = topdict->AddSectionDictionary ( kcd_BELONGS_TO );
@@ -268,6 +284,14 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 				forwarddecls_dict = topdict->AddSectionDictionary ( kcd_FORWARD_DECLARATIONS );
 				forwarddecls_dict->SetValue ( kcd_REFERENCED_CLASSNAME, rks_it->referingClassName() );
 				forward_declarations.push_back ( rks_it->referingClassName() );
+				if(WormCodeTemplate::ClassDefinition == template_type)
+				{
+					std::string inc = "#include <" + rks_it->referingClassName() + ".h>";
+					WSqlDataType::toLower(inc);
+	//    std::cerr << "=============   adding include " << inc << std::endl;
+					includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+					includes_dict->SetValue(kcd_INCLUDE, inc);
+				}
 			}
 
 			hasmany_dict = topdict->AddSectionDictionary ( kcd_HAS_MANY );
@@ -308,8 +332,11 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 	}
 
 	//!\todo stub - add an addInclude method or such .. currently we only support string
-	if ( has_string )
-		topdict->SetValueAndShowSection ( "INCLUDE", "#include <string>", kcd_INCLUDES );
+	if ( has_string && template_type == WormCodeTemplate::ClassDeclaration)
+	{
+				includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+				includes_dict->SetValue(kcd_INCLUDE,  "#include <string>");				
+	}
 
 	ExpandTemplate ( filename, DO_NOT_STRIP, topdict, &strToReturn );
 	delete topdict;

@@ -34,26 +34,31 @@ namespace WSql
 /** @{ */
 /**
  * These are hashed string constants for refering to the marker tags used in the templates
+ * Note that you may also simply use const char strings - this just helps avoid typos ..
  */
-static const ::ctemplate::StaticTemplateString kcd_INCLUDES = STS_INIT_WITH_HASH ( kcd_INCLUDES, "INCLUDES", 7699670683738647257LLU );
-static const ::ctemplate::StaticTemplateString kcd_INCLUDE = STS_INIT_WITH_HASH ( kcd_INCLUDE, "INCLUDE", 434435386609578605LLU );
-static const ::ctemplate::StaticTemplateString kcd_FORWARD_DECLARATIONS = STS_INIT_WITH_HASH ( kcd_FORWARD_DECLARATIONS, "FORWARD_DECLARATIONS", 15273852411010322531LLU );
-static const ::ctemplate::StaticTemplateString kcd_REFERENCED_CLASSNAME = STS_INIT_WITH_HASH ( kcd_REFERENCED_CLASSNAME, "REFERENCED_CLASSNAME", 5376938313052943395LLU );
-static const ::ctemplate::StaticTemplateString kcd_CLASS_NAME = STS_INIT_WITH_HASH ( kcd_CLASS_NAME, "CLASS_NAME", 13981977283673860485LLU );
-static const ::ctemplate::StaticTemplateString kcd_BELONGS_TO = STS_INIT_WITH_HASH ( kcd_BELONGS_TO, "BELONGS_TO", 15166195752158467517LLU );
-static const ::ctemplate::StaticTemplateString kcd_HAS_MANY = STS_INIT_WITH_HASH ( kcd_HAS_MANY, "HAS_MANY", 12417993436827992317LLU );
-static const ::ctemplate::StaticTemplateString kcd_FOREIGNKEY_CLASSNAME = STS_INIT_WITH_HASH ( kcd_FOREIGNKEY_CLASSNAME, "FOREIGNKEY_CLASSNAME", 14113744978891695861LLU );
-static const ::ctemplate::StaticTemplateString kcd_FOREIGNKEY_CLASS_PLURAL = STS_INIT_WITH_HASH ( kcd_FOREIGNKEY_CLASS_PLURAL, "FOREIGNKEY_CLASS_PLURAL", 13464148753922874173LLU );
-static const ::ctemplate::StaticTemplateString kcd_COLUMNS = STS_INIT_WITH_HASH ( kcd_COLUMNS, "COLUMNS", 15302874640052016969LLU );
-static const ::ctemplate::StaticTemplateString kcd_UNSUPPORTED = STS_INIT_WITH_HASH ( kcd_UNSUPPORTED, "UNSUPPORTED", 8112833089436120679LLU );
-static const ::ctemplate::StaticTemplateString kcd_UNSIGNED = STS_INIT_WITH_HASH ( kcd_UNSIGNED, "UNSIGNED", 10867561526856517727LLU );
-static const ::ctemplate::StaticTemplateString kcd_DATATYPE = STS_INIT_WITH_HASH ( kcd_DATATYPE, "DATATYPE", 6518949878326190781LLU );
-static const ::ctemplate::StaticTemplateString kcd_VARIABLE_GETTOR = STS_INIT_WITH_HASH ( kcd_VARIABLE_GETTOR, "VARIABLE_GETTOR", 4376112485907229951LLU );
-static const ::ctemplate::StaticTemplateString kcd_VARIABLE_NAME = STS_INIT_WITH_HASH ( kcd_VARIABLE_NAME, "VARIABLE_NAME", 5051229879184672055LLU );
-static const ::ctemplate::StaticTemplateString kcd_VARIABLE_SETTOR = STS_INIT_WITH_HASH ( kcd_VARIABLE_SETTOR, "VARIABLE_SETTOR", 18309610407346123363LLU );
-static const ::ctemplate::StaticTemplateString kcd_COLUMN_NAME = STS_INIT_WITH_HASH ( kcd_COLUMN_NAME, "COLUMN_NAME", 16524890828269290931LLU );
-static const ::ctemplate::StaticTemplateString kcd_REFERENCED_TABLENAME = STS_INIT_WITH_HASH ( kcd_REFERENCED_TABLENAME, "REFERENCED_TABLENAME", 14486319327059551333LLU );
-static const ::ctemplate::StaticTemplateString kcd_TABLE_NAME = STS_INIT_WITH_HASH ( kcd_TABLE_NAME, "TABLE_NAME", 3760310134096538793LLU );
+static const ::ctemplate::StaticTemplateString kcd_BELONGS_TO = STS_INIT_WITH_HASH(kcd_BELONGS_TO, "BELONGS_TO", 15166195752158467517LLU);
+static const ::ctemplate::StaticTemplateString kcd_CLASS_NAME = STS_INIT_WITH_HASH(kcd_CLASS_NAME, "CLASS_NAME", 13981977283673860485LLU);
+static const ::ctemplate::StaticTemplateString kcd_COLUMN_COUNT = STS_INIT_WITH_HASH(kcd_COLUMN_COUNT, "COLUMN_COUNT", 16485208626900918235LLU);
+static const ::ctemplate::StaticTemplateString kcd_COLUMN_NAME = STS_INIT_WITH_HASH(kcd_COLUMN_NAME, "COLUMN_NAME", 16524890828269290931LLU);
+static const ::ctemplate::StaticTemplateString kcd_COLUMNS_separator = STS_INIT_WITH_HASH(kcd_COLUMNS_separator, "COLUMNS_separator", 3248360594376546073LLU);
+static const ::ctemplate::StaticTemplateString kcd_COLUMNS = STS_INIT_WITH_HASH(kcd_COLUMNS, "COLUMNS", 15302874640052016969LLU);
+static const ::ctemplate::StaticTemplateString kcd_DATATYPE = STS_INIT_WITH_HASH(kcd_DATATYPE, "DATATYPE", 6518949878326190781LLU);
+static const ::ctemplate::StaticTemplateString kcd_FOREIGNKEY_CLASSNAME = STS_INIT_WITH_HASH(kcd_FOREIGNKEY_CLASSNAME, "FOREIGNKEY_CLASSNAME", 14113744978891695861LLU);
+static const ::ctemplate::StaticTemplateString kcd_FOREIGNKEY_CLASS_PLURAL = STS_INIT_WITH_HASH(kcd_FOREIGNKEY_CLASS_PLURAL, "FOREIGNKEY_CLASS_PLURAL", 13464148753922874173LLU);
+static const ::ctemplate::StaticTemplateString kcd_FORWARD_DECLARATIONS = STS_INIT_WITH_HASH(kcd_FORWARD_DECLARATIONS, "FORWARD_DECLARATIONS", 15273852411010322531LLU);
+static const ::ctemplate::StaticTemplateString kcd_HAS_MANY = STS_INIT_WITH_HASH(kcd_HAS_MANY, "HAS_MANY", 12417993436827992317LLU);
+static const ::ctemplate::StaticTemplateString kcd_INCLUDES = STS_INIT_WITH_HASH(kcd_INCLUDES, "INCLUDES", 7699670683738647257LLU);
+static const ::ctemplate::StaticTemplateString kcd_INCLUDE = STS_INIT_WITH_HASH(kcd_INCLUDE, "INCLUDE", 434435386609578605LLU);
+static const ::ctemplate::StaticTemplateString kcd_PK_SECTION = STS_INIT_WITH_HASH(kcd_PK_SECTION, "PK_SECTION", 2633593037312264637LLU);
+static const ::ctemplate::StaticTemplateString kcd_PRIMARY_KEY = STS_INIT_WITH_HASH(kcd_PRIMARY_KEY, "PRIMARY_KEY", 4310751395207134081LLU);
+static const ::ctemplate::StaticTemplateString kcd_REFERENCED_CLASSNAME = STS_INIT_WITH_HASH(kcd_REFERENCED_CLASSNAME, "REFERENCED_CLASSNAME", 5376938313052943395LLU);
+static const ::ctemplate::StaticTemplateString kcd_REFERENCED_TABLENAME = STS_INIT_WITH_HASH(kcd_REFERENCED_TABLENAME, "REFERENCED_TABLENAME", 14486319327059551333LLU);
+static const ::ctemplate::StaticTemplateString kcd_TABLE_NAME = STS_INIT_WITH_HASH(kcd_TABLE_NAME, "TABLE_NAME", 3760310134096538793LLU);
+static const ::ctemplate::StaticTemplateString kcd_UNSIGNED = STS_INIT_WITH_HASH(kcd_UNSIGNED, "UNSIGNED", 10867561526856517727LLU);
+static const ::ctemplate::StaticTemplateString kcd_UNSUPPORTED = STS_INIT_WITH_HASH(kcd_UNSUPPORTED, "UNSUPPORTED", 8112833089436120679LLU);
+static const ::ctemplate::StaticTemplateString kcd_VARIABLE_GETTOR = STS_INIT_WITH_HASH(kcd_VARIABLE_GETTOR, "VARIABLE_GETTOR", 4376112485907229951LLU);
+static const ::ctemplate::StaticTemplateString kcd_VARIABLE_NAME = STS_INIT_WITH_HASH(kcd_VARIABLE_NAME, "VARIABLE_NAME", 5051229879184672055LLU);
+static const ::ctemplate::StaticTemplateString kcd_VARIABLE_SETTOR = STS_INIT_WITH_HASH(kcd_VARIABLE_SETTOR, "VARIABLE_SETTOR", 18309610407346123363LLU);
 /** @} */
 
 /*! \class WormClassGenerator  An ORM generator class

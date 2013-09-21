@@ -19,11 +19,13 @@
 //class_definition.tpl is currently the shortest ..
 #define MIN_TPL_FILENAME_SIZE 20
 
-#include "wormclassgenerator.h"
-#include <ctemplate/template.h>
 #include <dirent.h>
 #include <errno.h>
 #include <fstream>
+#include <stdio.h>
+#include <ctemplate/template.h>
+
+#include "wormclassgenerator.h"
 
 using namespace ctemplate;
 
@@ -94,6 +96,8 @@ WormClassGenerator::WormClassGenerator ( WSqlDatabase &db ) : _db ( db )
  * This method initializes the database metadata and loads the available
  * templates. It must be called (and optionally checked for success) \em before
  * run().
+ * Note also that the templates are expected to end in ".tpl", worm will attempt to
+ * identify the type of template according to the filename.
  *
  * On failure this sets a message in the database object and returns false.
  *
@@ -204,15 +208,17 @@ void WormClassGenerator::run()
  * It then expands the template replacing the tag markers and returns a string suitable for
  * writing to a file.
  *
+ * \todo Break this up into smaller functions, its getting long ..
+ * 
  * \param std::string filename - the file containing the template
  * \param WSqlTable table - the table being generated
  * \retval std::string an expanded template
  */
 std::string WormClassGenerator::expand ( const std::string &filename, const WSqlTable &table, WormCodeTemplate::Type template_type )
 {
-//    std::cerr << "=============   Processing table " << table.name() << std::endl;
 	std::string strToReturn;
 	bool has_string = false;
+	bool has_vector = false;
 	std::string type_declaration;
 	std::string variable_name;
 	std::string variable_settor;
@@ -220,20 +226,21 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 	std::vector<std::string> forward_declarations;
 
 	TemplateDictionary *topdict = new TemplateDictionary ( filename );
-	TemplateDictionary *forwarddecls_dict;
-	TemplateDictionary *belongsto_dict;
-	TemplateDictionary *hasmany_dict;
-	TemplateDictionary *includes_dict;
-	TemplateDictionary *coldict;
+	TemplateDictionary *forwarddecls_dict = 0;
+	TemplateDictionary *belongsto_dict = 0;
+	TemplateDictionary *hasmany_dict = 0;
+	TemplateDictionary *includes_dict = 0;
+	TemplateDictionary *columns_dict = 0;
 	topdict->SetValue ( kcd_CLASS_NAME, table.className() );
 	topdict->SetValue ( kcd_TABLE_NAME, table.name() );
-
+	std::string includes_string;
+	
 	if( WormCodeTemplate::ClassDefinition == template_type )
 	{
-		std::string inc = "#include <" + table.className() + ".h>";
-		WSqlDataType::toLower(inc);
+		includes_string = "#include <" + table.className() + ".h>";
+		WSqlDataType::toLower(includes_string);
 		includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
-		includes_dict->SetValue(kcd_INCLUDE, inc);		
+		includes_dict->SetValue(kcd_INCLUDE, includes_string);		
 	}
 	const std::vector<WSqlColumn>& columns = table.columns();
 	std::vector<WSqlColumn>::const_iterator col_it = columns.begin();
@@ -255,14 +262,12 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 				forward_declarations.push_back ( fks_it->referencedClassName() );
 				if(WormCodeTemplate::ClassDefinition == template_type)
 				{
-					std::string inc = "#include <" + fks_it->referencedClassName() + ".h>";
-					WSqlDataType::toLower(inc);
-	//    std::cerr << "=============   adding include " << inc << std::endl;
+					includes_string = "#include <" + fks_it->referencedClassName() + ".h>";
+					WSqlDataType::toLower(includes_string);
 					includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
-					includes_dict->SetValue(kcd_INCLUDE, inc);
+					includes_dict->SetValue(kcd_INCLUDE, includes_string);
 				}
 			}
-
 			belongsto_dict = topdict->AddSectionDictionary ( kcd_BELONGS_TO );
 			belongsto_dict->SetValue ( kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName() );
 			belongsto_dict->SetValue ( kcd_REFERENCED_TABLENAME, fks_it->referencedTableName() );
@@ -271,6 +276,7 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 
 	if ( table.hasReferencedKeys() )
 	{
+		has_vector = true;
 		std::vector< WSqlReferencedKey >rks = table.referencedKeys();
 		std::vector< WSqlReferencedKey >::const_iterator rks_it = rks.begin();
 
@@ -286,23 +292,25 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 				forward_declarations.push_back ( rks_it->referingClassName() );
 				if(WormCodeTemplate::ClassDefinition == template_type)
 				{
-					std::string inc = "#include <" + rks_it->referingClassName() + ".h>";
-					WSqlDataType::toLower(inc);
-	//    std::cerr << "=============   adding include " << inc << std::endl;
-					includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
-					includes_dict->SetValue(kcd_INCLUDE, inc);
+					includes_string = "#include <" + rks_it->referingClassName() + ".h>";
+					WSqlDataType::toLower(includes_string);
+					if( ! includes_dict )
+						includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+					includes_dict->SetValue(kcd_INCLUDE, includes_string);
 				}
 			}
-
 			hasmany_dict = topdict->AddSectionDictionary ( kcd_HAS_MANY );
 			hasmany_dict->SetValue ( kcd_FOREIGNKEY_CLASSNAME, rks_it->referingClassName() );
 			hasmany_dict->SetValue ( kcd_FOREIGNKEY_CLASS_PLURAL, rks_it->referingClassNamePlural() );
 		}
 	}
 
-	for ( ; col_it != columns.end(); ++col_it )
+	int i;
+	char buff[8];
+	
+	for (i=0; col_it != columns.end(); ++col_it, i++ )
 	{
-		coldict = topdict->AddSectionDictionary ( kcd_COLUMNS );
+		columns_dict = topdict->AddSectionDictionary ( kcd_COLUMNS );
 		type_declaration = col_it->typeDeclaration();
 		variable_name = col_it->variableName();
 		std::string tmp = variable_name;
@@ -314,28 +322,41 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 			has_string = true;
 
 		if ( ! col_it->typeIsSupported() )
-			coldict->ShowSection ( kcd_UNSUPPORTED );
-
-		coldict->SetValue ( kcd_COLUMN_NAME, col_it->columnName() );
-		coldict->SetValue ( kcd_DATATYPE, type_declaration );
-		coldict->SetValue ( kcd_VARIABLE_NAME, variable_name );
-		coldict->SetValue ( kcd_VARIABLE_SETTOR, variable_settor );
-		coldict->SetValue ( kcd_VARIABLE_GETTOR, variable_gettor );
+			columns_dict->ShowSection ( kcd_UNSUPPORTED );
+		
+		if( col_it->isPrimaryKey() )
+			topdict->SetValueAndShowSection("PRIMARY_KEY", variable_name, "PK_SECTION"  );
+		
+		columns_dict->SetValue ( kcd_COLUMN_NAME, col_it->columnName() );
+		columns_dict->SetValue ( kcd_DATATYPE, type_declaration );
+		columns_dict->SetValue ( kcd_VARIABLE_NAME, variable_name );
+		columns_dict->SetValue ( kcd_VARIABLE_SETTOR, variable_settor );
+		columns_dict->SetValue ( kcd_VARIABLE_GETTOR, variable_gettor );
+		snprintf(buff, 8, "%d", i+1);
+		columns_dict->SetValue("COLUMN_COUNT", buff);
 
 		//FIXME always unsigned .. deep strangeness ..
-		/*      if(col_it->isUnsigned())
-		        {
-		            coldict->ShowSection(kcd_UNSIGNED);
-		            std::cerr << "in table " << tbl.className() << " " << col_it->columnName() << "is unsigned .." << std::endl
-		            << "        type: " << WSqlDataType::toString(col_it->type()) << std::endl;
-		        }    */
+	/*    if(col_it->isUnsigned())
+			{
+				coldict->ShowSection(kcd_UNSIGNED);
+				std::cerr << "in table " << tbl.className() << " " << col_it->columnName() << "is unsigned .." << std::endl
+				<< "        type: " << WSqlDataType::toString(col_it->type()) << std::endl;
+			}    
+	*/
 	}
+	//used for a final "QString.arg()" in cases of WHERE queries ..
+	snprintf(buff, 8, "%d", i+1);
+	topdict->SetValue("COLUMN_COUNT", buff);
 
-	//!\todo stub - add an addInclude method or such .. currently we only support string
 	if ( has_string && template_type == WormCodeTemplate::ClassDeclaration)
 	{
-				includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
-				includes_dict->SetValue(kcd_INCLUDE,  "#include <string>");				
+		includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+		includes_dict->SetValue(kcd_INCLUDE,  "#include <string>");				
+	}
+	if ( has_vector && template_type == WormCodeTemplate::ClassDeclaration)
+	{
+		includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+		includes_dict->SetValue(kcd_INCLUDE,  "#include <vector>");				
 	}
 
 	ExpandTemplate ( filename, DO_NOT_STRIP, topdict, &strToReturn );
@@ -373,7 +394,6 @@ std::string WormClassGenerator::createOutFileName ( const WormCodeTemplate::Type
 			break;
 		default:
 			std::cerr << "WormClassGenerator: WARNING: template type unsupported!";
-			;
 	}
 
 	return strToReturn;

@@ -36,7 +36,6 @@ WormCodeTemplate::WormCodeTemplate ( const WormCodeTemplate &other )
 
 WormCodeTemplate::~WormCodeTemplate()
 {
-
 }
 
 WormCodeTemplate &WormCodeTemplate::operator= ( const WormCodeTemplate &other )
@@ -70,10 +69,10 @@ void WormCodeTemplate::setUri ( const std::string &uri )
 	std::string tmp;
 	size_t pos = uri.rfind ( '/' ); //!\todo NOT PORTABLE, FIXME
 
+	//erm, can't remember what i was up to here ..??
 	if ( std::string::npos == pos )
 	{
 		pos = uri.rfind ( '\\' );
-
 		if ( std::string::npos == pos )
 			tmp = uri;
 	}

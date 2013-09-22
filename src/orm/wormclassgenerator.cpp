@@ -242,7 +242,7 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 	
 	if( WormCodeTemplate::ClassDefinition == template_type )
 	{
-		includes_string = "#include <" + table.className() + ".h>";
+		includes_string = "#include \"" + table.className() + ".h\"";
 		WSqlDataType::toLower(includes_string);
 		includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
 		includes_dict->SetValue(kcd_INCLUDE, includes_string);		
@@ -267,7 +267,7 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 				forward_declarations.push_back ( fks_it->referencedClassName() );
 				if(WormCodeTemplate::ClassDefinition == template_type)
 				{
-					includes_string = "#include <" + fks_it->referencedClassName() + ".h>";
+					includes_string = "#include \"" + fks_it->referencedClassName() + ".h\"";
 					WSqlDataType::toLower(includes_string);
 					includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
 					includes_dict->SetValue(kcd_INCLUDE, includes_string);
@@ -297,10 +297,9 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 				forward_declarations.push_back ( rks_it->referingClassName() );
 				if(WormCodeTemplate::ClassDefinition == template_type)
 				{
-					includes_string = "#include <" + rks_it->referingClassName() + ".h>";
+					includes_string = "#include \"" + rks_it->referingClassName() + ".h\"";
 					WSqlDataType::toLower(includes_string);
-					if( ! includes_dict )
-						includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+					includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
 					includes_dict->SetValue(kcd_INCLUDE, includes_string);
 				}
 			}

@@ -400,6 +400,8 @@ std::string WormClassGenerator::createOutFileName ( const WormCodeTemplate::Type
 			std::cerr << "WormClassGenerator: WARNING: template type unsupported!";
 	}
 
+	//TODO: make this optional
+	WSqlDataType::toLower(strToReturn);
 	return strToReturn;
 }
 

@@ -11,7 +11,7 @@
 <%CLASS_NAME%>::<%CLASS_NAME%>()
 {}
 
-~<%CLASS_NAME%>::<%CLASS_NAME%>()
+<%CLASS_NAME%>::~<%CLASS_NAME%>()
 {}
 
 <%CLASS_NAME%>::<%CLASS_NAME%> ( const <%CLASS_NAME%> &other )
@@ -44,7 +44,7 @@
 bool <%CLASS_NAME%>::operator== ( const <%CLASS_NAME%> &other ) const
 {
 	return (
-			<%#COLUMNS%><%VARIABLE_NAME%> = other.<%VARIABLE_NAME%> <%#COLUMNS_separator%>&&<%/COLUMNS_separator%>
+			<%#COLUMNS%><%VARIABLE_NAME%> == other.<%VARIABLE_NAME%> <%#COLUMNS_separator%>&&<%/COLUMNS_separator%>
 			<%/COLUMNS%>);
 }
 
@@ -52,7 +52,8 @@ bool <%CLASS_NAME%>::operator== ( const <%CLASS_NAME%> &other ) const
 bool <%CLASS_NAME%>::Save()
 {
     if(!Utilities::DbIsConnected())
-        (Utilities::CreateDbConnection());
+        if(!Utilities::CreateDbConnection())
+             return false;
 
     QSqlQuery query;
     query.prepare("INSERT into <%TABLE_NAME%> ( "
@@ -73,7 +74,8 @@ bool <%CLASS_NAME%>::Save()
 bool <%CLASS_NAME%>::Update()
 {
     if(!Utilities::DbIsConnected())
-        (Utilities::CreateDbConnection());
+        if(!Utilities::CreateDbConnection())
+            return false;
     QSqlQuery query;
 
     query.prepare(QString("UPDATE <%TABLE_NAME%> SET "
@@ -97,7 +99,8 @@ bool <%CLASS_NAME%>::Update()
 bool <%CLASS_NAME%>::Delete()
 {
     if(!Utilities::DbIsConnected())
-        (Utilities::CreateDbConnection());
+        if(!Utilities::CreateDbConnection())
+            return false;
     QSqlQuery query;
     query.prepare(QString("DELETE * from <%TABLE_NAME%> WHERE id = '%1' ").arg(<%PRIMARY_KEY%>));
 
@@ -113,7 +116,8 @@ bool <%CLASS_NAME%>::Delete()
 bool <%CLASS_NAME%>::LoadById(QString obj_id)
 {
     if(!Utilities::DbIsConnected())
-        (Utilities::CreateDbConnection());
+        if(!Utilities::CreateDbConnection())
+            return false;
     QSqlQuery query;
     query.prepare(QString("SELECT * from <%TABLE_NAME%> WHERE id = '%1' ").arg(obj_id));
 
@@ -130,9 +134,10 @@ bool <%CLASS_NAME%>::LoadById(QString obj_id)
 
 QList<<%CLASS_NAME%>> <%CLASS_NAME%>::LoadAll()
 {
-    QList<<%CLASS_NAME%>> listToReturn;
     if(!Utilities::DbIsConnected())
-        (Utilities::CreateDbConnection());
+        if(!Utilities::CreateDbConnection())
+            return false;
+    QList<<%CLASS_NAME%>> listToReturn;
     QSqlQuery query;
     query.prepare("SELECT * from <%TABLE_NAME%>");
 

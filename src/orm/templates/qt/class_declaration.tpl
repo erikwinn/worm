@@ -7,8 +7,8 @@
 <%/FORWARD_DECLARATIONS%>
 
 class <%CLASS_NAME%> {
-        <%CLASS_NAME%>::<%CLASS_NAME%>();
-        virtual ~<%CLASS_NAME%>::<%CLASS_NAME%>();
+        <%CLASS_NAME%>();
+        virtual ~<%CLASS_NAME%>();
         virtual <%CLASS_NAME%>& operator=( const <%CLASS_NAME%>& other );
         virtual bool operator==( const <%CLASS_NAME%>& other ) const;
         inline bool operator!=(const <%CLASS_NAME%> &other) const { return !operator==(other); }

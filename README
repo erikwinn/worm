@@ -144,13 +144,15 @@ ListViewDefinition                   //list_view_definition.tpl
 Database and class naming conventions:
 
  A table in the database should be named in lowercase with underscores
-for best results (Note: this is optional but will avoid naming conflicts - wormgen
-will still generate files for camel case naming schema). Ex: some_persons will
-be transformed to a class SomePerson.  Columns like first_name will transform
-to firstName.  Underscores for private variables, accessors, etc can be established
-in the templates. Table names should be plural and will be transformed to singular
-class names - eg. users table becomes class User. Wormgen tries to be clever about
-irregulars (eg. fly -> flies) - but isn't yet brilliant and only speaks english, so ..
+for best results (Note: this is optional but will avoid naming conflicts 
+- wormgen will still generate files for camel case naming schema). 
+Eg: some_persons will be transformed to a class SomePerson.  Columns 
+like first_name will transform to firstName.  Underscores for private 
+variables, accessors, etc can be established in the templates. Table names 
+should be plural and will be transformed to singular class names - 
+eg. users table becomes class User. Wormgen tries to be clever about
+irregulars (eg. fly -> flies) - but isn't yet brilliant and only speaks english, 
+so ..
 
 ***************  USING WORM TEMPLATES  *******************
 Templates:
@@ -170,7 +172,7 @@ The templates use ctemplate and currently support the following tags:
 "INCLUDES"                                     = #include <string>, #include "footableclass.h", etc. (hopefully correctly ..)
 "FORWARD_DECLARATIONS"        = forward declarations when there are pointers in a header
 "PK_SECTION"                                 = appears when a table has an  identifiable primary key. Note: compound keys are not handled - wormgen
-                                                             will simply generate multiple versions of the section and you will have to select/edit as needed 
+will simply generate multiple versions of the section and you will have to select/edit as needed 
 "UNSUPPORTED"                             = appears when an unsupported variable type is encountered (eg. BLOB)
 
 ******* List Items ***********
@@ -193,22 +195,27 @@ The templates use ctemplate and currently support the following tags:
   
   In PK_SECTION:
     "PRIMARY_KEY"                           = the class member that represents the primary key column, eg. userName or userId
-                                                             Note that multi column keys will generate duplicate sections for each key - edit/select
-                                                             as needed in the generated classes (or don't use multi column keys)
+Note that multi column keys will generate duplicate sections for each key
+- edit/select as needed in the generated classes (or don't use multi column 
+keys)
 	
-There are several example templates under <worm_directory_where_ever>/src/orm/templates.
-These show some tag usage possibilities - Note however that the templates probably won't work "out of
-the box".  They will do most of the heavy lifting of ORM boilerplate but the generated classes will 
-likely need at least some tweaking to work, YMMV. However, since the output _is_ templated it is
-of course possible to tweak the templates themselves or create new ones - maybe even a perfect
-"out of the box" example (which would be a welcome contribution). The out put is not restricted
-to C++ (except that currently wormgen will create std::string variables for VARCHAR and 
-std::vector for one to many .. this may change to be more flexible in future).
+There are several example templates under: 
+<worm_directory_where_ever>/src/orm/templates.
+
+These show some tag usage possibilities - Note however that the templates 
+probably won't work "out of the box".  They will do most of the heavy lifting 
+of ORM boilerplate but the generated classes will likely need at least some 
+tweaking to work, YMMV. However, since the output _is_ templated it is of 
+course possible to tweak the templates themselves or create new ones - maybe 
+even a perfect "out of the box" example (which would be a welcome contribution). 
+The out put is not restricted to C++ (except that currently wormgen will 
+create std::string variables for VARCHAR and std::vector for one to many .. 
+this may change to be more flexible in future).
 
 The current default template generates Wt::Dbo object headers. 
 
- A decent introduction to ctemplate syntax is available at the ctemplate website. The supported tags are
-quite simple and self-explanatory - see the default template for more.
+ A more thorough introduction to ctemplate syntax is available at the ctemplate 
+ website ( http://ctemplate.googlecode.com ). 
 
 ***************  USING WORM LIBRARY (libworm) *******************
 Library Usage and Documentation:
@@ -218,7 +225,8 @@ starting with these.  Also, the code is heavily commented - and there are copiou
 amounts of HTML formatted documentation under doc/html. Although wormgen
 itself is now pretty stable the library is still mostly a Pull model and needs more
 work to be useful in a general sense - still you may find use for it. Documentation
-for library usage will probably appear sometime after the library itself is more complete.
+for library usage will probably appear sometime after the library itself is more 
+complete.
 
 peace,
 -e

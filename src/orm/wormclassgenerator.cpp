@@ -95,6 +95,7 @@ static const ::ctemplate::StaticTemplateString kcd_VARIABLE_SETTOR = STS_INIT_WI
  */
 WormClassGenerator::WormClassGenerator ( WSqlDatabase &db ) : _db ( db )
 {
+	usesBaseClass = false;
 }
 /*! \brief Initialize templates and metadata
  *
@@ -139,6 +140,8 @@ bool WormClassGenerator::init()
 
 			tpl.setUri ( entry );
 			_templates.push_back ( tpl );
+			if( WormCodeTemplate::ClassDeclarationBase == tpl.type() )
+				usesBaseClass = true;
 
 			/* maybe use, pass a string to ctemplate:            std::string tmp;
 			fs.open(entry.c_str());
@@ -240,6 +243,7 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 	topdict->SetValue ( kcd_TABLE_NAME, table.name() );
 	std::string includes_string;
 	
+	//TODO: move this stuff to a method ..
 	if( WormCodeTemplate::ClassDefinition == template_type )
 	{
 		includes_string = "#include \"" + table.className() + ".h\"";
@@ -247,6 +251,21 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 		includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
 		includes_dict->SetValue(kcd_INCLUDE, includes_string);		
 	}
+	if( WormCodeTemplate::ClassDefinitionBase == template_type )
+	{
+		includes_string = "#include \"" + table.className() + "base.h\"";
+		WSqlDataType::toLower(includes_string);
+		includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+		includes_dict->SetValue(kcd_INCLUDE, includes_string);		
+	}
+	if( usesBaseClass  && WormCodeTemplate::ClassDeclaration == template_type )
+	{
+		includes_string = "#include \"" + table.className() + "base.h\"";
+		WSqlDataType::toLower(includes_string);
+		includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+		includes_dict->SetValue(kcd_INCLUDE, includes_string);		
+	}
+	
 	const std::vector<WSqlColumn>& columns = table.columns();
 	std::vector<WSqlColumn>::const_iterator col_it = columns.begin();
 
@@ -265,7 +284,8 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 				forwarddecls_dict = topdict->AddSectionDictionary ( kcd_FORWARD_DECLARATIONS );
 				forwarddecls_dict->SetValue ( kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName() );
 				forward_declarations.push_back ( fks_it->referencedClassName() );
-				if(WormCodeTemplate::ClassDefinition == template_type)
+				if ( ( ! usesBaseClass && WormCodeTemplate::ClassDefinition == template_type)
+					||  WormCodeTemplate::ClassDefinitionBase == template_type )
 				{
 					includes_string = "#include \"" + fks_it->referencedClassName() + ".h\"";
 					WSqlDataType::toLower(includes_string);
@@ -295,7 +315,8 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 				forwarddecls_dict = topdict->AddSectionDictionary ( kcd_FORWARD_DECLARATIONS );
 				forwarddecls_dict->SetValue ( kcd_REFERENCED_CLASSNAME, rks_it->referingClassName() );
 				forward_declarations.push_back ( rks_it->referingClassName() );
-				if(WormCodeTemplate::ClassDefinition == template_type)
+				if ( ( ! usesBaseClass && WormCodeTemplate::ClassDefinition == template_type)
+					||  WormCodeTemplate::ClassDefinitionBase == template_type )
 				{
 					includes_string = "#include \"" + rks_it->referingClassName() + ".h\"";
 					WSqlDataType::toLower(includes_string);
@@ -352,15 +373,23 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 	snprintf(buff, 8, "%d", i+1);
 	topdict->SetValue("COLUMN_COUNT", buff);
 
-	if ( has_string && template_type == WormCodeTemplate::ClassDeclaration)
+	if(has_string)
 	{
-		includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
-		includes_dict->SetValue(kcd_INCLUDE,  "#include <string>");				
+		if ( ( ! usesBaseClass && WormCodeTemplate::ClassDeclaration == template_type)
+			||  WormCodeTemplate::ClassDeclarationBase == template_type )
+		{
+			includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+			includes_dict->SetValue(kcd_INCLUDE,  "#include <string>");				
+		}
 	}
-	if ( has_vector && template_type == WormCodeTemplate::ClassDeclaration)
+	if(has_vector)
 	{
-		includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
-		includes_dict->SetValue(kcd_INCLUDE,  "#include <vector>");				
+		if ( ( ! usesBaseClass && WormCodeTemplate::ClassDeclaration == template_type)
+			||  WormCodeTemplate::ClassDeclarationBase == template_type )
+		{
+			includes_dict = topdict->AddSectionDictionary(kcd_INCLUDES);
+			includes_dict->SetValue(kcd_INCLUDE,  "#include <vector>");				
+		}
 	}
 
 	ExpandTemplate ( filename, DO_NOT_STRIP, topdict, &strToReturn );

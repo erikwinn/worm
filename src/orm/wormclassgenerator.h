@@ -50,6 +50,7 @@ class WormClassGenerator
         std::string _outputDirectory;
         std::vector<std::string> _tablesToGenerate;
         std::vector<WormCodeTemplate> _templates;
+		bool usesBaseClass;		
 };
 
 } //namespace WSql

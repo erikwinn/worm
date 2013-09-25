@@ -1,7 +1,5 @@
 WORM - DAL / ORM code generation framework
 
-WARNING 2013-04-06: EXPECT BREAKAGE - API CHANGES UNDER WAY.
-
 Copyright (C) 2011  Erik Winn (sidewalksoftware at gmail dot com)
 
 This program is free software: you can redistribute it and/or modify
@@ -9,7 +7,7 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-2011-11-18 - Version 0.2 UNSTABLE
+2013: Version 0.2.1
 
 WORM is a Data Abstraction Layer for access to database servers and an
 Object Relational Mapping system.  It consists of libraries providing a
@@ -19,10 +17,12 @@ given arbitrary database schema - "wormgen".  wormgen accepts a few
 arguments setting the database to use and optionally username, password,
 output directory, etc. - "wormgen -h" shows usage. See below for more information.
 
-At this writing the framework only supports SQlite3 and MySQL databases.
+At this writing the framework only supports SQLite3 and MySQL databases.
 and the default output supports Wt's (Web Toolkit http://webtoolkit.eu) Dbo
 library.  It generates header files that (with a little adjustment sometimes)
-will work with Wt::Dbo for existing database schemata.
+will work with Wt::Dbo for existing database schemata. There are also example
+templates that generate *.h/*.cpp pairs containing CRUD methods for Qt and 
+generic C++ with SQL (See below under "Templates")
 
 The output is configurable using the WORM template system which uses
 google's ctemplate for output templating.
@@ -34,7 +34,7 @@ including column information such as name, data type, defaults, extras, etc.
 NOTE: This API is not fully stable! I expect there to be some changes and
 do not yet recommend building off the API for anything serious.  wormgen
 is functional (if simple) and changes there should not cause problems but
-the libraries are under heavy development.  There may be modifications
+the libraries are still under development.  There may be modifications
 and these should be expected until this message is removed.
 You have been warned :).
 
@@ -105,7 +105,9 @@ argument for -d database; eg.:
 wormgen -d ./examples/blog.db
 
 This will generate files in the current directory - to specify a different output
-directory use -o /path/to/output
+directory use:
+
+wormgen -o /path/to/output
 
 Other commandline arguments include:
 -D driver ([default]mysql or sqlite)
@@ -128,7 +130,7 @@ ClassDeclaration,                       //class_declaration.tpl
 class source - generates Foo.cpp:
 ClassDefinition,                          //class_definition.tpl
 
-These are not yet implemented but will be soon:
+These are not yet implemented but will be soon (read someday..):
 
 EditViewDeclarationBase,       //edit_view_declaration_base.tpl
 EditViewDeclaration,                //edit_view_declaration.tpl
@@ -140,23 +142,83 @@ ListViewDefinitionBase,          //list_view_definition_base.tpl
 ListViewDefinition                   //list_view_definition.tpl
 
 Database and class naming conventions:
+
  A table in the database should be named in lowercase with underscores
 for best results (Note: this is optional but will avoid naming conflicts - wormgen
 will still generate files for camel case naming schema). Ex: some_persons will
 be transformed to a class SomePerson.  Columns like first_name will transform
 to firstName.  Underscores for private variables, accessors, etc can be established
-in the templates. Table names should be plural and will be transformed to singular.
+in the templates. Table names should be plural and will be transformed to singular
+class names - eg. users table becomes class User. Wormgen tries to be clever about
+irregulars (eg. fly -> flies) - but isn't yet brilliant and only speaks english, so ..
 
+***************  USING WORM TEMPLATES  *******************
 Templates:
-The templates use ctemplate and currently support only the tags in the default
-template (which generates Wt::Dbo object headers). A decent introduction to
-ctemplate syntax is available at the ctemplate website. The supported tags are
+(examples are under <worm_directory_where_ever>/src/orm/templates.)
+
+The templates use ctemplate and currently support the following tags: 
+
+******* Top Level ********
+(These may be used at any level)
+"CLASS_NAME"
+"TABLE_NAME"
+
+ ****** Sections (lists) *******
+"BELONGS_TO"                               = appears when a class has a many to one relationship with another class
+"COLUMNS"                                     = contains a list of COLUMN dictionaries
+"HAS_MANY"                                   = appears when a class has a one to many relationship with another class
+"INCLUDES"                                     = #include <string>, #include "footableclass.h", etc. (hopefully correctly ..)
+"FORWARD_DECLARATIONS"        = forward declarations when there are pointers in a header
+"PK_SECTION"                                 = appears when a table has an  identifiable primary key. Note: compound keys are not handled - wormgen
+                                                             will simply generate multiple versions of the section and you will have to select/edit as needed 
+"UNSUPPORTED"                             = appears when an unsupported variable type is encountered (eg. BLOB)
+
+******* List Items ***********
+  In COLUMNS:
+    "COLUMN_COUNT"                    = number of colums found in table
+    "COLUMN_NAME"                      = eg. "user_name"
+    "COLUMNS_separator"                = Actually a section - strings inside will be repeated for every column except the last.
+    "DATATYPE"                                = int, char, short, std::string, etc.
+    "FOREIGNKEY_CLASSNAME"     = eg. Session (foreign key in users table) -- one to many
+    "FOREIGNKEY_CLASS_PLURAL" = eg. Sessions
+    "REFERENCED_CLASSNAME"     = eg. UserType (foreign key to user in user_type table) -- many to one 
+    "REFERENCED_TABLENAME"     = eg. "user_type"
+    "VARIABLE_NAME"                      = eg. userName
+    "VARIABLE_GETTOR"                  = eg. getUserName
+    "VARIABLE_SETTOR"                   = eg setUserName
+    "UNSIGNED"                                 = appears if variable is unsigned ..
+  
+  In INCLUDES:
+    "INCLUDE"                                    = eg. "#include usertype.h"
+  
+  In PK_SECTION:
+    "PRIMARY_KEY"                           = the class member that represents the primary key column, eg. userName or userId
+                                                             Note that multi column keys will generate duplicate sections for each key - edit/select
+                                                             as needed in the generated classes (or don't use multi column keys)
+	
+There are several example templates under <worm_directory_where_ever>/src/orm/templates.
+These show some tag usage possibilities - Note however that the templates probably won't work "out of
+the box".  They will do most of the heavy lifting of ORM boilerplate but the generated classes will 
+likely need at least some tweaking to work, YMMV. However, since the output _is_ templated it is
+of course possible to tweak the templates themselves or create new ones - maybe even a perfect
+"out of the box" example (which would be a welcome contribution). The out put is not restricted
+to C++ (except that currently wormgen will create std::string variables for VARCHAR and 
+std::vector for one to many .. this may change to be more flexible in future).
+
+The current default template generates Wt::Dbo object headers. 
+
+ A decent introduction to ctemplate syntax is available at the ctemplate website. The supported tags are
 quite simple and self-explanatory - see the default template for more.
 
+***************  USING WORM LIBRARY (libworm) *******************
 Library Usage and Documentation:
 
 There are some small example programs under examples/ - I recommend
 starting with these.  Also, the code is heavily commented - and there are copious
-amounts of HTML formatted documentation under doc/html..
+amounts of HTML formatted documentation under doc/html. Although wormgen
+itself is now pretty stable the library is still mostly a Pull model and needs more
+work to be useful in a general sense - still you may find use for it. Documentation
+for library usage will probably appear sometime after the library itself is more complete.
 
-Enjoy!
+peace,
+-e

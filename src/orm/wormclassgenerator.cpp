@@ -296,6 +296,8 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 			belongsto_dict = topdict->AddSectionDictionary ( kcd_BELONGS_TO );
 			belongsto_dict->SetValue ( kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName() );
 			belongsto_dict->SetValue ( kcd_REFERENCED_TABLENAME, fks_it->referencedTableName() );
+			belongsto_dict->SetValue("REFERENCED_VARIABLE_NAME", 
+									 WSqlDataType::columnNameToVariable(fks_it->referencedColumnName()));
 		}
 	}
 
@@ -357,6 +359,8 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 		columns_dict->SetValue ( kcd_VARIABLE_NAME, variable_name );
 		columns_dict->SetValue ( kcd_VARIABLE_SETTOR, variable_settor );
 		columns_dict->SetValue ( kcd_VARIABLE_GETTOR, variable_gettor );
+		snprintf(buff, 8, "%d", i);
+		columns_dict->SetValue("CURRENT_COLUMN_NUMBER", buff);
 		snprintf(buff, 8, "%d", i+1);
 		columns_dict->SetValue("COLUMN_COUNT", buff);
 

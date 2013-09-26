@@ -15,13 +15,32 @@ generic API for database access and database metadata mapping of schema
 structure. On top of this there is a tool to generate C++ class files for a
 given arbitrary database schema - "wormgen".  wormgen accepts a few
 arguments setting the database to use and optionally username, password,
-output directory, etc. - "wormgen -h" shows usage. See below for more information.
+output directory, etc. - "wormgen -h" shows usage. See "USING WORM" 
+below for more information.
 
-At this writing the framework only supports SQLite3 and MySQL databases.
-and the default output supports Wt's (Web Toolkit http://webtoolkit.eu) Dbo
-library.  It generates header files that (with a little adjustment sometimes)
-will work with Wt::Dbo for existing database schemata. There are also example
-templates that generate *.h/*.cpp pairs containing CRUD methods for Qt and 
+Why "Yet Another ORM" - simple: I could not find a C++ ORM class 
+generator for linux that would take the schema from an existing
+database and generate the ORM layer. Everything I found did things
+like force one to create an XML description of the schema from which
+both SQL and C++ would be generated. Or do the database in C++
+classes first (with some special syntax or #pragmas) .. I like SQL - it is
+a good language for design, I frequently do the schema (aka "Model")
+first when I am designing and then derive the architecture from that.
+I didn't want to be forced to do that in OO - just a personal design
+preference (aka "Model Driven Architecture"). Erm, plus I happened
+to _have_ an existing database and wanted to port an app from PHP
+to C++ ..  why do what you could do manually in 3 days by hand
+when you can spend a month automating it? Really - which is going
+to be more fun, huh?
+
+Hence, libworm and wormgen.
+
+At this writing the framework only supports SQLite3 and MySQL 
+databases. and the default output supports Wt's Dbo library.  
+(Web Toolkit http://webtoolkit.eu) It generates header files that 
+(with a little adjustment sometimes) will work with Wt::Dbo for 
+existing database schemata. There are also example templates that 
+generate *.h/*.cpp pairs containing CRUD methods for Qt and 
 generic C++ with SQL (See below under "Templates")
 
 The output is configurable using the WORM template system which uses
@@ -38,33 +57,40 @@ the libraries are still under development.  There may be modifications
 and these should be expected until this message is removed.
 You have been warned :).
 
-NOTE: THIS IS UNTESTED ON WINDOWS or MAC AND NOT LIKELY TO WORK CURRENTLY..
+NOTE: THIS IS UNTESTED ON WINDOWS or MAC AND NOT LIKELY 
+TO WORK CURRENTLY..
+
 linux or Unices should be ok.
 
 Requirements:
 
 * cmake, make, gcc, libstdc++, stl
-* SQlite3 libraries - you may comment out the sqlite driver in src/CMakeLists.txt
-if you don't want SQlite3 support
+* SQlite3 libraries - you may comment out the sqlite driver in 
+src/CMakeLists.txt if you don't want SQlite3 support
 * libmysqlclient - same applies, you may comment this out
-* ctemplate 1.0; libctemplate (currently the no threads version - this can be changed in the cmake files)
+* ctemplate 1.0; libctemplate (currently the no threads version - this can 
+be changed in the cmake files)
 
 Build Instructions:
 You can either clone the repository with git:
 
 git clone https://github.com/erikwinn/worm.git
- - which will create a directory named "worm" in your current working directory.
+ - which will create a directory named "worm" in your current working 
+ directory.
 
-Or, download a tar.gz and do(the number corresponds to the current version):
+Or, download a tar.gz and do(the number corresponds to the 
+current version):
+
 tar xzvf erikwinn-worm-79a2021.tar.gz
 mv erikwinn-worm-79a2021 worm
 cd worm
 cd ./build && cmake ../
 make
 
-This will build the libraries and wormgen under build/src. By default the static
-library is built - uncomment the shared library in src/CMakeLists.txt and
-comment out the static to change this (todo: add a configure script ..)
+This will build the libraries and wormgen under build/src. By default 
+the static library is built - you can uncomment the shared library in 
+src/CMakeLists.txt and comment out the static to change this 
+(todo: add a configure script ..)
 
 libraries: libworm.so libworm.a
 binary: wormgen
@@ -79,8 +105,8 @@ You must be root to install.
  * binary to /usr/local/bin/wormgen.  Code generation templates will
  * be installed to /usr/local/share/worm/
 
-NOTE: You can also use wormgen without installing by doing something like this if
-it was built with the shared libraries:
+NOTE: You can also use wormgen without installing by doing something 
+like this if it was built with the shared libraries:
 (use a full path to work outside this directory):
 
 export LD_LIBRARY_PATH=./build/src
@@ -97,15 +123,15 @@ Alternately you can do:
 wormgen Usage:
 wormgen -h gives help on usage.
 
-The database argument is the only required argument - you must have
-a database already set up and access to it.  By default it assumes the username
-is root with no password - for an SQlite3 database pass the filename as the
-argument for -d database; eg.:
+The database argument is the only required argument - you must 
+have a database already set up and access to it.  By default it assumes 
+the username is root with no password - for an SQlite3 database pass
+the filename as the argument for -d database; eg.:
 
 wormgen -d ./examples/blog.db
 
-This will generate files in the current directory - to specify a different output
-directory use:
+This will generate files in the current directory - to specify a different 
+output directory use:
 
 wormgen -o /path/to/output
 
@@ -166,38 +192,36 @@ The templates use ctemplate and currently support the following tags:
 "TABLE_NAME"
 
  ****** Sections (lists) *******
-"BELONGS_TO"                               = appears when a class has a many to one relationship with another class
-"COLUMNS"                                     = contains a list of COLUMN dictionaries
-"HAS_MANY"                                   = appears when a class has a one to many relationship with another class
-"INCLUDES"                                     = #include <string>, #include "footableclass.h", etc. (hopefully correctly ..)
-"FORWARD_DECLARATIONS"        = forward declarations when there are pointers in a header
-"PK_SECTION"                                 = appears when a table has an  identifiable primary key. Note: compound keys are not handled - wormgen
-will simply generate multiple versions of the section and you will have to select/edit as needed 
-"UNSUPPORTED"                             = appears when an unsupported variable type is encountered (eg. BLOB)
+"BELONGS_TO"   = appears when a class has a many to one relationship with another class
+"COLUMNS"   = contains a list of COLUMN dictionaries
+"HAS_MANY"   = appears when a class has a one to many relationship with another class
+"INCLUDES"   = #include <string>, #include "footableclass.h", etc. (hopefully correctly ..)
+"FORWARD_DECLARATIONS"  = forward declarations when there are pointers in a header
+"PK_SECTION"  = appears when a table has an  identifiable primary key. Note: compound keys are not handled - wormgen will simply generate multiple versions of the section and you will have to select/edit as needed 
+"UNSUPPORTED"  = appears when an unsupported variable type is encountered (eg. BLOB)
 
 ******* List Items ***********
   In COLUMNS:
-    "COLUMN_COUNT"                    = number of colums found in table
-    "COLUMN_NAME"                      = eg. "user_name"
-    "COLUMNS_separator"                = Actually a section - strings inside will be repeated for every column except the last.
-    "DATATYPE"                                = int, char, short, std::string, etc.
-    "FOREIGNKEY_CLASSNAME"     = eg. Session (foreign key in users table) -- one to many
-    "FOREIGNKEY_CLASS_PLURAL" = eg. Sessions
-    "REFERENCED_CLASSNAME"     = eg. UserType (foreign key to user in user_type table) -- many to one 
-    "REFERENCED_TABLENAME"     = eg. "user_type"
-    "VARIABLE_NAME"                      = eg. userName
-    "VARIABLE_GETTOR"                  = eg. getUserName
-    "VARIABLE_SETTOR"                   = eg setUserName
-    "UNSIGNED"                                 = appears if variable is unsigned ..
+    "CURRENT_COLUMN_NUMBER" = the current column number (0...COLUMN_COUNT - 1)
+    "COLUMN_COUNT"  = number of colums found in table. This also holds CURRENT_COLUMN_NUMBER + 1 during COLUMNS loops 
+    "COLUMN_NAME"  = eg. "user_name"
+    "COLUMNS_separator"   = Actually a section - strings inside will be repeated for every column except the last.
+    "DATATYPE"   = int, char, short, std::string, etc.
+    "FOREIGNKEY_CLASSNAME"   = eg. Session (foreign key in users table) -- many to one; HAS_MANY section
+    "FOREIGNKEY_CLASS_PLURAL"  = eg. Sessions
+    "REFERENCED_CLASSNAME"  = eg. UserType (foreign key to user in user_type table) -- one to many; BELONGS_TO section
+    "REFERENCED_TABLENAME"  = eg. "user_type"
+    "VARIABLE_NAME"  = eg. userName
+    "VARIABLE_GETTOR"   = eg. getUserName
+    "VARIABLE_SETTOR"   = eg setUserName
+    "UNSIGNED"  = Actually a section, appears if variable is unsigned ..
   
   In INCLUDES:
-    "INCLUDE"                                    = eg. "#include usertype.h"
+    "INCLUDE"  = eg. "#include usertype.h"
   
   In PK_SECTION:
-    "PRIMARY_KEY"                           = the class member that represents the primary key column, eg. userName or userId
-Note that multi column keys will generate duplicate sections for each key
-- edit/select as needed in the generated classes (or don't use multi column 
-keys)
+    "PRIMARY_KEY"  = the class member that represents the primary key column, eg. userName or userId
+Note that multi column keys will generate duplicate sections for each key - edit/select as needed in the generated classes (or don't use multi column keys)
 	
 There are several example templates under: 
 <worm_directory_where_ever>/src/orm/templates.
@@ -207,26 +231,27 @@ probably won't work "out of the box".  They will do most of the heavy lifting
 of ORM boilerplate but the generated classes will likely need at least some 
 tweaking to work, YMMV. However, since the output _is_ templated it is of 
 course possible to tweak the templates themselves or create new ones - maybe 
-even a perfect "out of the box" example (which would be a welcome contribution). 
+even a perfect "out of the box" example (which would be a welcome 
+contribution). 
 The out put is not restricted to C++ (except that currently wormgen will 
-create std::string variables for VARCHAR and std::vector for one to many .. 
-this may change to be more flexible in future).
+create std::string variables for VARCHAR - this may change to be more 
+flexible in future).
 
 The current default template generates Wt::Dbo object headers. 
 
- A more thorough introduction to ctemplate syntax is available at the ctemplate 
- website ( http://ctemplate.googlecode.com ). 
+ A more thorough introduction to ctemplate syntax is available at the 
+ctemplate website ( http://ctemplate.googlecode.com ). 
 
 ***************  USING WORM LIBRARY (libworm) *******************
 Library Usage and Documentation:
 
 There are some small example programs under examples/ - I recommend
-starting with these.  Also, the code is heavily commented - and there are copious
-amounts of HTML formatted documentation under doc/html. Although wormgen
-itself is now pretty stable the library is still mostly a Pull model and needs more
-work to be useful in a general sense - still you may find use for it. Documentation
-for library usage will probably appear sometime after the library itself is more 
-complete.
+starting with these.  Also, the code is heavily commented - and there are 
+copious amounts of HTML formatted documentation under doc/html. 
+Although wormgen itself is now pretty stable the library is still mostly a 
+Pull model and needs more work to be useful in a general sense - still you 
+may find use for it. Documentation for library usage will probably appear 
+sometime after the library itself is more complete.
 
 peace,
 -e

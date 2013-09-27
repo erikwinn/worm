@@ -10,12 +10,13 @@
 <%CLASS_NAME%>::<%CLASS_NAME%>()
 {
 	<%#BELONGS_TO%>ptr<%REFERENCED_CLASSNAME%> = 0;
+    ptrTo<%REFERENCED_CLASSNAME%>IsMine = false;
 	<%/BELONGS_TO%>
 }
 
 <%CLASS_NAME%>::~<%CLASS_NAME%>()
 {
-	<%#BELONGS_TO%>if(ptr<%REFERENCED_CLASSNAME%>)
+	<%#BELONGS_TO%>if(ptrTo<%REFERENCED_CLASSNAME%>IsMine && ptr<%REFERENCED_CLASSNAME%>)
 	    delete ptr<%REFERENCED_CLASSNAME%>;
 	<%/BELONGS_TO%>
 }
@@ -25,9 +26,6 @@
     <%#COLUMNS%><%VARIABLE_NAME%> = other.<%VARIABLE_NAME%>;
     <%/COLUMNS%>
 }
-
-<%CLASS_NAME%>::~<%CLASS_NAME%>()
-{}
 
 <%CLASS_NAME%> &<%CLASS_NAME%>::operator= ( const <%CLASS_NAME%> &other )
 {
@@ -43,6 +41,60 @@ bool <%CLASS_NAME%>::operator== ( const <%CLASS_NAME%> &other ) const
             <%/COLUMNS%>);
 }
 
+<%#BELONGS_TO%>/**
+* NOTE that the gettor returns a pointer that it _owns_ (and will be deleted in dtor)
+* If and Only If it HAS NOT BEEN SET WITH THE SETTOR. If you have NOT USED the settor
+* the object dtor will do trash collection for ptr<%REFERENCED_CLASSNAME%>.
+*/
+<%REFERENCED_CLASSNAME%>* <%CLASS_NAME%>::get<%REFERENCED_CLASSNAME%>()
+{
+	if(!ptr<%REFERENCED_CLASSNAME%>)
+	{
+		ptr<%REFERENCED_CLASSNAME%> = <%REFERENCED_CLASSNAME%>::LoadById(<%REFERENCED_VARIABLE_NAME%>);
+		ptrTo<%REFERENCED_CLASSNAME%>IsMine = true;
+	}
+	return ptr<%REFERENCED_CLASSNAME%>;
+}
+
+/**
+* NOTE that the settor DELETES any pointer that has been under the ownership of
+* the object and sets ptrTo<%REFERENCED_CLASSNAME%>IsMine to  be false. This means
+* that any ptr<%REFERENCED_CLASSNAME%> SET WITH THE SETTOR WILL NOT BE DELETED.
+*
+* IE., If you HAVE USED the settor the object dtor WILL NOT do trash collection for
+* ptr<%REFERENCED_CLASSNAME%>.
+*/
+void <%CLASS_NAME%>::set<%REFERENCED_CLASSNAME%>(<%REFERENCED_CLASSNAME%> *p)
+{
+    if(ptrTo<%REFERENCED_CLASSNAME%>IsMine && ptr<%REFERENCED_CLASSNAME%>)
+	    delete ptr<%REFERENCED_CLASSNAME%>;
+    ptr<%REFERENCED_CLASSNAME%> = p;
+	ptrTo<%REFERENCED_CLASSNAME%>IsMine = false;
+}
+
+QList<<%CLASS_NAME%>> <%CLASS_NAME%>::LoadBy<%REFERENCED_CLASSNAME%>Id(QString obj_id)
+{
+    if(!Utilities::DbIsConnected())
+        if(!Utilities::CreateDbConnection())
+            return ptrToReturn;
+
+    QList<<%CLASS_NAME%>> listToReturn;
+    QSqlQuery query;
+    query.prepare("SELECT * from <%TABLE_NAME%> WHERE <%REFERENCED_COLUMN_NAME%> = '%1' ").arg(obj_id));
+
+    if(! query.exec())
+        qDebug(QString("Warning: unable to load <%CLASS_NAME%> list.\n  Error: %2").arg(query.lastError().text()).toUtf8());
+
+    while(query.next())
+    {
+        <%CLASS_NAME%> obj;
+        <%#COLUMNS%>obj.<%VARIABLE_SETTOR%>(query.value(<%CURRENT_COLUMN_NUMBER%>).to<%TO_DATATYPE%>());
+        <%/COLUMNS%>
+        listToReturn.push_back(obj);
+    }
+    return listToReturn;
+}
+<%/BELONGS_TO%>
 
 bool <%CLASS_NAME%>::Save()
 {
@@ -75,15 +127,15 @@ bool <%CLASS_NAME%>::Update()
 
     query.prepare(QString("UPDATE <%TABLE_NAME%> SET "
                           <%#COLUMNS%>"<%COLUMN_NAME%>='%<%COLUMN_COUNT%>'<%#COLUMNS_separator%>,<%/COLUMNS_separator%> "
-                          <%/COLUMNS%>" WHERE id = '%<%COLUMN_COUNT%>' "
+                          <%/COLUMNS%>" WHERE <%PK_VARIABLE_NAME%> = '%<%COLUMN_COUNT%>' "
                          )
                   <%#COLUMNS%>.arg(QString(<%VARIABLE_GETTOR%>()).replace('\'',"''"))
-                  <%/COLUMNS%>.arg(<%PRIMARY_KEY%>);
+                  <%/COLUMNS%>.arg(<%PK_VARIABLE_NAME%>);
 
     if(! query.exec())
     {
         qDebug(QString("Warning: unable to update <%CLASS_NAME%> with ID: %1.\n  Error: %2 \n Query: %3")
-               .arg(<%PRIMARY_KEY%>)
+               .arg(<%PK_VARIABLE_NAME%>)
                .arg(query.lastQuery())
                .arg(query.lastError().text()).toUtf8());
         return false;
@@ -97,7 +149,7 @@ bool <%CLASS_NAME%>::Delete()
         if(!Utilities::CreateDbConnection())
             return false;
     QSqlQuery query;
-    query.prepare(QString("DELETE * from <%TABLE_NAME%> WHERE id = '%1' ").arg(<%PRIMARY_KEY%>));
+    query.prepare(QString("DELETE * from <%TABLE_NAME%> WHERE <%PK_COLUMN_NAME%> = '%1' ").arg(<%PK_VARIABLE_NAME%>));
 
     if(! query.exec())
     {
@@ -106,7 +158,6 @@ bool <%CLASS_NAME%>::Delete()
     }
     return true;
 }
-<%/PK_SECTION%>
 
 <%CLASS_NAME%>* <%CLASS_NAME%>::LoadById(QString obj_id)
 {
@@ -116,7 +167,7 @@ bool <%CLASS_NAME%>::Delete()
         if(!Utilities::CreateDbConnection())
             return ptrToReturn;
     QSqlQuery query;
-    query.prepare(QString("SELECT * from <%TABLE_NAME%> WHERE id = '%1' ").arg(obj_id));
+    query.prepare(QString("SELECT * from <%TABLE_NAME%> WHERE <%PK_COLUMN_NAME%> = '%1' ").arg(obj_id));
 
     if(! query.exec() || !query.next())
     {
@@ -125,10 +176,12 @@ bool <%CLASS_NAME%>::Delete()
     }
 
     ptrToReturn = new <%CLASS_NAME%>;
-    <%#COLUMNS%>ptrToReturn-><%VARIABLE_SETTOR%>(query.value(<%CURRENT_COLUMN_NUMBER%>).toString());
+    <%#COLUMNS%>ptrToReturn-><%VARIABLE_SETTOR%>(query.value(<%CURRENT_COLUMN_NUMBER%>).to<%TO_DATATYPE%>());
     <%/COLUMNS%>
     return ptrToReturn;
 }
+
+<%/PK_SECTION%>
 
 QList<<%CLASS_NAME%>> <%CLASS_NAME%>::LoadAll()
 {
@@ -145,7 +198,7 @@ QList<<%CLASS_NAME%>> <%CLASS_NAME%>::LoadAll()
     while(query.next())
     {
         <%CLASS_NAME%> obj;
-        <%#COLUMNS%>obj.<%VARIABLE_SETTOR%>(query.value(<%CURRENT_COLUMN_NUMBER%>).toString());
+        <%#COLUMNS%>obj.<%VARIABLE_SETTOR%>(query.value(<%CURRENT_COLUMN_NUMBER%>).to<%TO_DATATYPE%>());
         <%/COLUMNS%>
         listToReturn.push_back(obj);
     }

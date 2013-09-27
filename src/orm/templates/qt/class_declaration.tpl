@@ -14,24 +14,22 @@ class <%CLASS_NAME%> {
         inline bool operator!=(const <%CLASS_NAME%> &other) const { return !operator==(other); }
         
         bool Save();
-        bool Update();
+        <%#PK_SECTION%>bool Update();
         bool Delete();
         static <%CLASS_NAME%>* LoadById(QString obj_id);
+        <%/PK_SECTION%>
         static QList<<%CLASS_NAME%>> LoadAll();
         
-        <%#COLUMNS%><%#UNSUPPORTED%>//unsupported <%/UNSUPPORTED%><%#UNSIGNED%>unsigned <%/UNSIGNED%><%DATATYPE%> <%VARIABLE_GETTOR%>()const{return <%VARIABLE_NAME%>;}
+        <%#COLUMNS%><%#UNSUPPORTED%>//unsupported <%/UNSUPPORTED%>const <%#UNSIGNED%>unsigned <%/UNSIGNED%><%DATATYPE%>& <%VARIABLE_GETTOR%>()const{return <%VARIABLE_NAME%>;}
         <%/COLUMNS%>
         <%#COLUMNS%><%#UNSUPPORTED%>//unsupported <%/UNSUPPORTED%><%#UNSIGNED%>unsigned <%/UNSIGNED%>void <%VARIABLE_SETTOR%>(<%DATATYPE%> val){<%VARIABLE_NAME%>=val;}
         <%/COLUMNS%>
-        <%#BELONGS_TO%><%REFERENCED_CLASSNAME%>* get<%REFERENCED_CLASSNAME%>(){
-            if(!ptr<%REFERENCED_CLASSNAME%>)
-				ptr<%REFERENCED_CLASSNAME%> = <%REFERENCED_CLASSNAME%>::LoadById(<%REFERENCED_VARIABLE_NAME%>);
-            return ptr<%REFERENCED_CLASSNAME%>;
-        }
+        <%#BELONGS_TO%><%REFERENCED_CLASSNAME%>* get<%REFERENCED_CLASSNAME%>();
+        static <%CLASS_NAME%>* LoadBy<%REFERENCED_CLASSNAME%>Id(QString obj_id);
         <%/BELONGS_TO%>
-        <%#HAS_MANY%>const std::vector<<%FOREIGNKEY_CLASSNAME%>*> <%FOREIGNKEY_CLASS_PLURAL%>()const{return vec<%FOREIGNKEY_CLASS_PLURAL%>;}
+        <%#HAS_MANY%>const std::vector<<%FOREIGNKEY_CLASSNAME%>*> get<%FOREIGNKEY_CLASS_PLURAL%>()const{return vec<%FOREIGNKEY_CLASS_PLURAL%>;}
         <%/HAS_MANY%>
-        <%#BELONGS_TO%>void set<%REFERENCED_CLASSNAME%>(<%REFERENCED_CLASSNAME%> *p){ptr<%REFERENCED_CLASSNAME%>=p;}
+        <%#BELONGS_TO%>void set<%REFERENCED_CLASSNAME%>(<%REFERENCED_CLASSNAME%> *p);
         <%/BELONGS_TO%>
         <%#HAS_MANY%>void set<%FOREIGNKEY_CLASS_PLURAL%>(std::vector<<%FOREIGNKEY_CLASSNAME%>*> v){vec<%FOREIGNKEY_CLASS_PLURAL%>=v;}
         <%/HAS_MANY%>
@@ -39,6 +37,7 @@ class <%CLASS_NAME%> {
         <%#COLUMNS%><%#UNSUPPORTED%>//unsupported <%/UNSUPPORTED%><%#UNSIGNED%>unsigned <%/UNSIGNED%><%DATATYPE%> <%VARIABLE_NAME%>;
         <%/COLUMNS%>
         <%#BELONGS_TO%><%REFERENCED_CLASSNAME%> *ptr<%REFERENCED_CLASSNAME%>;
+        bool ptrTo<%REFERENCED_CLASSNAME%>IsMine;
         <%/BELONGS_TO%>
         <%#HAS_MANY%>std::vector<<%FOREIGNKEY_CLASSNAME%>*> vec<%FOREIGNKEY_CLASS_PLURAL%>;
         <%/HAS_MANY%>

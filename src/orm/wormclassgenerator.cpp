@@ -228,6 +228,7 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 	bool has_string = false;
 	bool has_vector = false;
 	std::string type_declaration;
+	std::string column_name;
 	std::string variable_name;
 	std::string variable_settor;
 	std::string variable_gettor;
@@ -239,6 +240,8 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 	TemplateDictionary *hasmany_dict = 0;
 	TemplateDictionary *includes_dict = 0;
 	TemplateDictionary *columns_dict = 0;
+	TemplateDictionary *primary_key_dict = 0;
+	
 	topdict->SetValue ( kcd_CLASS_NAME, table.className() );
 	topdict->SetValue ( kcd_TABLE_NAME, table.name() );
 	std::string includes_string;
@@ -296,6 +299,7 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 			belongsto_dict = topdict->AddSectionDictionary ( kcd_BELONGS_TO );
 			belongsto_dict->SetValue ( kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName() );
 			belongsto_dict->SetValue ( kcd_REFERENCED_TABLENAME, fks_it->referencedTableName() );
+			belongsto_dict->SetValue("REFERENCED_COLUMN_NAME", fks_it->referencedColumnName());
 			belongsto_dict->SetValue("REFERENCED_VARIABLE_NAME", 
 									 WSqlDataType::columnNameToVariable(fks_it->referencedColumnName()));
 		}
@@ -340,6 +344,7 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 		columns_dict = topdict->AddSectionDictionary ( kcd_COLUMNS );
 		type_declaration = col_it->typeDeclaration();
 		variable_name = col_it->variableName();
+		column_name = col_it->columnName(); 
 		std::string tmp = variable_name;
 		tmp[0] = toupper ( tmp[0] );
 		variable_settor = "set" + tmp;
@@ -352,10 +357,26 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 			columns_dict->ShowSection ( kcd_UNSUPPORTED );
 		
 		if( col_it->isPrimaryKey() )
-			topdict->SetValueAndShowSection("PRIMARY_KEY", variable_name, "PK_SECTION"  );
+		{
+			primary_key_dict = topdict->AddSectionDictionary ( "PK_SECTION" );
+			primary_key_dict->SetValue("PK_VARIABLE_NAME", variable_name);
+			primary_key_dict->SetValue("PK_COLUMN_NAME", column_name);
+		}
 		
-		columns_dict->SetValue ( kcd_COLUMN_NAME, col_it->columnName() );
+		columns_dict->SetValue ( kcd_COLUMN_NAME, column_name );
 		columns_dict->SetValue ( kcd_DATATYPE, type_declaration );
+		if(! type_declaration.empty())
+		{
+			type_declaration[0] = ::toupper(type_declaration[0]);
+			//transform std::string to StdString .. for Qt
+			size_t pos = type_declaration.find_last_of(':');
+			if(std::string::npos != pos)
+			{
+				type_declaration[pos+1] = ::toupper(type_declaration[pos+1]);				
+				type_declaration.erase (std::remove(type_declaration.begin(), type_declaration.end(), ':'), type_declaration.end());
+			}
+		}
+		columns_dict->SetValue ( "TO_DATATYPE", type_declaration );
 		columns_dict->SetValue ( kcd_VARIABLE_NAME, variable_name );
 		columns_dict->SetValue ( kcd_VARIABLE_SETTOR, variable_settor );
 		columns_dict->SetValue ( kcd_VARIABLE_GETTOR, variable_gettor );

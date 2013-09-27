@@ -207,10 +207,11 @@ The templates use ctemplate and currently support the following tags:
     "COLUMN_NAME"  = eg. "user_name"
     "COLUMNS_separator"   = Actually a section - strings inside will be repeated for every column except the last.
     "DATATYPE"   = int, char, short, std::string, etc.
-    "FOREIGNKEY_CLASSNAME"   = eg. Session (foreign key in users table) -- many to one; HAS_MANY section
+    "FOREIGNKEY_CLASSNAME"   = eg. Session (foreign key in users table) -- one to many; HAS_MANY section
     "FOREIGNKEY_CLASS_PLURAL"  = eg. Sessions
-    "REFERENCED_CLASSNAME"  = eg. UserType (foreign key to user in user_type table) -- one to many; BELONGS_TO section
-    "REFERENCED_TABLENAME"  = eg. "user_type"
+    "REFERENCED_CLASSNAME"  = eg. UserType (foreign key to user in user_type table) -- many to one; BELONGS_TO section
+    "REFERENCED_TABLENAME"  = eg. "user_type"  -- many to one; BELONGS_TO section
+	"REFERENCED_VARIABLE_NAME" = eg. "userTypeId" - the foreign key variable  -- many to one; BELONGS_TO section
     "VARIABLE_NAME"  = eg. userName
     "VARIABLE_GETTOR"   = eg. getUserName
     "VARIABLE_SETTOR"   = eg setUserName
@@ -220,7 +221,8 @@ The templates use ctemplate and currently support the following tags:
     "INCLUDE"  = eg. "#include usertype.h"
   
   In PK_SECTION:
-    "PRIMARY_KEY"  = the class member that represents the primary key column, eg. userName or userId
+    "PK_VARIABLE_NAME"  = the class member that represents the primary key column, eg. userName or userId
+    "PK_COLUMN_NAME"  = the database name the primary key column, eg. user_name or user_id
 Note that multi column keys will generate duplicate sections for each key - edit/select as needed in the generated classes (or don't use multi column keys)
 	
 There are several example templates under: 

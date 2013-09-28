@@ -1,6 +1,4 @@
-{{=<% %>=}}
-<%! The line above resets the limiters - alter to taste %>
-#include <QVariant>
+{{=<% %>=}}<%! The marker to the left resets the limiters - alter to taste %>#include <QVariant>
 #include <QSqlQuery>
 #include <QSqlError>
 
@@ -9,36 +7,37 @@
 
 <%CLASS_NAME%>::<%CLASS_NAME%>()
 {
-	<%#BELONGS_TO%>ptr<%REFERENCED_CLASSNAME%> = 0;
-    ptrTo<%REFERENCED_CLASSNAME%>IsMine = false;
-	<%/BELONGS_TO%>
+    <%#BELONGS_TO%>ptr<%REFERENCED_CLASSNAME%> = 0;
+    ptrTo<%REFERENCED_CLASSNAME%>IsMine = false;<%#BELONGS_TO_separator%>
+    <%/BELONGS_TO_separator%><%/BELONGS_TO%>
 }
 
 <%CLASS_NAME%>::~<%CLASS_NAME%>()
 {
-	<%#BELONGS_TO%>if(ptrTo<%REFERENCED_CLASSNAME%>IsMine && ptr<%REFERENCED_CLASSNAME%>)
-	    delete ptr<%REFERENCED_CLASSNAME%>;
-	<%/BELONGS_TO%>
+    <%#BELONGS_TO%>if(ptrTo<%REFERENCED_CLASSNAME%>IsMine && ptr<%REFERENCED_CLASSNAME%>)
+        delete ptr<%REFERENCED_CLASSNAME%>;<%#BELONGS_TO_separator%>
+    <%/BELONGS_TO_separator%><%/BELONGS_TO%>
 }
 
 <%CLASS_NAME%>::<%CLASS_NAME%> ( const <%CLASS_NAME%> &other )
 {
-    <%#COLUMNS%><%VARIABLE_NAME%> = other.<%VARIABLE_NAME%>;
-    <%/COLUMNS%>
+    <%#COLUMNS%><%VARIABLE_NAME%> = other.<%VARIABLE_NAME%>;<%#COLUMNS_separator%>
+    <%/COLUMNS_separator%><%/COLUMNS%>
 }
 
 <%CLASS_NAME%> &<%CLASS_NAME%>::operator= ( const <%CLASS_NAME%> &other )
 {
-    <%#COLUMNS%><%VARIABLE_NAME%> = other.<%VARIABLE_NAME%>;
-    <%/COLUMNS%>
+    <%#COLUMNS%><%VARIABLE_NAME%> = other.<%VARIABLE_NAME%>;<%#COLUMNS_separator%>
+    <%/COLUMNS_separator%><%/COLUMNS%>
     return *this;
 }
 
 bool <%CLASS_NAME%>::operator== ( const <%CLASS_NAME%> &other ) const
 {
     return (
-            <%#COLUMNS%><%VARIABLE_NAME%> == other.<%VARIABLE_NAME%> <%#COLUMNS_separator%>&&<%/COLUMNS_separator%>
-            <%/COLUMNS%>);
+            <%#COLUMNS%><%VARIABLE_NAME%> == other.<%VARIABLE_NAME%> <%#COLUMNS_separator%>&&
+            <%/COLUMNS_separator%><%/COLUMNS%>
+           );
 }
 
 <%#BELONGS_TO%>/**
@@ -48,12 +47,12 @@ bool <%CLASS_NAME%>::operator== ( const <%CLASS_NAME%> &other ) const
 */
 <%REFERENCED_CLASSNAME%>* <%CLASS_NAME%>::get<%REFERENCED_CLASSNAME%>()
 {
-	if(!ptr<%REFERENCED_CLASSNAME%>)
-	{
-		ptr<%REFERENCED_CLASSNAME%> = <%REFERENCED_CLASSNAME%>::LoadById(<%REFERENCED_VARIABLE_NAME%>);
-		ptrTo<%REFERENCED_CLASSNAME%>IsMine = true;
-	}
-	return ptr<%REFERENCED_CLASSNAME%>;
+    if(!ptr<%REFERENCED_CLASSNAME%>)
+    {
+        ptr<%REFERENCED_CLASSNAME%> = <%REFERENCED_CLASSNAME%>::LoadById(<%REFERENCED_VARIABLE_NAME%>);
+        ptrTo<%REFERENCED_CLASSNAME%>IsMine = true;
+    }
+    return ptr<%REFERENCED_CLASSNAME%>;
 }
 
 /**
@@ -67,20 +66,20 @@ bool <%CLASS_NAME%>::operator== ( const <%CLASS_NAME%> &other ) const
 void <%CLASS_NAME%>::set<%REFERENCED_CLASSNAME%>(<%REFERENCED_CLASSNAME%> *p)
 {
     if(ptrTo<%REFERENCED_CLASSNAME%>IsMine && ptr<%REFERENCED_CLASSNAME%>)
-	    delete ptr<%REFERENCED_CLASSNAME%>;
+        delete ptr<%REFERENCED_CLASSNAME%>;
     ptr<%REFERENCED_CLASSNAME%> = p;
-	ptrTo<%REFERENCED_CLASSNAME%>IsMine = false;
+    ptrTo<%REFERENCED_CLASSNAME%>IsMine = false;
 }
 
 QList<<%CLASS_NAME%>> <%CLASS_NAME%>::LoadBy<%REFERENCED_CLASSNAME%>Id(QString obj_id)
 {
+    QList<<%CLASS_NAME%>> listToReturn;
     if(!Utilities::DbIsConnected())
         if(!Utilities::CreateDbConnection())
-            return ptrToReturn;
+            return listToReturn;
 
-    QList<<%CLASS_NAME%>> listToReturn;
     QSqlQuery query;
-    query.prepare("SELECT * from <%TABLE_NAME%> WHERE <%REFERENCED_COLUMN_NAME%> = '%1' ").arg(obj_id));
+    query.prepare(QString("SELECT * from <%TABLE_NAME%> WHERE <%REFERENCED_COLUMN_NAME%> = '%1' ").arg(obj_id));
 
     if(! query.exec())
         qDebug(QString("Warning: unable to load <%CLASS_NAME%> list.\n  Error: %2").arg(query.lastError().text()).toUtf8());
@@ -127,10 +126,10 @@ bool <%CLASS_NAME%>::Update()
 
     query.prepare(QString("UPDATE <%TABLE_NAME%> SET "
                           <%#COLUMNS%>"<%COLUMN_NAME%>='%<%COLUMN_COUNT%>'<%#COLUMNS_separator%>,<%/COLUMNS_separator%> "
-                          <%/COLUMNS%>" WHERE <%PK_VARIABLE_NAME%> = '%<%COLUMN_COUNT%>' "
+                          <%/COLUMNS%>" WHERE <%PK_COLUMN_NAME%> = '%<%COLUMN_COUNT%>' "
                          )
                   <%#COLUMNS%>.arg(QString(<%VARIABLE_GETTOR%>()).replace('\'',"''"))
-                  <%/COLUMNS%>.arg(<%PK_VARIABLE_NAME%>);
+                  <%/COLUMNS%>.arg(<%PK_VARIABLE_NAME%>));
 
     if(! query.exec())
     {
@@ -162,7 +161,7 @@ bool <%CLASS_NAME%>::Delete()
 <%CLASS_NAME%>* <%CLASS_NAME%>::LoadById(QString obj_id)
 {
     <%CLASS_NAME%> *ptrToReturn = 0;
-    
+
     if(!Utilities::DbIsConnected())
         if(!Utilities::CreateDbConnection())
             return ptrToReturn;
@@ -185,10 +184,11 @@ bool <%CLASS_NAME%>::Delete()
 
 QList<<%CLASS_NAME%>> <%CLASS_NAME%>::LoadAll()
 {
+    QList<<%CLASS_NAME%>> listToReturn;
     if(!Utilities::DbIsConnected())
         if(!Utilities::CreateDbConnection())
-            return false;
-    QList<<%CLASS_NAME%>> listToReturn;
+            return listToReturn;
+
     QSqlQuery query;
     query.prepare("SELECT * from <%TABLE_NAME%>");
 

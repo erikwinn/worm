@@ -244,6 +244,9 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 	
 	topdict->SetValue ( kcd_CLASS_NAME, table.className() );
 	topdict->SetValue ( kcd_TABLE_NAME, table.name() );
+	std::string header_guard = table.className() + "_H";
+	WSqlDataType::toUpper(header_guard);
+	topdict->SetValue("HEADER_GUARD", header_guard);
 	std::string includes_string;
 	
 	//TODO: move this stuff to a method ..

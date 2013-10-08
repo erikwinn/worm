@@ -131,6 +131,41 @@ static const char *const TypeNames[] =
 
 //! Number of types supported. \note Change this if you add types!!
 static const unsigned short number_of_datatypes = 26;
+
+/*! \brief Returns true if the datatype of the column is supported by the ORM generator
+ */
+static bool typeIsSupported(Type _type)
+{
+	switch ( _type )
+	{
+		case WSqlDataType::NCHAR:
+		case WSqlDataType::CHAR:
+		case WSqlDataType::TEXT:
+		case WSqlDataType::TINYTEXT:
+		case WSqlDataType::LONGTEXT:
+		case WSqlDataType::MEDIUMTEXT:
+		case WSqlDataType::VARCHAR:
+		case WSqlDataType::NVARCHAR:
+		case WSqlDataType::DATE:
+		case WSqlDataType::DATETIME:
+		case WSqlDataType::YEAR:
+		case WSqlDataType::TIME:
+		case WSqlDataType::TIMESTAMP:
+		case WSqlDataType::TIMESTAMPTZ:
+		case WSqlDataType::TINYINT:
+		case WSqlDataType::SMALLINT:
+		case WSqlDataType::MEDIUMINT:
+		case WSqlDataType::INT:
+		case WSqlDataType::BIGINT:
+		case WSqlDataType::FLOAT:
+		case WSqlDataType::DECIMAL:
+		case WSqlDataType::DOUBLE:
+			return true;
+		default:
+			return false;
+	}
+}
+
 /*! Transform a string to all upper case
  */
 static void toUpper ( std::string &s )
@@ -272,6 +307,57 @@ static Type toType ( std::string name )
 			return static_cast<Type> ( i );
 
 	return static_cast<Type> ( 0 ); //NOTYPE
+}
+/*! \brief Returns a C++ type declaration
+ * This method returns a string suitable for a type declaration of a variable in C++ code.
+ */
+static std::string typeDeclaration(Type _type)
+{
+	std::string strToReturn;
+
+	switch ( _type )
+	{
+		case WSqlDataType::NCHAR:
+		case WSqlDataType::CHAR:
+			strToReturn = "char";
+			break;
+		case WSqlDataType::TEXT:
+		case WSqlDataType::TINYTEXT:
+		case WSqlDataType::LONGTEXT:
+		case WSqlDataType::MEDIUMTEXT:
+		case WSqlDataType::VARCHAR:
+		case WSqlDataType::NVARCHAR:
+		case WSqlDataType::DATE:
+		case WSqlDataType::DATETIME:
+		case WSqlDataType::YEAR:
+		case WSqlDataType::TIME:
+		case WSqlDataType::TIMESTAMP:
+		case WSqlDataType::TIMESTAMPTZ:
+			strToReturn = "std::string";
+			break;
+		case WSqlDataType::TINYINT:
+			strToReturn = "short";
+			break;
+		case WSqlDataType::SMALLINT:
+		case WSqlDataType::MEDIUMINT:
+		case WSqlDataType::INT:
+			strToReturn = "int";
+			break;
+		case WSqlDataType::BIGINT:
+			strToReturn = "long long";
+			break;
+		case WSqlDataType::FLOAT:
+			strToReturn = "float";
+			break;
+		case WSqlDataType::DECIMAL:
+		case WSqlDataType::DOUBLE:
+			strToReturn = "double";
+			break;
+		default:
+			strToReturn = WSqlDataType::toString ( _type );
+	}
+
+	return strToReturn;
 }
 
 //! Attempt to return a singularized form of \a name

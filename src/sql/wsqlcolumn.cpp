@@ -261,84 +261,14 @@ const int WSqlColumn::precision() const
  */
 std::string WSqlColumn::typeDeclaration() const
 {
-	std::string strToReturn;
-
-	switch ( _type )
-	{
-		case WSqlDataType::NCHAR:
-		case WSqlDataType::CHAR:
-			strToReturn = "char";
-			break;
-		case WSqlDataType::TEXT:
-		case WSqlDataType::TINYTEXT:
-		case WSqlDataType::LONGTEXT:
-		case WSqlDataType::MEDIUMTEXT:
-		case WSqlDataType::VARCHAR:
-		case WSqlDataType::NVARCHAR:
-		case WSqlDataType::DATE:
-		case WSqlDataType::DATETIME:
-		case WSqlDataType::YEAR:
-		case WSqlDataType::TIME:
-		case WSqlDataType::TIMESTAMP:
-		case WSqlDataType::TIMESTAMPTZ:
-			strToReturn = "std::string";
-			break;
-		case WSqlDataType::TINYINT:
-			strToReturn = "short";
-			break;
-		case WSqlDataType::SMALLINT:
-		case WSqlDataType::MEDIUMINT:
-		case WSqlDataType::INT:
-			strToReturn = "int";
-			break;
-		case WSqlDataType::BIGINT:
-			strToReturn = "long";
-			break;
-		case WSqlDataType::FLOAT:
-			strToReturn = "float";
-			break;
-		case WSqlDataType::DECIMAL:
-		case WSqlDataType::DOUBLE:
-			strToReturn = "double";
-			break;
-		default:
-			strToReturn = WSqlDataType::toString ( _type );
-	}
-
-	return strToReturn;
+	return WSqlDataType::typeDeclaration(_type);
 }
+
 /*! \brief Returns true if the datatype of the column is supported by the ORM generator
  */
 bool WSqlColumn::typeIsSupported() const
 {
-	switch ( _type )
-	{
-		case WSqlDataType::NCHAR:
-		case WSqlDataType::CHAR:
-		case WSqlDataType::TEXT:
-		case WSqlDataType::TINYTEXT:
-		case WSqlDataType::LONGTEXT:
-		case WSqlDataType::MEDIUMTEXT:
-		case WSqlDataType::VARCHAR:
-		case WSqlDataType::NVARCHAR:
-		case WSqlDataType::DATE:
-		case WSqlDataType::DATETIME:
-		case WSqlDataType::YEAR:
-		case WSqlDataType::TIME:
-		case WSqlDataType::TIMESTAMP:
-		case WSqlDataType::TIMESTAMPTZ:
-		case WSqlDataType::TINYINT:
-		case WSqlDataType::SMALLINT:
-		case WSqlDataType::MEDIUMINT:
-		case WSqlDataType::INT:
-		case WSqlDataType::BIGINT:
-		case WSqlDataType::FLOAT:
-		case WSqlDataType::DECIMAL:
-		case WSqlDataType::DOUBLE:
-			return true;
-		default:
-			return false;
-	}
+	return WSqlDataType::typeIsSupported(_type);
 }
 
 // template<> std::string WSqlColumn::defaultValue<std::string>()

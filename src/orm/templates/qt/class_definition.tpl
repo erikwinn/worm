@@ -111,7 +111,7 @@ bool <%CLASS_NAME%>::Save()
     <%/COLUMNS%>
     if(! query.exec())
     {
-        qDebug(QString("Warning: unable to save <%CLASS_NAME%>\n  Error: %1").arg(query.lastError().text()).toUtf8());
+        qDebug(QString("Warning: <%CLASS_NAME%>::Save: Unable to save <%CLASS_NAME%>\n  Error: %1").arg(query.lastError().text()).toUtf8());
         return false;
     }
     return true;
@@ -133,7 +133,7 @@ bool <%CLASS_NAME%>::Update()
 
     if(! query.exec())
     {
-        qDebug(QString("Warning: unable to update <%CLASS_NAME%> with ID: %1.\n  Error: %2 \n Query: %3")
+        qDebug(QString("Warning: <%CLASS_NAME%>::Update: Unable to update <%CLASS_NAME%> with ID: %1.\n  Error: %2 \n Query: %3")
                .arg(<%PK_VARIABLE_NAME%>)
                .arg(query.lastQuery())
                .arg(query.lastError().text()).toUtf8());
@@ -170,7 +170,7 @@ bool <%CLASS_NAME%>::Delete()
 
     if(! query.exec() || !query.next())
     {
-        qDebug(QString("Warning: unable to load job detail with ID: %1.\n  Error: %2").arg(obj_id).arg(query.lastError().text()).toUtf8());
+        qDebug(QString("Warning: <%CLASS_NAME%>::LoadById: Unable to load <%CLASS_NAME%> with ID: %1.\n  Error: %2").arg(obj_id).arg(query.lastError().text()).toUtf8());
         return ptrToReturn;
     }
 

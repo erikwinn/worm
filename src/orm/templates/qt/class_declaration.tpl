@@ -9,11 +9,11 @@ class <%CLASS_NAME%> {
 
     public:<%! UNSUPPORTED refers to enum and set which we don't handle yet - they must be set manually %>
         <%CLASS_NAME%>();
-        <%CLASS_NAME%>(const <%CLASS_NAME%>& other );
+        <%CLASS_NAME%>( const <%CLASS_NAME%>& other );
         virtual ~<%CLASS_NAME%>();
         virtual <%CLASS_NAME%>& operator=( const <%CLASS_NAME%>& other );
         virtual bool operator==( const <%CLASS_NAME%>& other ) const;
-        inline bool operator!=(const <%CLASS_NAME%> &other) const { return !operator==(other); }
+        inline bool operator!=( const <%CLASS_NAME%> &other ) const { return !operator==(other); }
 
         bool Save();
         <%#PK_SECTION%>bool Update();

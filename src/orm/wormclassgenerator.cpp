@@ -216,7 +216,9 @@ void WormClassGenerator::run()
  * It then expands the template replacing the tag markers and returns a string suitable for
  * writing to a file.
  *
- * \todo Break this up into smaller functions, its getting long ..
+ * \todo Break this up into smaller functions, its getting long .. and formating the variable strings 
+ * (eg. variable_gettor/variable_settor) should at least be broken out into a funcion and ideally
+ * be moved to the template .. but, we need a smarter templating system for that.
  * 
  * \param std::string filename - the file containing the template
  * \param WSqlTable table - the table being generated
@@ -303,8 +305,11 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 			belongsto_dict->SetValue ( kcd_REFERENCED_CLASSNAME, fks_it->referencedClassName() );
 			belongsto_dict->SetValue ( kcd_REFERENCED_TABLENAME, fks_it->referencedTableName() );
 			belongsto_dict->SetValue("REFERENCED_COLUMN_NAME", fks_it->referencedColumnName());
+			belongsto_dict->SetValue("REFERING_COLUMN_NAME", fks_it->columnName());
+//TODO: straighten this out, these two are confused/confusing .. eliminate or rename one
 			belongsto_dict->SetValue("REFERENCED_VARIABLE_NAME", 
 									 WSqlDataType::columnNameToVariable(fks_it->referencedColumnName()));
+			belongsto_dict->SetValue("REFERING_VARIABLE_NAME", fks_it->referingVariableName());
 		}
 	}
 
@@ -371,12 +376,23 @@ std::string WormClassGenerator::expand ( const std::string &filename, const WSql
 		if(! type_declaration.empty())
 		{
 			type_declaration[0] = ::toupper(type_declaration[0]);
-			//transform std::string to StdString .. for Qt
+			//NOTE: transform std::string to StdString .. for Qt - should be some how moved or made more flexible. Or, depend on a config option.
+			//ie. if(qt_support) .. which we might determine from the template file ? in any case, commandline and/or settings (which we don't have ..).
 			size_t pos = type_declaration.find_last_of(':');
 			if(std::string::npos != pos)
 			{
 				type_declaration[pos+1] = ::toupper(type_declaration[pos+1]);				
 				type_declaration.erase (std::remove(type_declaration.begin(), type_declaration.end(), ':'), type_declaration.end());
+			}
+			//Also for Qt: longlong to LongLong
+			pos = type_declaration.find("Long long");
+			if(std::string::npos != pos)
+			{
+				type_declaration[pos] = ::toupper(type_declaration[pos]);
+				pos = type_declaration.find(' ');
+				type_declaration.erase(pos,1);
+				pos = type_declaration.find_last_of('l');
+				type_declaration[pos] = ::toupper(type_declaration[pos]);
 			}
 		}
 		columns_dict->SetValue ( "TO_DATATYPE", type_declaration );

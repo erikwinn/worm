@@ -44,7 +44,6 @@ class WormClassGenerator
         bool writeFile(const std::string content, const std::string filename);
         std::string createOutFileName(const WormCodeTemplate::Type type, const WSqlTable& table);    
         std::string expand( const std::string &filename, const WSql::WSqlTable &table, WSql::WormCodeTemplate::Type template_type );
-        
         WSqlDatabase& _db;
         std::string _templateDirectory;
         std::string _outputDirectory;

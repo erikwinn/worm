@@ -78,6 +78,29 @@ std::string WSqlForeignKey::referencedClassName() const
 {
 	return WSqlDataType::tableNameToClass ( _referencedTableName );
 }
+
+std::string WSqlForeignKey::referingVariableName() const
+{
+		//CRUDE HACK: FIXME ASAP .. rfind, check if at end ..			
+	std::string strToReturn = columnName();
+// 			std::cout << "strToReturn 0: " << strToReturn << std::endl;
+
+	size_t pos = WSqlDataType::iFind(strToReturn, "_id");
+	if(std::string::npos != pos)
+	{
+		strToReturn = strToReturn.erase(pos);
+	}
+// 			std::cout << "strToReturn 1: " << strToReturn << std::endl;
+	strToReturn = WSqlDataType::columnNameToVariable(strToReturn);	
+// 			std::cout << "strToReturn 2: " << strToReturn << std::endl;
+	strToReturn[0] = toupper(strToReturn[0]);
+// 			std::cout << "strToReturn 3: " << strToReturn << std::endl;
+	
+	//\HACK
+
+	return strToReturn;
+}
+
 std::string WSqlForeignKey::referencedClassNamePlural() const
 {
 	return WSqlDataType::toPlural ( referencedClassName() );

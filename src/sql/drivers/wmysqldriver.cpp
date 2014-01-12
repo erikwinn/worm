@@ -383,7 +383,7 @@ WSqlTable WMysqlDriver::tableMetaData ( const std::string &tableName )
 	std::vector<std::string> column_names;
 	std::vector<std::string>::const_iterator column_names_it;
 	std::string sql ( "show columns in " );
-	sql.append ( tableName );
+	sql.append ( escape_mysql_keyword( tableName ));
 	doQuery ( sql );
 	getResult();
 	WSqlColumn column;
@@ -421,7 +421,8 @@ WSqlTable WMysqlDriver::tableMetaData ( const std::string &tableName )
 
 		sql = "select constraint_name, referenced_table_schema,  referenced_table_name,"
 			  " referenced_column_name from information_schema.key_column_usage "
-			  " where table_name like '" + tableName + "' and column_name like '" + *column_names_it + "'";
+			  " where table_name like '" + escape_mysql_keyword(tableName) 
+			  + "' and column_name like '" +  escape_mysql_keyword(*column_names_it) + "'";
 
 		doQuery ( sql );
 		getResult();
@@ -518,6 +519,20 @@ std::string WMysqlDriver::local_escape_string ( std::string &escapeme )
 	std::string ret = buffer;
 	delete[] buffer;
 	return ret;
+}
+
+//TODO: make this smarter, trim string,  detect an array of keywords ..
+std::string WMysqlDriver::escape_mysql_keyword( std::string escapeme)
+{
+	std::string strToReturn = escapeme;
+	size_t pos = WSqlDataType::iFind( escapeme, "order");
+	if(std::string::npos  != pos )
+	{
+		strToReturn = "`";
+		strToReturn.append(escapeme);
+		strToReturn.append("`");		
+	}
+	return strToReturn;
 }
 
 }//namespace WSql

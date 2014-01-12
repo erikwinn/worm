@@ -48,7 +48,8 @@ class WMysqlDriver : public WSqlDriver
         bool init();
         std::string local_escape_string( std::string& escapeme);
         void initColumnType(WSqlColumn &clm, std::string description);
-        
+        std::string escape_mysql_keyword( std::string escapeme );
+		
         MYSQL * _mysql;
 
 };

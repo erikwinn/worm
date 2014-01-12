@@ -95,9 +95,9 @@ class WSqlForeignKey
 		{
 			return _referencedSchemaName;
 		}
-		std::string referingVariableName() const;
-
-		std::string referencedClassName() const;
+        std::string referingVariableName() const;
+        std::string referencedVariableName() const;
+        std::string referencedClassName() const;
 		std::string referencedClassNamePlural() const;
 
 		void dump() const;

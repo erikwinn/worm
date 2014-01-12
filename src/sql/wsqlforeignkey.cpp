@@ -98,7 +98,12 @@ std::string WSqlForeignKey::referingVariableName() const
 	
 	//\HACK
 
-	return strToReturn;
+    return strToReturn;
+}
+
+std::string WSqlForeignKey::referencedVariableName() const
+{
+    return WSqlDataType::columnNameToVariable(referencedColumnName());
 }
 
 std::string WSqlForeignKey::referencedClassNamePlural() const

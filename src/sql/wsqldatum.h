@@ -21,6 +21,7 @@
 
 #include <string>
 #include <sstream>
+#include <iostream>
 
 namespace WSql
 {
@@ -38,11 +39,14 @@ class WSqlDatum
 			return !operator==( other );
 		}
 		template <typename T> void setData( const T t ) {
+			std::stringstream _converter;
 			_converter << t;
+			_data.erase();
 			_data = _converter.str();
 		};
 
 		template <typename T> T data(){
+		std::stringstream _converter;
 			T result;
 			_converter << _data;
 			_converter >> result;
@@ -64,7 +68,6 @@ class WSqlDatum
 		void clear();
 	private:
 		std::string _data;
-		std::stringstream _converter;
 
 };
 
